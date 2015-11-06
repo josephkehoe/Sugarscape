@@ -65,7 +65,7 @@ int Gui(int Dimensions, float pause)
     theWorld.sanityCeck();
     ViewPort theGUI(&window,&theWorld,std::pair<int,int>(1024, 768),std::pair<int,int>(0,0),theWorld.getSize());
     Growback growback(&theWorld);
-   SeasonalGrowback seasonalGrowback(&theWorld);
+    SeasonalGrowback seasonalGrowback(&theWorld);
     AgentMove move(&theWorld);
     PollutionFormation pollForm(&theWorld);
     GarbageCollection gc(&theWorld);
@@ -257,7 +257,7 @@ int benchmark(int numRepeats, int stepCount, int dimStart, int increment, int ru
 
 int main(int, char const**)
 {
-    Gui(30,1.0);
+    Gui(30,1.0f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
     return EXIT_SUCCESS;   
 }
