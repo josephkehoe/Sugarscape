@@ -10,3 +10,6 @@ ALL: *.o
 	g++ -std=gnu++11 *.o -o Sugarscape -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 
+DEBUG: *.o
+	g++ -g -std=gnu++11 *.o -o Sugarscape -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
