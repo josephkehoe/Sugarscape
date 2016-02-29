@@ -1,11 +1,10 @@
 //
-//  WriteAction.cpp
+//  WriteStrategy.cpp
 //  SugarScape
 //
-//  Created by Joseph P Kehoe on 06/05/2015.
-//  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
+//  Created by Joseph P Kehoe on 29/02/2016.
+//  Copyright (c) 2016 Joseph P Kehoe. All rights reserved.
 //
-
 #include "WriteStrategy.h"
 
 WriteStrategy::WriteStrategy(World* theWorld):Strategy(theWorld){
@@ -179,6 +178,7 @@ int WriteStrategy::participantCount(int startX, int startY, int dimSize)
  Picks randomly, May be required to help form group reimplement if you want
  a more intelligent picking behaviour e.g. pick best/nearest/weakest neighbour
  
+
  @param possibleDestinations :vector of locations we can move to
  @returns index of chosen location in vector
  @exception none
