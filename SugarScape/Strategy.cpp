@@ -2,8 +2,8 @@
 //  Strategy.cpp
 //  SugarScape
 //
-//  Created by Joseph P Kehoe on 28/04/2015.
-//  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
+//  Created by Joseph P Kehoe on 29/02/2016.
+//  Copyright (c) 2016 Joseph P Kehoe. All rights reserved.
 //
 
 #include "Strategy.h"
