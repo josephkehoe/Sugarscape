@@ -18,9 +18,9 @@
 #include "Action.h"
 
 /*!  \class  Action
- \brief Abstract base class for Strategiess
+ \brief Abstract base class for Strategies
  
- Derived actions need to define updatubg strategies (synchronous/asynchronous). 
+ Derived actions need to define updating strategies (synchronous/asynchronous).
  run and concurrentRun perform actions on lattice.
  */
 
