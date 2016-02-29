@@ -164,8 +164,10 @@ int WriteAction::participantCount(int startX, int startY, int dimSize)
 #pragma omp parallel for
     for (int i=startX; i<startX+dimSize; ++i) {
         for (int k=startY; k<startY+dimSize; ++k) {
-            if (sim->getAgent(std::pair<int,int>(i, k)) != nullptr && sim->getAgent(std::pair<int,int>(i, k))->isDone()==false) {
-                ++pcount;
+            if (sim->getAgent(std::pair<int, int>(i, k))->isDone() == false) {
+                if (sim->getAgent(std::pair<int, int>(i, k)) != nullptr) {
+                    ++pcount;
+                }
             }
         }
     }
