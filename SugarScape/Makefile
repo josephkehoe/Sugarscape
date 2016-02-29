@@ -10,8 +10,10 @@ ALL: *.o
 	$(CXX) *.o -o Sugarscape  $(CXXFLAGS)
 
 
+
 DEBUG: *.o
 	$(CXX) -g *.o -o Sugarscape $(CXXFLAGS)
 
 CLEAN:
 	rm *.o
+
