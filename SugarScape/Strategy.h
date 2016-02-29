@@ -1,13 +1,13 @@
 //
-//  Action.h
+//  Strategy.h
 //  SugarScape
 //
-//  Created by Joseph P Kehoe on 28/04/2015.
+//  Created by Joseph P Kehoe on 29/02/2016.
 //  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
 //
 
-#ifndef __SugarScape__Action__
-#define __SugarScape__Action__
+#ifndef __SugarScape__Strategy__
+#define __SugarScape__Strategy__
 
 #include <iostream>
 #include <algorithm>
@@ -15,26 +15,26 @@
 #include "Location.h"
 #include "group.h"
 #include "World.h"
+#include "Action.h"
 
 /*!  \class  Action
- \brief Abstract base class for Actions
+ \brief Abstract base class for Strategiess
  
- Derived actions need to define formGroup and executeAction functions as they are pure virtual. 
+ Derived actions need to define updatubg strategies (synchronous/asynchronous). 
  run and concurrentRun perform actions on lattice.
  */
 
-class Action{
+class Strategy{
 protected:
     World *sim; /*!< The object containing the entire simulation */
 public:
-    Action(World*);
-    virtual ~Action();
-    virtual bool run(int,int,int);
-    virtual bool concurrentRun(void);
-    virtual bool executeAction(Location *, group* grp=nullptr)=0;
-    virtual group* formGroup(Location *)=0;
+    Strategy(World*);
+    virtual ~Strategy();
+    virtual bool run(int,int,int,Action*);
+    virtual bool concurrentRun(Action*);
+ 
 };
-#endif /* defined(__SugarScape__Action__) */
+#endif /* defined(__SugarScape__Strategy__) */
 
 
 //!

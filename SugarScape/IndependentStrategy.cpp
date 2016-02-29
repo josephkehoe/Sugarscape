@@ -1,48 +1,35 @@
 //
-//  IndependentAction.cpp
+//  IndependentStrategy.cpp
 //  SugarScape
 //
-//  Created by Joseph P Kehoe on 06/05/2015.
-//  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
+//  Created by Joseph P Kehoe on 29/02/2016.
+//  Copyright (c) 2016 Joseph P Kehoe. All rights reserved.
 //
 
-#include "IndependentAction.h"
+#include "IndependentStrategy.h"
 
-IndependentAction::IndependentAction(World* theWorld):Action(theWorld){
+IndependentStrategy::IndependentStrategy(World* theWorld):Strategy(theWorld){
     
 }
-IndependentAction::~IndependentAction(void){
+IndependentStrategy::~IndependentStrategy(void){
     
 }
 
-/**
- * Forms exclusive Group for Growback- No group involved so returns null pointer
- * @param currLocation :Location to apply rule to
- * @return Pointer to group
- * @exception none
- */
-group* IndependentAction::formGroup(Location *currLocation){
-    return nullptr;
-}
+
 /**
  * Performs action on entire lattice
- * @see Action
+ * @see Strategy
  * @return number of actions performed
  * @exception none
  */
-bool IndependentAction::run(int startX, int startY, int size){
+bool IndependentStrategy::run(int startX, int startY, int size,Action* rule){
     Location* Lattice=sim->getLattice();
     int dim=sim->getSize();
     //Perform action
 #pragma omp parallel for
     for (int i=0; i<size*size; ++i) {
-        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
+        rule->executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
     }
-//    for (int i=startX; i<startX+size; ++i) {
-//        for (int k=startY; k<startY+size; ++k) {
-//            executeAction(&Lattice[i*dim+k],nullptr);
-//        }
-//    }
     return true;
 
 }
@@ -52,9 +39,9 @@ bool IndependentAction::run(int startX, int startY, int size){
  * @return number of actions performed
  * @exception none
  */
-bool IndependentAction::concurrentRun(void){
+bool IndependentStrategy::concurrentRun(Action* rule){
     int size=sim->getSize();
-    return run(0,0,size);
+    return run(0,0,size,rule);
 }
 
 

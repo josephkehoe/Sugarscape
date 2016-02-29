@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
 //
 
-#include "WriteAction.h"
+#include "WriteStrategy.h"
 
-WriteAction::WriteAction(World* theWorld):Strategy(theWorld){
+WriteStrategy::WriteStrategy(World* theWorld):Strategy(theWorld){
     
 }
-WriteAction::~WriteAction(void){
+WriteStrategy::~WriteStrategy(void){
     
 }
 
@@ -25,7 +25,7 @@ WriteAction::~WriteAction(void){
  * @return true
  * @exception none
  */
-bool WriteAction::run(int startX, int startY, int size){
+bool WriteStrategy::run(int startX, int startY, int size,Action* rule){
     Location* Lattice=sim->getLattice();
     int remaining=0;
     std::vector<group*>  ExclusiveGroups,FailedGroups;
@@ -100,7 +100,7 @@ bool WriteAction::run(int startX, int startY, int size){
  * @return true
  * @exception none
  */
-bool WriteAction::concurrentRun(Action* rule){
+bool WriteStrategy::concurrentRun(Action* rule){
     int sectionSize=sim->getMaxVision();
     /*!< construct tile set - tile contains 9 sections - 3 each side*/
     int tileDim=3*sectionSize;
@@ -114,7 +114,7 @@ bool WriteAction::concurrentRun(Action* rule){
       run((i/tileNum)*tileDim,(i%tileNum)*tileDim,sectionSize,rule);
     }
 #pragma omp parallel for
-    for (int i=0; i<totalTiles; ++i) {
+   for (int i=0; i<totalTiles; ++i) {
       run((i/tileNum)*tileDim,(i%tileNum)*tileDim+sectionSize,sectionSize,rule);
     }
 #pragma omp parallel for
@@ -158,7 +158,7 @@ bool WriteAction::concurrentRun(Action* rule){
  @returns number of agents in this grid
  @exception none
  */
-int WriteAction::participantCount(int startX, int startY, int dimSize)
+int WriteStrategy::participantCount(int startX, int startY, int dimSize)
 {
     int pcount=0;
 #pragma omp parallel for
@@ -183,7 +183,7 @@ int WriteAction::participantCount(int startX, int startY, int dimSize)
  @returns index of chosen location in vector
  @exception none
  */
-int WriteAction::pickIndex(std::vector<Location*> possibleDestinations)
+int WriteStrategy::pickIndex(std::vector<Location*> possibleDestinations)
 {
     return sim->getRnd(0,(int)possibleDestinations.size()-1);//pick random location
 }

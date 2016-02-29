@@ -22,6 +22,6 @@ public:
     ReadDependentStrategy(World*);
     virtual ~ReadDependentStrategy();
     virtual bool run(int,int,int,Action*);
-    virtual bool concurrentRun(void);
+    virtual bool concurrentRun(Action*);
 };
 #endif /* defined(__SugarScape__ReadDependentStrategy__) */

@@ -1,18 +1,18 @@
 //
-//  Action.cpp
+//  Strategy.cpp
 //  SugarScape
 //
 //  Created by Joseph P Kehoe on 28/04/2015.
 //  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
 //
 
-#include "Action.h"
+#include "Strategy.h"
 
 
-Action::Action(World* theWorld):sim(theWorld){
+Strategy::Strategy(World* theWorld):sim(theWorld){
     
 }
-Action::~Action(void){
+Strategy::~Strategy(void){
     
 }
 /**
@@ -23,7 +23,7 @@ Action::~Action(void){
  * @return true if ok, false to indicate error
  * @exception none
  */
-bool Action::run(int startX,int startY, int size){
+bool Strategy::run(int startX,int startY, int size,Action*){
     return false;
 }
 /**
@@ -31,7 +31,7 @@ bool Action::run(int startX,int startY, int size){
  * @return true if ok, false to indicate error
  * @exception none
  */
-bool Action::concurrentRun(void){
+bool Strategy::concurrentRun(Action*){
     return false;
 }
 

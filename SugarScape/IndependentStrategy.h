@@ -2,27 +2,26 @@
 //  IndependentAction.h
 //  SugarScape
 //
-//  Created by Joseph P Kehoe on 06/05/2015.
-//  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
+//  Created by Joseph P Kehoe on 29/02/2016.
+//  Copyright (c) 2016 Joseph P Kehoe. All rights reserved.
 //
 
-#ifndef __SugarScape__IndependentAction__
-#define __SugarScape__IndependentAction__
+#ifndef __SugarScape__IndependentStrategy__
+#define __SugarScape__IndependentStrategy__
 
 #include <iostream>
-#include "Action.h"
+#include "Strategy.h"
 
-/*!  \class  IndependentAction
+/*!  \class  IndependentStrategy
  \brief Actions that require no interaction between agents
  
  The simplest possible agent actions.  No interaction between agents. Every agent acts independently.
  */
-class IndependentAction:public Action{
+class IndependentStrategy:public Strategy{
 public:
-    IndependentAction(World*);
-    virtual ~IndependentAction();
-    virtual bool run(int,int,int);
-    virtual bool concurrentRun(void);
-    virtual group* formGroup(Location*);
+    IndependentStrategy(World*);
+    virtual ~IndependentStrategy();
+    virtual bool run(int,int,int,Action*);
+    virtual bool concurrentRun(Action*);
 };
-#endif /* defined(__SugarScape__IndependentAction__) */
+#endif /* defined(__SugarScape__IndependentStrategy__) */
