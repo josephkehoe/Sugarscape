@@ -1,15 +1,32 @@
 //
-// Created by joseph on 01/03/16.
+// Created by joseph on 03/03/16.
 //
 
-#include "LineByLineStrategy.h"
+#include "RndAsyncStrategy.h"
 
-LineByLineStrategy::LineByLineStrategy(World *sim):Strategy(sim){
-    //our work is done
+
+RndAsyncStrategy::RndAsyncStrategy(World *sim) : Strategy(sim){
+    //initialise ordering array
+    size=sim->getSize()*sim->getSize();
+    ordering = new int[size];
+    for(int i=0;i<size;++i){
+        ordering[i]=i;
+    }
+    shuffle();//randomise ordering
 }
 
 
-bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
+bool RndAsyncStrategy::shuffle() {
+    for(int i=0; i<size; ++i){
+        int k=sim->getRnd(0,size);
+        int temp=ordering[k];
+        ordering[k]=ordering[i];
+        ordering[i]=temp;
+    }
+    return true;
+}
+
+bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
     Location *Lattice = sim->getLattice();
     int dim = sim->getSize();
     Location * loc=nullptr;
@@ -18,7 +35,7 @@ bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
     //Perform action
 #pragma omp parallel for
     for (int i = 0; i < size * size; ++i) {
-        loc=&Lattice[(startX + i / size) * dim + startY + i % size];
+        loc=&Lattice[(startX + ordering[i] / size) * dim + startY + ordering[i] % size];
         grp = rule->formGroup(loc);//get this group
         rule->executeAction(loc, grp);//execute action on this group
         //sync this group
@@ -38,6 +55,6 @@ bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
     return true;
 }
 
-bool LineByLineStrategy::concurrentRun(Action *rule){
+bool RndAsyncStrategy::concurrentRun(Action *rule){
     return run(0,0,sim->getSize(),rule);
 }
