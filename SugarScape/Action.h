@@ -15,6 +15,7 @@
 #include "Location.h"
 #include "group.h"
 #include "World.h"
+#include "Strategy.h"
 
 /*!  \class  Action
  \brief Abstract base class for Actions
@@ -26,8 +27,9 @@
 class Action{
 protected:
     World *sim; /*!< The object containing the entire simulation */
+    Strategy *strategy;
 public:
-    Action(World*);
+    Action(World*, Strategy*);
     virtual ~Action();
     virtual bool run(int,int,int);
     virtual bool concurrentRun(void);

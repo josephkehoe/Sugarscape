@@ -9,8 +9,8 @@
 #include "Action.h"
 
 
-Action::Action(World* theWorld):sim(theWorld){
-    
+Action::Action(World* theWorld, Strategy* theStrategy):sim(theWorld), strategy(theStrategy){
+    //All done
 }
 Action::~Action(void){
     
@@ -24,7 +24,7 @@ Action::~Action(void){
  * @exception none
  */
 bool Action::run(int startX,int startY, int size){
-    return false;
+    return strategy->run(startX,startY,size,this);
 }
 /**
  * Concurrently performs action on entire Lattice
@@ -32,7 +32,6 @@ bool Action::run(int startX,int startY, int size){
  * @exception none
  */
 bool Action::concurrentRun(void){
-    return false;
+    return strategy->concurrentRun(this);
 }
-
 

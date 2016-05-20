@@ -58,3 +58,7 @@ bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
 bool RndAsyncStrategy::concurrentRun(Action *rule){
     return run(0,0,sim->getSize(),rule);
 }
+
+RndAsyncStrategy::~RndAsyncStrategy() {
+    delete [] ordering;
+}

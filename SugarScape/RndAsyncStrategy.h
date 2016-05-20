@@ -16,6 +16,8 @@ protected:
     bool shuffle();
 public:
     RndAsyncStrategy(World *sim);
+
+    virtual ~RndAsyncStrategy();
     virtual bool run(int, int , int ,Action*);
     virtual bool concurrentRun(Action*);
 };
