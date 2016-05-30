@@ -6,6 +6,11 @@
 //  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
 //
 
+#include <fstream>
+#include <chrono>
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream>      // std::stringstream
 #include "World.h"
 #include "group.h"
 #include "Action.h"
@@ -31,9 +36,11 @@ World::World(int dimensionSize)
 {
     if (dimensionSize>0) {
         size=dimensionSize;
-        initialPopulation=size*size/4;
+        //initialPopulation=size*size/4;
     }
-    rng.seed();
+    //seed random number generator!!
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    rng.seed(seed);
     femaleFertilityStart=getRnd(MinFemaleFertilityStart, MaxFemaleFertilityStart+1);//range is inclusive!
     maleFertilityStart=getRnd(MinMaleFertilityStart, MaxMaleFertilityStart+1);//range is inclusive!
     femaleFertilityEnd=getRnd(MinFemaleFertilityEnd, MaxFemaleFertilityEnd+1);//range is inclusive!
@@ -65,13 +72,15 @@ bool World::init(void)
     for (int i=0; i<size*size; ++i) {
         Lattice[i].setWorld(this);
         Lattice[i].setPosition(std::pair<int,int>(i/size,i%size));
-        Lattice[i].setMaxSugar(getRnd(InitialSugarMin, InitialSugarMax));
-        Lattice[i].setSugar(getRnd(InitialSugarMin, Lattice[i].getMaxSugar()));
+        //do not set these if we are reading in from config file -- only one assignment allowed!
+        //Lattice[i].setMaxSugar(getRnd(InitialSugarMin, InitialSugarMax));
+        //Lattice[i].setSugar(getRnd(InitialSugarMin, Lattice[i].getMaxSugar()));
     }
-    
+    //read in initial sugar levels from config file
+    this->readConfigFile("/home/joseph/startup.csv");
     //create agents and put in lattice
     std::pair<int,int> pos;
-    for (int i=0; i<initialPopulation; ++i) {//quater fill lattice
+    for (int i=0; i<initialPopulation; ++i) {//quarter fill lattice
         Agent *anAgent= nullptr;
         do {
             pos.first=getRnd(0, size-1);
@@ -103,7 +112,7 @@ int World::sync(void){
  * @return void
  * @exception none
  */
-void World::sanityCeck(void){
+void World::sanityCheck(void){
     for (int i=0; i<size; ++i) {
         for (int k=0; k<size; ++k) {
             if (Lattice[i*size+k].hasAgent()){
@@ -175,6 +184,14 @@ bool World::resetNeighbours(void){
 
 //********************************GETTERS**************************************
 
+/**
+ * Increments step count by one
+ * @return current step value
+ * @exception none
+ */
+int World::incStep(){
+    return ++step;
+}
 
 /**
  * Gets a randon number in range (inclusive)
@@ -184,6 +201,7 @@ bool World::resetNeighbours(void){
  * @exception none
  */
 int World::getRnd(int start,int end){
+
     std::uniform_int_distribution<uint32_t> uint_dist(start,end);
     return uint_dist(rng);
 }
@@ -958,7 +976,27 @@ Agent* World::killAgent(std::pair<int,int> pos)
 }
 
 
-
+int World::readConfigFile(std::string configFile)
+{
+    std::ifstream  data(configFile);
+    std::string line;
+    int i=0;
+    while(std::getline(data,line))
+    {
+        std::stringstream  lineStream(line);
+        std::string        cell;
+        while(std::getline(lineStream,cell,','))
+        {
+            int number=stoi(cell);
+            Lattice[i].setMaxSugar(number);
+            Lattice[i].setSugar(number);
+            ++i;
+            std::cout << number <<" ";// You have a cell!!!!
+        }
+        std::cout <<std::endl;
+    }
+    return i;
+}
 //****************RULE APPLICATION**************************
 
 /**

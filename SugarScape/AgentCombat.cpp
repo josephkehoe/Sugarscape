@@ -48,7 +48,7 @@ bool AgentCombat::executeAction(Location *loc, group *grp)
                 grp->getMembers()[0]->setSugar(0);/*!< sugar at location is consumed */
             }
             else{
-                //std::cout <<"COMBAT!"<<std::endl;
+                std::cout <<"COMBAT!"<<std::endl;
                 //1. Update victorious agent resources
                 Agent *loser = grp->getMembers()[0]->getAgent();//only one member in group - the loser
                 winner->incSugar(grp->getMembers()[0]->getReward());//*WHAT IF WE ADD SPICE?*
@@ -122,7 +122,7 @@ int AgentCombat::pickIndex(std::vector<Location*> possibles,Agent *me)
 
 
 /**
- * Creates the group containing the vistim we are attacking or empty location we are moving to
+ * Creates the group containing the victim we are attacking or empty location we are moving to
  * @param loc :pointer to our location
  * @see Combat Rule
  * @return pointer to group object

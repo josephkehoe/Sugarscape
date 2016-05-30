@@ -27,10 +27,10 @@ bool AgentMating::executeAction(Location *loc, group *grp)
             Agent *offSpring= new Agent(sim,theMale,theFemale,newPosition);
             sim->setAgent(newPosition, offSpring);/*!< Put offspring in empty location */
             offSpring->incSugar(grp->getMembers()[1]->getSugar());/*!< eat sugar at new location */
-            //offSpring->incSugar(theMale->getSugar()/2);
-            //theMale->incSugar(-theMale->getSugar()/2);
-            //offSpring->incSugar(theFemale->getSugar()/2);
-            //theFemale->incSugar(-theFemale->getSugar()/2);
+            offSpring->incSugar(theMale->getSugar()/2);
+            theMale->incSugar(-theMale->getSugar()/2);
+            offSpring->incSugar(theFemale->getSugar()/2);
+            theFemale->incSugar(-theFemale->getSugar()/2);
             offSpring->makeUnavailable();
             grp->getMembers()[1]->setSugar(0);/*!< sugar at new location now consumed */
             
@@ -79,6 +79,7 @@ group* AgentMating::formGroup(Location *loc)
             grp->setRank(1);
             grp->setActiveParticipants(1);
             grp->setPrimeMover(loc);
+
             for (int i=0; i<4 && mate==nullptr; ++i) {/*!< find mate first */
 
                 if (me->getAvail(i) && suitable(loc->getCardinal(i))==true) {
@@ -142,6 +143,7 @@ int AgentMating::participantCount(int startX, int startY, int dimSize)
 }
 
 bool AgentMating::suitable(Location *loc){
+    //DO WE NEED TO ADD CHECK FOR RESERVES OF SUGAR AS WELL?
     if (loc->hasAgent() && loc->getAgent()->getSex()==Sex::female) {
         return true;
     }

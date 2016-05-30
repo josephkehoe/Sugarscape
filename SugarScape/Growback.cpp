@@ -23,6 +23,11 @@ Growback::Growback(World *sim):IndependentAction(sim){
  */
 bool Growback::executeAction(Location * place,group*){
     
+//    int SugarGrowth=place->getSugar()+sim->getSugarGrowth();
+//    if (SugarGrowth>place->getMaxSugar())
+//    {
+//        SugarGrowth=place->getMaxSugar();
+//    }
     place->setSugar(place->getSugar()+sim->getSugarGrowth());
     return true;
     

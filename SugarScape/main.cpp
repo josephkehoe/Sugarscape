@@ -90,7 +90,7 @@ int Gui(int Dimensions, float pause)
     //theWorld.addRule(&diffusion);
     
     theWorld.addRule(&move);
-    theWorld.addRule(&agentMating);
+    //theWorld.addRule(&agentMating);
     //theWorld.addRule(&agentCombat);
     //theWorld.addRule(&agentCulture);
     //theWorld.addRule(&agentDisease);
@@ -257,7 +257,7 @@ int benchmark(int numRepeats, int stepCount, int dimStart, int increment, int ru
 
 int main(int, char const**)
 {
-    Gui(30,1.0f);
+    Gui(50,1.0f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
     return EXIT_SUCCESS;   
 }

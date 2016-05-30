@@ -43,24 +43,24 @@ class World{
      Change to suit your simulation
      */
     static const int DIM=40; /*!< Size of lattice dimensions */
-    static const int AGENTCOUNT=400; /*!< Initial number of agents */
+    static const int AGENTCOUNT=100; /*!< Initial number of agents */
     static const int CultureCount=20;
     static const int MaxAge=60;
     static const int MaxVision=6;
-    static const int MaxMetabolism=10;
+    static const int MaxMetabolism=3;
     static const int MinAge=10;
-    static const int MinMetabolism=4;
-    static const int SugarGrowth=4;
+    static const int MinMetabolism=1;
+    static const int SugarGrowth=1;
     static const int SpiceGrowth=0;
     static const int Duration=10;
     static const int Rate=3;
-    static const int InitialPopulationSize=50;
+    static const int InitialPopulationSize=500;
     static const int InitialSugarMax=25;
     static const int InitialSugarMin=5;
     static const int InitialSpiceMax=25;
     static const int InitialSpiceMin=5;
-    static const int WinterRate=3;
-    static const int SeasonLength=15;
+    static const int WinterRate=8;
+    static const int SeasonLength=50;
     static const int Production=2;
     static const int Consumption=2;
     static const int CombatLimit=6;
@@ -161,6 +161,7 @@ public:
     Location* getLocation(std::pair<int, int>);
     
     //Setters
+    int incStep();
     int setSize(int);
     int setCultureCount(int);
     int setDiseaseLength(int);
@@ -192,10 +193,11 @@ public:
     //helpers
     bool init(void);
     int sync(void);
-    void sanityCeck(void);
+    void sanityCheck(void);
     int wrap(int);
     int getAgentCount(void);
     bool resetNeighbours(void);
+    int readConfigFile(std::string);
 
     //Rule Application
     int addRule(Action*);

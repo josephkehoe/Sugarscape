@@ -17,7 +17,7 @@ AgentMove::AgentMove(World *s)
 
 
 /**
- myCompare compares two locations to see whcih is best
+ myCompare compares two locations to see which is best
  
  if they equal in pollution levels pick location with most sugar
  else pick least polluted
@@ -27,13 +27,13 @@ AgentMove::AgentMove(World *s)
  @returns true if a better than b
  @exception none
  */
-bool myCompare(Location *a, Location *b)
+int myCompare(Location *a, Location *b)
 {
     if (a->getPollution()==b->getPollution()) {
-        return a->getWealth()>b->getWealth();//I am assuming we will only be checking empty locations
+        return a->getWealth() - b->getWealth();//I am assuming we will only be checking empty locations
     } else
     {
-        return a->getPollution()<b->getPollution();
+        return a->getPollution() - b->getPollution();
     }
 }
 
@@ -50,8 +50,11 @@ int AgentMove::pickIndex(std::vector<Location*> possibleDestinations)
 {
     int best=0;
     for (int i=0; i<possibleDestinations.size(); ++i) {
-        if (myCompare(possibleDestinations[i], possibleDestinations[best])) {
+        if (myCompare(possibleDestinations[i], possibleDestinations[best])>0) {
             best=i;
+        }
+        else if (myCompare(possibleDestinations[i], possibleDestinations[best])==0) {
+            if (sim->getRnd(0,10)>5) best=i;//if equal pick one by coin flip
         }
     }
     //std::sort(possibleDestinations.begin(),possibleDestinations.end(),myCompare);

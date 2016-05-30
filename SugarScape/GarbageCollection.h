@@ -16,7 +16,7 @@
  \brief Deletes pointers to agents that are dead
  
  Location holds pointers to dead agents.  This just deletes those agents pointed to.
- The other rules death, replacxement, etc. populate this pointer as required
+ The other rules death, replacement, etc. populate this pointer as required
  */
 class GarbageCollection:public IndependentAction{
 public:

@@ -12,7 +12,7 @@
 #include <iostream>
 #include "AgentBasicMove.h"
 
-bool myCompare(Location *a, Location *b);
+int myCompare(Location *a, Location *b);
 
 
 /*!  \class  AgentMove

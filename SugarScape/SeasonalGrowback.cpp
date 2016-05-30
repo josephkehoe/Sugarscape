@@ -24,15 +24,15 @@ SeasonalGrowback::SeasonalGrowback(World *sim):IndependentAction(sim){
 bool SeasonalGrowback::executeAction(Location * place, group *){
     if ((sim->getStep()/sim->getSeasonLength())%2==0) {//summer top half
         if (place->getX()*2<sim->getSize()) {
-            place->setSugar(sim->getSugarGrowth());
+            place->setSugar(place->getSugar()+sim->getSugarGrowth());
         } else {
-            place->setSugar(sim->getSugarGrowth()/sim->getWinterRate());
+            place->setSugar(place->getSugar()+(sim->getSugarGrowth()/sim->getWinterRate()));
         }
     } else {//winter top half
         if (place->getX()*2<sim->getSize()) {
-            place->setSugar(sim->getSugarGrowth()/sim->getWinterRate());
+            place->setSugar(place->getSugar()+(sim->getSugarGrowth()/sim->getWinterRate()));
         } else {
-            place->setSugar(sim->getSugarGrowth());
+            place->setSugar(place->getSugar()+sim->getSugarGrowth());
         }
     }
     return true;
