@@ -33,6 +33,8 @@ public:
     virtual bool concurrentRun(void);
     virtual bool executeAction(Location *, group* grp=nullptr)=0;
     virtual group* formGroup(Location *)=0;
+    virtual int participantCount(int,int,int);
+    virtual int pickIndex(std::vector<Location*>);
 };
 #endif /* defined(__SugarScape__Action__) */
 

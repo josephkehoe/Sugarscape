@@ -15,13 +15,13 @@
 /*!  \class  ReadDependentStrategy
  \brief Synchronous updates where the agent reads the neighbour's state but only update their own
  
- Read-Dependent Rules with synchronous updating all use from this. 
+ Read-Dependent Rules with synchronous updating all use this.
  */
 class ReadDependentStrategy:public Strategy{
 public:
     ReadDependentStrategy(World*);
     virtual ~ReadDependentStrategy();
     virtual bool run(int,int,int,Action*);
-    virtual bool concurrentRun(Action*);
+//    virtual bool concurrentRun(Action*);USE INHERITED VERSION
 };
 #endif /* defined(__SugarScape__ReadDependentStrategy__) */

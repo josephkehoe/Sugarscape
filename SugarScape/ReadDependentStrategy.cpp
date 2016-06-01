@@ -6,23 +6,37 @@
 //  Copyright (c) 2016 Joseph P Kehoe. All rights reserved.
 //
 
-#include "ReadAction.h"
-
+#include "ReadDependentStrategy.h"
+/**
+ * Constructor - Little to do - base class constructor does all work
+ * @param theWorld :Pointer to World Object
+ * @see Strategy Constructor
+ * @exception none
+ */
 ReadDependentStrategy::ReadDependentStrategy(World* theWorld):Strategy(theWorld){
-    
+    //NOTHING ELSE TO DO
 }
+
+/**
+ * Destructor - Nothing to do
+ * @exception none
+ */
 ReadDependentStrategy::~ReadDependentStrategy(void){
-    
+    //NOTHING TO DELETE
 }
 
 
 /**
- * Performs a read only action across entire lattice sequentially
+ * Performs a read-only action across entire lattice *synchronously*
  * @see Action.h
+ * @param startX :start row on lattice
+ * @param startY :start column on lattice
+ * @param size   :dimension of lattice (assume square lattice)
+ * @param rule   :The action we are applying to each agent
  * @return number of actions performed
  * @exception none
  */
-bool ReadAction::run(int startX, int startY, int size, Action * rule){
+bool ReadDependentStrategy::run(int startX, int startY, int size, Action * rule){
     Location* Lattice=sim->getLattice();
     int dim=sim->getSize();
     //Perform action
@@ -39,8 +53,8 @@ bool ReadAction::run(int startX, int startY, int size, Action * rule){
  * @return number of actions performed
  * @exception none
  */
-bool ReadAction::concurrentRun(Action* rule){
-    int size=sim->getSize();
-    return run(0,0,size,rule);
-}
+//bool ReadDependentStrategy::concurrentRun(Action* rule){
+//    int size=sim->getSize();
+//    return run(0,0,size,rule);
+//}
 

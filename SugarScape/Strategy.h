@@ -22,6 +22,9 @@
  
  Derived actions need to define run and concurrentRun functions as they are pure virtual. 
  run and concurrentRun perform actions on lattice.
+ Strategy class runs rules within a step in some defined way (synchronous, asynchronous, etc.)
+ When a rule object is created we pass in a (derived) strategy to it.  It then employs this strategy to schedule rule
+ application within a step.
  */
 
 class Strategy{
@@ -30,8 +33,8 @@ protected:
 public:
     Strategy(World*);
     virtual ~Strategy();
-    virtual bool run(int,int,int,Action*);
-    virtual bool concurrentRun(Action*);
+    virtual bool run(int,int,int,Action*); /*!< Standard run algorithm handling concurrency */
+    virtual bool concurrentRun(Action*);   /*!< Tiled implementation for concurrency -if it exists */
 };
 #endif /* defined(__SugarScape__Strategy__) */
 

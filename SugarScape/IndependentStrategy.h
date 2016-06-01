@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "Action.h"
+#include "Strategy.h"
 
 /*!  \class  IndependentAction
  \brief Synchronous updating where agents require no interaction 
@@ -22,6 +23,6 @@ public:
     IndependentStrategy(World*);
     virtual ~IndependentStrategy();
     virtual bool run(int,int,int,Action*);
-    virtual bool concurrentRun(Action*);
+ //   virtual bool concurrentRun(Action*); USE INHERITED VERSION
 };
 #endif /* defined(__SugarScape__IndependentStrategy__) */

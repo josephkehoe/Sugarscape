@@ -47,8 +47,12 @@
 #include "AgentLoanPayments.h"
 #include "AgentCredit.h"
 #include "ViewPort.h"
-
-
+#include "Strategy.h"
+#include "NewSweepStrategy.h"
+#include "LineByLineStrategy.h"
+#include "IndependentStrategy.h"
+#include "IterativeWriteStrategy.h"
+#include "ReadDependentStrategy.h"
 
 int benchmark(int,int,int,int,int,std::string);
 int Gui(int, float);
@@ -56,14 +60,20 @@ int Gui(int, float);
 
 int Gui(int Dimensions, float pause)
 {
-    // Create the main window
+
+    std::ofstream outputFile("/home/joseph/capacityM1v1.csv",std::ios::out | std::ios::app);
+
+    /*!<  Create the main window */
     sf::RenderWindow window(sf::VideoMode(1024, 768), "SFML window");
-    // create everything
+    /*!< create world and initialise it */
     World theWorld(Dimensions);
     theWorld.init();
     theWorld.sync();
-    theWorld.sanityCeck();
+
+    /*!< create viewport for displaying simulation */
     ViewPort theGUI(&window,&theWorld,std::pair<int,int>(1024, 768),std::pair<int,int>(0,0),theWorld.getSize());
+
+    /*!< Declare all rules here */
     Growback growback(&theWorld);
     SeasonalGrowback seasonalGrowback(&theWorld);
     AgentMove move(&theWorld);
@@ -79,7 +89,18 @@ int Gui(int Dimensions, float pause)
     AgentMetabolism agentMetabolism(&theWorld);
     AgentCredit agentCredit(&theWorld);
     AgentLoanPayments agentLoanPayments(&theWorld);
-    
+
+    /*!< Declare all possible strategies here */
+    Strategy baseStrategy(&theWorld);
+    NewSweepStrategy newSweep(&theWorld);
+    LineByLineStrategy lineByLine(&theWorld);
+    RndAsyncStrategy rndAsync(&theWorld);
+    IndependentStrategy independent(&theWorld);
+    IterativeWriteStrategy iterativeWrite(&theWorld);
+    ReadDependentStrategy readDependent(&theWorld);
+    WriteStrategy writeDependent(&theWorld);
+
+
     //!
     /*!
      Add the rules we are using here.
@@ -88,16 +109,20 @@ int Gui(int Dimensions, float pause)
     //theWorld.addRule(&seasonalGrowback);
     //theWorld.addRule(&pollForm);
     //theWorld.addRule(&diffusion);
-    
     theWorld.addRule(&move);
-    //theWorld.addRule(&agentMating);
+    theWorld.addRule(&agentMating);
     //theWorld.addRule(&agentCombat);
-    //theWorld.addRule(&agentCulture);
+    theWorld.addRule(&agentCulture);
     //theWorld.addRule(&agentDisease);
     //theWorld.addRule(&agentReplacement);
     theWorld.addRule(&agentMetabolism);
     theWorld.addRule(&agentDeath);
-    //theWorld.addRule(&gc);
+    theWorld.addRule(&gc);
+
+    //!
+    /*!
+     Start simulation!
+     */
     int stepCount=0;
     std::string counter;
     
@@ -164,7 +189,9 @@ int Gui(int Dimensions, float pause)
         text.setString(counter);
         sf::Time t1 = sf::seconds(pause);
         sf::sleep(t1);
-        theWorld.sanityCeck();
+        //theWorld.sanityCheck();
+        theWorld.incStep();
+        //outputFile << theWorld.getStep() << ","  << theWorld.getAgentCount()<< std::endl;
     }
     return stepCount;
 }
@@ -183,7 +210,7 @@ int benchmark(int numRepeats, int stepCount, int dimStart, int increment, int ru
             World theWorld(dimStart+i*increment);
             theWorld.init();
             theWorld.sync();
-            //theWorld.sanityCeck();
+            //theWorld.sanityCheck();
             Growback growback(&theWorld);
             SeasonalGrowback seasonalGrowback(&theWorld);
             AgentMove move(&theWorld);
@@ -257,7 +284,7 @@ int benchmark(int numRepeats, int stepCount, int dimStart, int increment, int ru
 
 int main(int, char const**)
 {
-    Gui(50,1.0f);
+    Gui(50,0.5f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
     return EXIT_SUCCESS;   
 }

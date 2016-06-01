@@ -6,12 +6,23 @@
 //  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
 //
 
-#include "WriteAction.h"
+#include "WriteStrategy.h"
 
-WriteAction::WriteAction(World* theWorld):Action(theWorld){
+/**
+ * Constructor - Little to do - base class constructor does all work
+ * @param theWorld :Pointer to World Object
+ * @see Strategy Constructor
+ * @exception none
+ */
+WriteStrategy::WriteStrategy(World* theWorld):Strategy(theWorld){
     
 }
-WriteAction::~WriteAction(void){
+
+/**
+ * Destructor - Nothing to do
+ * @exception none
+ */
+WriteStrategy::~WriteStrategy(void){
     
 }
 
@@ -21,16 +32,19 @@ WriteAction::~WriteAction(void){
  * @param startX :Starting X position of tile we are executing
  * @param startY :starting Y position of tile
  * @param size :dimensions of our tile (we assume square tiles)
+ * @param rule :The (write) action we are running
  * @see Write-Dependent Algorithm
  * @return true
  * @exception none
+ *
+ * For breakdown of algorithm see paper
  */
-bool WriteAction::run(int startX, int startY, int size){
+bool WriteStrategy::run(int startX, int startY, int size, Action* rule){
     Location* Lattice=sim->getLattice();
     int remaining=0;
     std::vector<group*>  ExclusiveGroups,FailedGroups;
     //calculate number of entities that need to take part in this actions
-    remaining=participantCount(startX, startY, size);
+    remaining=rule->participantCount(startX, startY, size);
     while (remaining>0) {//loop until all active participants are in groups
         std::vector<group*> proposedGroups;
         //Part One: Form group proposals
@@ -97,10 +111,11 @@ bool WriteAction::run(int startX, int startY, int size){
 /**
  * Concurrent version of run
  * @see Concurrent Write-Dependent Algorithm
+ * @param rule :The (write) action we are running
  * @return true
  * @exception none
  */
-bool WriteAction::concurrentRun(Action* rule){
+bool WriteStrategy::concurrentRun(Action* rule){
     int sectionSize=sim->getMaxVision();
     /*!< construct tile set - tile contains 9 sections - 3 each side*/
     int tileDim=3*sectionSize;
@@ -158,34 +173,34 @@ bool WriteAction::concurrentRun(Action* rule){
  @returns number of agents in this grid
  @exception none
  */
-int WriteAction::participantCount(int startX, int startY, int dimSize)
-{
-    int pcount=0;
-#pragma omp parallel for
-    for (int i=startX; i<startX+dimSize; ++i) {
-        for (int k=startY; k<startY+dimSize; ++k) {
-            if (sim->getAgent(std::pair<int, int>(i, k))->isDone() == false) {
-                if (sim->getAgent(std::pair<int, int>(i, k)) != nullptr) {
-                    ++pcount;
-                }
-            }
-        }
-    }
-    return pcount;
-}
+//int WriteAction::participantCount(int startX, int startY, int dimSize)
+//{
+//    int pcount=0;
+//#pragma omp parallel for
+//    for (int i=startX; i<startX+dimSize; ++i) {
+//        for (int k=startY; k<startY+dimSize; ++k) {
+//            if (sim->getAgent(std::pair<int, int>(i, k))->isDone() == false) {
+//                if (sim->getAgent(std::pair<int, int>(i, k)) != nullptr) {
+//                    ++pcount;
+//                }
+//            }
+//        }
+//    }
+//    return pcount;
+//}
 
 
 /**
  pick index from list of available locations
  
- Picks randomly, May be required to help form group reimplement if you want
+ Picks randomly, May be required to help form group. Reimplement if you want
  a more intelligent picking behaviour e.g. pick best/nearest/weakest neighbour
  
  @param possibleDestinations :vector of locations we can move to
  @returns index of chosen location in vector
  @exception none
  */
-int WriteAction::pickIndex(std::vector<Location*> possibleDestinations)
-{
-    return sim->getRnd(0,(int)possibleDestinations.size()-1);//pick random location
-}
+//int WriteAction::pickIndex(std::vector<Location*> possibleDestinations)
+//{
+//    return sim->getRnd(0,(int)possibleDestinations.size()-1);//pick random location
+//}

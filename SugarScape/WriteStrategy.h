@@ -12,18 +12,17 @@
 #include <iostream>
 #include "Strategy.h"
 
-/*!  \class  WriteStrategy All synchronous Write-Dependent Actions must use this
- \brief Contains algorithm for executing Write-Dependent actions
+/*!  \class  WriteStrategy
+ \brief All synchronous Write-Dependent Actions must use this
  
-
+Contains algorithm for executing Write-Dependent actions synchronously.
+ Most complex of interaction type.
  */
 class WriteStrategy:public Strategy{
 public:
     WriteStrategy(World*);
     virtual ~WriteStrategy();
-    virtual bool run(int,int,int);
+    virtual bool run(int,int,int,Action*);
     virtual bool concurrentRun(Action*);
-    virtual int participantCount(int,int,int,Action*);
-    virtual int pickIndex(std::vector<Location*>);
 };
 #endif /* defined(__SugarScape__WriteStrategy__) */

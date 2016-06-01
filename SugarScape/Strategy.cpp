@@ -8,31 +8,43 @@
 
 #include "Strategy.h"
 
-
+/**
+ * Constructor - Little to do - Initialise sim pointer
+ * @param theWorld :Pointer to World Object
+ * @exception none
+ */
 Strategy::Strategy(World* theWorld):sim(theWorld){
     
 }
+
+/**
+ * Destructor - Nothing to do
+ * @exception none
+ */
 Strategy::~Strategy(void){
     
 }
 /**
- * Sequentially performs action on square section of Lattice
+ * Performs action on square section of Lattice
  * @param startX :start row on lattice
  * @param startY :start column on lattice
- * @param size :dimension of lattice (assume square lattice)
+ * @param size   :dimension of lattice (assume square lattice)
+ * @param rule   :The action we are applying to each agent
  * @return true if ok, false to indicate error
  * @exception none
  */
-bool Action::run(int startX,int startY, int size,Action*){
+bool Strategy::run(int startX,int startY, int size,Action*){
     return false;
 }
 /**
- * Concurrently performs action on entire Lattice
+ * Concurrently performs action on entire Lattice. Base case is if no tiling algorithm exists
+ * then we just call normal run as it also handles concurrency.
+ * @param rule   :The action we are applying to each agent
  * @return true if ok, false to indicate error
  * @exception none
  */
-bool Action::concurrentRun(Action*){
-    return false;
+bool Strategy::concurrentRun(Action* rule){
+    return run(0,0,sim->getSize(),rule);
 }
 
 

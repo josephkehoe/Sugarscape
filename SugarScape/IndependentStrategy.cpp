@@ -6,26 +6,23 @@
 //  Copyright (c) 2016 Joseph P Kehoe. All rights reserved.
 //
 
-#include "IndependentAction.h"
+#include "IndependentStrategy.h"
 
-IndependentAction::IndependentAction(World* theWorld):Strategy(theWorld){
+IndependentStrategy::IndependentStrategy(World* theWorld):Strategy(theWorld){
     
 }
-IndependentAction::~IndependentAction(void){
+IndependentStrategy::~IndependentStrategy(void){
     
 }
 
 /**
- * Forms exclusive Group for Growback- No group involved so returns null pointer
- * @param currLocation :Location to apply rule to
- * @return Pointer to group
- * @exception none
- */
-group* IndependentAction::formGroup(Location *currLocation){
-    return nullptr;
-}
-/**
- * Performs action on entire lattice
+ * Performs action on entire lattice synchronously (For independent actions this is the same
+ * *asynchronously* and *synchronously*)
+ * @param startX :start row on lattice
+ * @param startY :start column on lattice
+ * @param size   :dimension of lattice (assume square lattice)
+ * @param rule   :The action we are applying to each agent
+ * @return true if ok, false to indicate error
  * @see Action
  * @return number of actions performed
  * @exception none
@@ -47,9 +44,9 @@ bool IndependentStrategy::run(int startX, int startY, int size, Action *Rule){
  * @return number of actions performed
  * @exception none
  */
-bool IndependentStrategy::concurrentRun(Action* rule){
-    int size=sim->getSize();
-    return run(0,0,size,rule);
-}
+//bool IndependentStrategy::concurrentRun(Action* rule){
+//    int size=sim->getSize();
+//    return run(0,0,size,rule);
+//}
 
 
