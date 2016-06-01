@@ -1,19 +1,19 @@
 CXX = g++
 CXXFLAGS=  -std=gnu++11  -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -fopenmp
+TARGET= Sugarscape
 
 
-%.o : %.cpp %.h
-	$(CXX)  -c *.cpp  $(CXXFLAGS)
 
 
 ALL: *.o
-	$(CXX) *.o -o Sugarscape  $(CXXFLAGS)
-
+	$(CXX) *.o -o $(TARGET)  $(CXXFLAGS)
 
 
 DEBUG: *.o
-	$(CXX) -g *.o -o Sugarscape $(CXXFLAGS)
+	$(CXX) -g *.o -o  $(TARGET) $(CXXFLAGS)
 
 CLEAN:
 	rm *.o
 
+%.o : %.cpp %.h
+	$(CXX)  -c *.cpp  $(CXXFLAGS)
