@@ -17,7 +17,7 @@
  * @exception none
  */
 IterativeWriteAction::IterativeWriteAction(World *sim, Strategy *theStrategy)
-:WriteAction(sim, theStrategy)
+:Action(sim, theStrategy)//WriteAction
 {
     //our work is done
 }
@@ -31,19 +31,19 @@ IterativeWriteAction::IterativeWriteAction(World *sim, Strategy *theStrategy)
  * @return true
  * @exception none
  */
-bool IterativeWriteAction::run(int startX, int startY, int size)
-{
-
-//        int participants=participantCount(startX, startY, size);
-//        while (participants>0) {
-//            WriteAction::run(startX, startY, size);
-//            sim->sync();/*!< *MUST* sync before iterating */
-//            participants=participantCount(startX, startY, size);
-//        }
-//        //sim->resetNeighbours();CHECK THIS OUT TO CONFIRM ITS DELETION!!!
-//        return true;
-        return theStrategy->run(startX,startY,size,this);
-}
+//bool IterativeWriteAction::run(int startX, int startY, int size)
+//{
+//
+////        int participants=participantCount(startX, startY, size);
+////        while (participants>0) {
+////            WriteAction::run(startX, startY, size);
+////            sim->sync();/*!< *MUST* sync before iterating */
+////            participants=participantCount(startX, startY, size);
+////        }
+////        //sim->resetNeighbours();CHECK THIS OUT TO CONFIRM ITS DELETION!!!
+////        return true;
+//        return theStrategy->run(startX,startY,size,this);
+//}
 
 
 /**
@@ -51,18 +51,18 @@ bool IterativeWriteAction::run(int startX, int startY, int size)
  * @return true
  * @exception none
  */
-bool IterativeWriteAction::concurrentRun(void)
-{
-//    int participants=participantCount(0, 0, sim->getSize());
-//    while (participants>0) {
-//        WriteAction::concurrentRun();
-//        sim->sync();/*!< *MUST* sync before iterating */
-//        participants=participantCount(0, 0, sim->getSize());
-//    }
-//    //sim->resetNeighbours();;CHECK THIS OUT TO CONFIRM ITS DELETION!!!
-//    return true;
-    return theStrategy->concurrentRun(this);
-}
+//bool IterativeWriteAction::concurrentRun(void)
+//{
+////    int participants=participantCount(0, 0, sim->getSize());
+////    while (participants>0) {
+////        WriteAction::concurrentRun();
+////        sim->sync();/*!< *MUST* sync before iterating */
+////        participants=participantCount(0, 0, sim->getSize());
+////    }
+////    //sim->resetNeighbours();;CHECK THIS OUT TO CONFIRM ITS DELETION!!!
+////    return true;
+//    return theStrategy->concurrentRun(this);
+//}
 
 
 /**

@@ -15,7 +15,7 @@
  * @return none
  * @exception none
  */
-Growback::Growback(World *sim, Strategy *theStrategy):IndependentAction(sim, theStrategy){
+Growback::Growback(World *sim, Strategy *theStrategy):Action(sim, theStrategy){//IndependentAction(sim, theStrategy){
     
 }
 

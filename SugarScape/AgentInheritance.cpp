@@ -16,7 +16,7 @@
  * @exception none
  */
 AgentInheritance::AgentInheritance(World *sim, Strategy *theStrategy)
-    :ReadAction(sim, theStrategy)
+    :Action(sim, theStrategy)//ReadAction
 {
     //Our work is done!
 }

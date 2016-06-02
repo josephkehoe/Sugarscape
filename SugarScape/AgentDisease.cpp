@@ -14,7 +14,7 @@
  * @return none
  * @exception none
  */
-AgentDisease::AgentDisease(World *sim,Strategy* theStrategy):ReadAction(sim,theStrategy){
+AgentDisease::AgentDisease(World *sim,Strategy* theStrategy):Action(sim,theStrategy){//ReadAction
     //EMPTY
 }
 

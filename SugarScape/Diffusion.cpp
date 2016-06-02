@@ -15,7 +15,7 @@
  * @return none
  * @exception none
  */
-Diffusion::Diffusion(World *sim, Strategy *theStrategy):ReadAction(sim,theStrategy){
+Diffusion::Diffusion(World *sim, Strategy *theStrategy):Action(sim,theStrategy){//ReadAction
     //EMPTY
 }
 

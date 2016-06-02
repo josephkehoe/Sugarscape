@@ -16,7 +16,7 @@
  * @exception none
  */
 AgentDeath::AgentDeath(World *sim,Strategy*theStrategy)
-    :ReadAction(sim,theStrategy)
+    :Action(sim,theStrategy)//ReadAction
 {
     //our work is done
 }

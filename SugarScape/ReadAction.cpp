@@ -22,15 +22,7 @@ ReadAction::ReadAction(World *theWorld, Strategy *theStrategy):Action(theWorld,t
 ReadAction::~ReadAction(void){
     
 }
-/**
- * Forms exclusive Group
- * @param loc :Location to apply rule to
- * @return Pointer to group
- * @exception none
- */
-group* ReadAction::formGroup(Location* loc){
-    return nullptr;
-}
+
 
 /**
  * Performs a read only action across entire lattice sequentially
@@ -38,18 +30,18 @@ group* ReadAction::formGroup(Location* loc){
  * @return number of actions performed
  * @exception none
  */
-bool ReadAction::run(int startX, int startY, int size){
-//    Location* Lattice=sim->getLattice();
-//    int dim=sim->getSize();
-//    //Perform action
-//#pragma omp parallel for
-//    for (int i=0; i<size*size; ++i) {
-//        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
-//    }
-//
-//    return true;
-    return theStrategy->run(startX,startY,size,this);
-}
+//bool ReadAction::run(int startX, int startY, int size){
+////    Location* Lattice=sim->getLattice();
+////    int dim=sim->getSize();
+////    //Perform action
+////#pragma omp parallel for
+////    for (int i=0; i<size*size; ++i) {
+////        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
+////    }
+////
+////    return true;
+//    return theStrategy->run(startX,startY,size,this);
+//}
 
 /**
  * Performs a read only action across entire lattice concurrently
@@ -57,9 +49,9 @@ bool ReadAction::run(int startX, int startY, int size){
  * @return number of actions performed
  * @exception none
  */
-bool ReadAction::concurrentRun(void){
-    int size=sim->getSize();
-    //return run(0,0,size);
-    return theStrategy->run(0,0,size,this);
-}
+//bool ReadAction::concurrentRun(void){
+//    int size=sim->getSize();
+//    //return run(0,0,size);
+//    return theStrategy->run(0,0,size,this);
+//}
 

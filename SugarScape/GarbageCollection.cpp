@@ -16,7 +16,7 @@
  * @exception none
  */
 GarbageCollection::GarbageCollection(World *sim, Strategy *theStrategy)
-    :IndependentAction(sim,theStrategy)
+    :Action(sim,theStrategy)//IndependentAction(sim,theStrategy)
 {
     //nothing to do here
 }

@@ -16,7 +16,7 @@
  * @exception none
  */
 AgentBasicMove::AgentBasicMove(World *sim, Strategy* myStrategy)
-    :WriteAction(sim,myStrategy)
+    :Action(sim,myStrategy)//WriteAction
 {
     //our work is done
 }

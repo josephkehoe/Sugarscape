@@ -15,7 +15,7 @@
  * @return none
  * @exception none
  */
-SeasonalGrowback::SeasonalGrowback(World *sim, Strategy *theStrategy):IndependentAction(sim,theStrategy){
+SeasonalGrowback::SeasonalGrowback(World *sim, Strategy *theStrategy):Action(sim,theStrategy){//IndependentAction
     
 }
 

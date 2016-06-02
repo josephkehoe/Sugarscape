@@ -16,7 +16,7 @@
  * @exception none
  */
 AgentLoanPayments::AgentLoanPayments(World *sim,Strategy *theStrategy)
-:WriteAction(sim,theStrategy)
+:Action(sim,theStrategy)//WriteAction
 {
     //our work is done
 }

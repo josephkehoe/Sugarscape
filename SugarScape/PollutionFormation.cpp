@@ -15,7 +15,7 @@
  * @return none
  * @exception none
  */
-PollutionFormation::PollutionFormation(World *sim, Strategy *theStrategy):IndependentAction(sim, theStrategy){
+PollutionFormation::PollutionFormation(World *sim, Strategy *theStrategy):Action(sim, theStrategy){//IndependentAction
     //EMPTY
 }
 

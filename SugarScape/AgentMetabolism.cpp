@@ -15,7 +15,7 @@
  * @return none
  * @exception none
  */
-AgentMetabolism::AgentMetabolism(World *sim,Strategy *theStrategy):IndependentAction(sim,theStrategy){
+AgentMetabolism::AgentMetabolism(World *sim,Strategy *theStrategy):Action(sim,theStrategy){//IndependentAction                                                                                                             theStrategy){
     
 }
 

@@ -15,7 +15,7 @@
  * @return none
  * @exception none
  */
-AgentCulture::AgentCulture(World *sim,Strategy* theStrategy):ReadAction(sim,theStrategy){
+AgentCulture::AgentCulture(World *sim,Strategy* theStrategy):Action(sim,theStrategy){//ReadAction
     //EMPTY
 }
 

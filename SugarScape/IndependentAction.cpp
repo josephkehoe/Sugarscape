@@ -23,42 +23,34 @@ IndependentAction::~IndependentAction(void){
     
 }
 
-/**
- * Forms exclusive Group for rule- No group involved so returns null pointer
- * @param currLocation :Location to apply rule to
- * @return Pointer to group
- * @exception none
- */
-group* IndependentAction::formGroup(Location *currLocation){
-    return nullptr;
-}
+
 /**
  * Performs action on entire lattice
  * @see Action
  * @return number of actions performed
  * @exception none
  */
-bool IndependentAction::run(int startX, int startY, int size){
-    theStrategy->run(startX,startY,size,this);
-//    Location* Lattice=sim->getLattice();
-//    int dim=sim->getSize();
-//    //Perform action
-//#pragma omp parallel for
-//    for (int i=0; i<size*size; ++i) {
-//        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
-//    }
-//    return true;
-
-}
+//bool IndependentAction::run(int startX, int startY, int size){
+//    theStrategy->run(startX,startY,size,this);
+////    Location* Lattice=sim->getLattice();
+////    int dim=sim->getSize();
+////    //Perform action
+////#pragma omp parallel for
+////    for (int i=0; i<size*size; ++i) {
+////        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
+////    }
+////    return true;
+//
+//}
 /**
  * Performs action on entire lattice concurrently
  * @see Action
  * @return number of actions performed
  * @exception none
  */
-bool IndependentAction::concurrentRun(void){
-    int size=sim->getSize();
-    return theStrategy->run(0,0,size,this);//run(0,0,size);
-}
+//bool IndependentAction::concurrentRun(void){
+//    int size=sim->getSize();
+//    return theStrategy->run(0,0,size,this);//run(0,0,size);
+//}
 
 
