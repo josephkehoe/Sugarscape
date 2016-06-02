@@ -62,7 +62,7 @@ int Gui(int, float);
 int Gui(World *theWorld, float pause)
 {
 
-    std::ofstream outputFile("/home/joseph/capacityM1v1.csv",std::ios::out | std::ios::app);
+    std::ofstream outputFile("log/capacityM1v1.csv",std::ios::out | std::ios::app);
 
     /*!<  Create the main window */
     sf::RenderWindow window(sf::VideoMode(1024, 768), "SFML window");
@@ -311,7 +311,7 @@ int main(int, char const**)
 {
     /*!< create world and initialise it */
     World theWorld(50);
-    theWorld.init();
+    theWorld.init("log/output.log");
     theWorld.sync();
     init(50);
     Gui(&theWorld,0.5f);

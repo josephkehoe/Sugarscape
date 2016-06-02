@@ -66,8 +66,9 @@ World::~World(){
  * @return true
  * @exception none
  */
-bool World::init(void)
+bool World::init(std::string logFileName)
 {
+    outputLog.open(logFileName,std::ios::out | std::ios::app);
     //Create Locations in Lattice
     Lattice=new Location[size*size];
     for (int i=0; i<size*size; ++i) {
@@ -78,7 +79,7 @@ bool World::init(void)
         //Lattice[i].setSugar(getRnd(InitialSugarMin, Lattice[i].getMaxSugar()));
     }
     //read in initial sugar levels from config file
-    this->readConfigFile("/home/joseph/startup.csv");
+    this->readConfigFile("startup.csv");
     //create agents and put in lattice
     std::pair<int,int> pos;
     for (int i=0; i<initialPopulation; ++i) {//quarter fill lattice
@@ -976,7 +977,12 @@ Agent* World::killAgent(std::pair<int,int> pos)
     }
 }
 
-
+/**
+ * read in config file --comma delimited ints
+ * @param configFile :name (incl. path) of configfile
+ * @return number of items read
+ * @exception none
+ */
 int World::readConfigFile(std::string configFile)
 {
     std::ifstream  data(configFile);
@@ -997,6 +1003,17 @@ int World::readConfigFile(std::string configFile)
         std::cout <<std::endl;
     }
     return i;
+}
+
+/**
+ * put string in log file
+ * @param msg :message for log file (as string)
+ * @return nothing as yet
+ * @exception none
+ */
+int World::log(std::string msg){
+    outputLog << msg << std::endl;
+    return 1;
 }
 //****************RULE APPLICATION**************************
 
