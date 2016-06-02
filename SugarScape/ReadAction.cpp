@@ -7,6 +7,7 @@
 //
 
 #include "ReadAction.h"
+#include "Strategy.h"
 
 /**
  * Constructor - passes World pointer to parent constructor
@@ -38,19 +39,16 @@ group* ReadAction::formGroup(Location* loc){
  * @exception none
  */
 bool ReadAction::run(int startX, int startY, int size){
-    Location* Lattice=sim->getLattice();
-    int dim=sim->getSize();
-    //Perform action
-#pragma omp parallel for
-    for (int i=0; i<size*size; ++i) {
-        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
-    }
-//    for (int i=startX; i<startX+size; ++i) {
-//        for (int k=startY; k<startY+size; ++k) {
-//            executeAction(&Lattice[i*dim+k],nullptr);
-//        }
+//    Location* Lattice=sim->getLattice();
+//    int dim=sim->getSize();
+//    //Perform action
+//#pragma omp parallel for
+//    for (int i=0; i<size*size; ++i) {
+//        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
 //    }
-    return true;
+//
+//    return true;
+    return theStrategy->run(startX,startY,size,this);
 }
 
 /**
@@ -61,6 +59,7 @@ bool ReadAction::run(int startX, int startY, int size){
  */
 bool ReadAction::concurrentRun(void){
     int size=sim->getSize();
-    return run(0,0,size);
+    //return run(0,0,size);
+    return theStrategy->run(0,0,size,this);
 }
 

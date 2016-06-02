@@ -7,6 +7,7 @@
 //
 
 #include "IndependentAction.h"
+#include "Strategy.h"
 
 /**
  * Constructor - passes World pointer to parent constructor
@@ -23,7 +24,7 @@ IndependentAction::~IndependentAction(void){
 }
 
 /**
- * Forms exclusive Group for Growback- No group involved so returns null pointer
+ * Forms exclusive Group for rule- No group involved so returns null pointer
  * @param currLocation :Location to apply rule to
  * @return Pointer to group
  * @exception none
@@ -38,19 +39,15 @@ group* IndependentAction::formGroup(Location *currLocation){
  * @exception none
  */
 bool IndependentAction::run(int startX, int startY, int size){
-    Location* Lattice=sim->getLattice();
-    int dim=sim->getSize();
-    //Perform action
-#pragma omp parallel for
-    for (int i=0; i<size*size; ++i) {
-        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
-    }
-//    for (int i=startX; i<startX+size; ++i) {
-//        for (int k=startY; k<startY+size; ++k) {
-//            executeAction(&Lattice[i*dim+k],nullptr);
-//        }
+    theStrategy->run(startX,startY,size,this);
+//    Location* Lattice=sim->getLattice();
+//    int dim=sim->getSize();
+//    //Perform action
+//#pragma omp parallel for
+//    for (int i=0; i<size*size; ++i) {
+//        executeAction(&Lattice[(startX+i/size)*dim+startY+i%size],nullptr);
 //    }
-    return true;
+//    return true;
 
 }
 /**
@@ -61,7 +58,7 @@ bool IndependentAction::run(int startX, int startY, int size){
  */
 bool IndependentAction::concurrentRun(void){
     int size=sim->getSize();
-    return run(0,0,size);
+    return theStrategy->run(0,0,size,this);//run(0,0,size);
 }
 
 

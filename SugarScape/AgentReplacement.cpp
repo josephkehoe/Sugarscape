@@ -7,6 +7,7 @@
 //
 
 #include "AgentReplacement.h"
+#include "Strategy.h"
 
 /**
  * Constructor - passes World pointer to parent constructor
@@ -112,18 +113,18 @@ group* AgentReplacement::formGroup(Location *loc)
 bool AgentReplacement::run(int startX, int startY, int size)
 {
     populateFreeSlots();
-    return WriteAction::run(startX, startY, size);
+    return Action::run(startX,startY,size);//WriteAction::run(startX, startY, size);
 }
 
 /**
  concurrentRun now gets list of all free slots before running the replacement rule
- @returns true if sucessful
+ @returns true if successful
  @exception none
  */
 bool AgentReplacement::concurrentRun(void)
 {
     populateFreeSlots();
-    return WriteAction::concurrentRun();
+    return  Action::concurrentRun(); //WriteAction::concurrentRun();
 }
 
 /**

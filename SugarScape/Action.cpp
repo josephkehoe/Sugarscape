@@ -7,6 +7,7 @@
 //
 
 #include "Action.h"
+#include "Strategy.h"
 
 /**
  * Constructor - Initialises world and strategy variables
@@ -37,7 +38,7 @@ Action::~Action(void){
  * @exception none
  */
 bool Action::run(int startX,int startY, int size){
-    return false;
+    return theStrategy->run(startX,startY,size,this);
 }
 /**
  * Concurrently performs action on entire Lattice
@@ -45,9 +46,18 @@ bool Action::run(int startX,int startY, int size){
  * @exception none
  */
 bool Action::concurrentRun(void){
-    return false;
+    return theStrategy->concurrentRun(this);
 }
 
+/**
+ * Forms exclusive Group for rule- If no group involved then return null pointer
+ * @param currLocation :Location to apply rule to
+ * @return Pointer to group or nullptr
+ * @exception none
+ */
+group* Action::formGroup(Location *currLocation){
+    return nullptr;
+}
 
 /**
  Calculate the number of active participants in this action on the grid

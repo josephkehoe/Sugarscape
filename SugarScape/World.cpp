@@ -1020,8 +1020,8 @@ int World::applyRules(){
     int ruleCount=0;
     for(auto rule:activeRules){
         ruleCount+=rule->run(0,0,size);
-        //if (rule->getStrategy()->needsSync()) sync();
-        sync();
+        if (rule->getStrategy()->needsSync()) sync();
+        //sync();
         resetNeighbours();
     }
     return ruleCount;
