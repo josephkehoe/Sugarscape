@@ -34,7 +34,7 @@ public:
     virtual bool run(int,int,int);
     virtual bool concurrentRun(void);
     virtual bool executeAction(Location *, group* grp=nullptr)=0;
-    virtual group* formGroup(Location *)=0;
+    virtual group* formGroup(Location *);
     virtual int participantCount(int,int,int);
     virtual int pickIndex(std::vector<Location*>);
 
