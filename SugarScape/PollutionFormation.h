@@ -15,11 +15,17 @@
 /*!  \class  PollutionFormation
  \brief Implements Pollution Formation rule
  
-When sugar quantity s is gathered from the Sugarscape, an amount of production pollution is gathered production*s. When sugar amount m is consumed (metabolised), consumption pollution is generated according to consumption*m. The total pollution on a site at time t p[t], is the sum of the pollution present at the previous time, plus the pollution resulting from production and consumption activities, that is, p[t]=p[t-1]+ s+ m. */
+When sugar quantity s is gathered from the Sugarscape, an amount of production pollution is gathered production*s.
+When sugar amount m is consumed (metabolised), consumption pollution is generated according to consumption*m.
+ The total pollution on a site at time t p[t], is the sum of the pollution present at the previous time,
+ plus the pollution resulting from production and consumption activities, that is, p[t]=p[t-1]+ s+ m.
+
+  TYPE:   *Independent*
+ */
 
 class PollutionFormation:public IndependentAction{
 public:
-    PollutionFormation(World *s);
+    PollutionFormation(World *, Strategy*);
     virtual bool executeAction(Location *, group *);
 };
 

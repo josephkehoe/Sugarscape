@@ -20,7 +20,7 @@
  */
 class ReadAction:public Action{
 public:
-    ReadAction(World*);
+    ReadAction(World*, Strategy*);
     virtual ~ReadAction();
     virtual bool run(int,int,int);
     virtual bool concurrentRun(void);

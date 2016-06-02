@@ -17,11 +17,13 @@
  
  * Each alpha (pollutionRate) time periods and at each site, compute the pollution flux the average pollution level over all its von Neumann neighbouring sites;
  * Each site's flux becomes its new pollution level.
+
+ TYPE:   *Read Dependent*
  */
 
 class Diffusion:public ReadAction{
 public:
-    Diffusion(World *s);
+    Diffusion(World *, Strategy*);
     virtual bool executeAction(Location *, group *);
 };
 

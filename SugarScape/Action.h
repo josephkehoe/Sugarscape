@@ -15,7 +15,8 @@
 #include "Location.h"
 #include "group.h"
 #include "World.h"
-
+//#include "Strategy.h"
+class Strategy;
 /*!  \class  Action
  \brief Abstract base class for Actions
  
@@ -26,8 +27,9 @@
 class Action{
 protected:
     World *sim; /*!< The object containing the entire simulation */
+    Strategy *theStrategy; /*!< The updating strategy we will use with this rule */
 public:
-    Action(World*);
+    Action(World*, Strategy*);
     virtual ~Action();
     virtual bool run(int,int,int);
     virtual bool concurrentRun(void);
@@ -35,6 +37,10 @@ public:
     virtual group* formGroup(Location *)=0;
     virtual int participantCount(int,int,int);
     virtual int pickIndex(std::vector<Location*>);
+
+    /*!< Getters and Setters */
+    Strategy* getStrategy(void);
+    Strategy* setStrategy(Strategy*);
 };
 #endif /* defined(__SugarScape__Action__) */
 

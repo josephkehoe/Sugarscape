@@ -17,11 +17,13 @@
  
  Replacement - R_[a,b]
  When an agent dies it is replaced by an agent of age 0 having random genetic attributes, random position on the Sugarscape, random initial endowment, and a maximum age selected from the range [a,b].
+
+ TYPE:   *Write Dependent*
  */
 class AgentLoanPayments :public WriteAction{
 
 public:
-    AgentLoanPayments(World *s);
+    AgentLoanPayments(World *,Strategy*);
     virtual bool executeAction(Location *, group *);
     virtual group* formGroup(Location *);
     

@@ -15,12 +15,14 @@
 /*!  \class  AgentMetabolism
  \brief handles metabolism of agents
  
- Not a seperate rule in book but required as a seperate rule
+ Not a separate rule in book but required as a separate rule
  i.e. should have been a rule in book!
+
+  TYPE:   *Independent*
  */
 class AgentMetabolism:public IndependentAction{
 public:
-    AgentMetabolism(World *s);
+    AgentMetabolism(World *, Strategy*);
     virtual bool executeAction(Location *, group *);
 };
 

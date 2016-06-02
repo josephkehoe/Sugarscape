@@ -23,6 +23,5 @@ public:
     IndependentStrategy(World*);
     virtual ~IndependentStrategy();
     virtual bool run(int,int,int,Action*);
- //   virtual bool concurrentRun(Action*); USE INHERITED VERSION
 };
 #endif /* defined(__SugarScape__IndependentStrategy__) */

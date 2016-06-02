@@ -16,11 +16,13 @@
  \brief Implements Growback Rule
  
  At each Lattice position, sugar grows back at a fixed rate of *sugarGrowth* units per time interval up to the capacity at that position.
+
+  TYPE:   *Independent*
  */
 
 class Growback:public IndependentAction{
 public:
-    Growback(World *s);
+    Growback(World*, Strategy*);
     virtual bool executeAction(Location *, group *);
 };
 #endif /* defined(__SugarScape__Growback__) */

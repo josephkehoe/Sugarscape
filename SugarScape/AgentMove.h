@@ -24,10 +24,12 @@ Movement - M
  - Considering only unoccupied lattice positions, find the nearest position producing maximum welfare;
  - Move to the new position
  - Collect all resources at that location
+
+ TYPE:   *Write Dependent*
  */
 class AgentMove :public AgentBasicMove{
 public:
-    AgentMove(World *s);
+    AgentMove(World *,Strategy*);
     virtual int pickIndex(std::vector<Location*>);
 };
 

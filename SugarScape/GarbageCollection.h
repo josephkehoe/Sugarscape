@@ -16,11 +16,14 @@
  \brief Deletes pointers to agents that are dead
  
  Location holds pointers to dead agents.  This just deletes those agents pointed to.
- The other rules death, replacement, etc. populate this pointer as required
+ The other rules death, replacement, etc. populate this pointer as required. This
+ should be the *LAST* rule to run!
+
+  TYPE:   *Independent*
  */
 class GarbageCollection:public IndependentAction{
 public:
-    GarbageCollection(World *s);
+    GarbageCollection(World *, Strategy*);
     virtual bool executeAction(Location *, group *);
 };
 #endif /* defined(__SugarScape__GarbageCollection__) */

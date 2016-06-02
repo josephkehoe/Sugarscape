@@ -25,12 +25,14 @@
 -  If the borrower on an active loan dies before the due date then the lender simply takes a loss;
 - If the lender on an active loan dies before the due date then the borrower is not required to pay back the loan, unless inheritance rule $I$ is active, in which case the lender's children now become the borrower's creditors.
 
+
+  TYPE:   *Iterative Write Dependent*
  */
 class AgentCredit:public IterativeWriteAction{
 protected:
     bool suitable(Location*);
 public:
-    AgentCredit(World*);
+    AgentCredit(World*,Strategy*);
     virtual bool executeAction(Location *, group *);
     virtual group* formGroup(Location *);
     virtual int participantCount(int,int,int);

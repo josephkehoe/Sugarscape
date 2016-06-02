@@ -24,8 +24,8 @@ protected:
 public:
     RndAsyncStrategy(World *sim);
     virtual ~RndAsyncStrategy();
-    virtual bool run(int, int , int ,Action*);
-//    virtual bool concurrentRun(Action*);USE BASE CLASS VERSION
+    virtual bool run(int, int , int ,Action*);/*!< Standard run algorithm handling concurrency */
+    virtual bool needsSync(void); /*!< Do we need to sync world after strategy application? */
 };
 
 

@@ -35,6 +35,7 @@ public:
     virtual ~Strategy();
     virtual bool run(int,int,int,Action*); /*!< Standard run algorithm handling concurrency */
     virtual bool concurrentRun(Action*);   /*!< Tiled implementation for concurrency -if it exists */
+    virtual bool needsSync(void); /*!< Do we need to sync world after strategy application? */
 };
 #endif /* defined(__SugarScape__Strategy__) */
 

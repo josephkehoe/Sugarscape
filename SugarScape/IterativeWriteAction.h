@@ -20,7 +20,7 @@
 class IterativeWriteAction:public WriteAction{
 
 public:
-    IterativeWriteAction(World*);
+    IterativeWriteAction(World*, Strategy*);
     virtual bool run(int startX, int startY, int size);
     virtual bool concurrentRun(void);
     virtual int  participantCount(int, int, int);

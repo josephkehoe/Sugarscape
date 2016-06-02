@@ -22,11 +22,11 @@
  - Considering only unoccupied lattice positions, Pick a Location at random;
  - Move to the new position
  - Collect all resources at that location
-
+TYPE:   *Write Dependent*
  */
 class AgentBasicMove :public WriteAction{
 public:
-    AgentBasicMove(World *s);
+    AgentBasicMove(World *,Strategy*);
     virtual bool executeAction(Location *, group *);
     virtual group* formGroup(Location *);
 

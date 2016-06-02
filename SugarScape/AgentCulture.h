@@ -26,11 +26,13 @@ Group membership
 * Agents are defined to be members of the Blue group when 0s outnumber 1s on their tag strings, and members of the Red group in the opposite case.
 Agent Culture K
 * Combination of the ``agent cultural transmission'' and ``agent group membership'' rules given immediately above.
+
+  TYPE:   *Read Dependent*
  */
 
 class AgentCulture:public ReadAction{
 public:
-    AgentCulture(World *s);
+    AgentCulture(World *, Strategy*);
     virtual bool executeAction(Location *, group *);
 };
 

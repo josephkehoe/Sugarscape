@@ -19,7 +19,6 @@ class NewSweepStrategy : public RndAsyncStrategy{
 public:
     NewSweepStrategy(World *sim);
     virtual bool run(int, int , int ,Action*);
-//    virtual bool concurrentRun(Action*);USE BASE CLASS VERSION
 };
 
 

@@ -16,10 +16,12 @@
  \brief Kills off agents whose time is due
  
  When an agent reaches its maximum allowed age or runs out of resources it is removed from the simulation and all its associated loans (either as borrower or lender) are considered void.
+
+ TYPE:   *Read Dependent*
  */
 class AgentDeath :public ReadAction{
 public:
-    AgentDeath(World *s);
+    AgentDeath(World *,Strategy*);
     virtual bool executeAction(Location *, group *);
 
     

@@ -19,7 +19,7 @@
  */
 class IndependentAction:public Action{
 public:
-    IndependentAction(World*);
+    IndependentAction(World*,Strategy*);
     virtual ~IndependentAction();
     virtual bool run(int,int,int);
     virtual bool concurrentRun(void);

@@ -27,10 +27,12 @@ Agent Combat C_{\alpha}
  - Select the nearest position having maximum reward and go there;
  - Gather the resources at the site plus the minimum of $\alpha$ and the occupants wealth if the site was occupied;
  - If the site was occupied then the former occupant is considered ``killed'' - permanently removed from play.
+
+ TYPE:   *Write Dependent*
  */
 class AgentCombat :public AgentMove{
 public:
-    AgentCombat(World *s);
+    AgentCombat(World *,Strategy*);
     virtual bool executeAction(Location *, group *);
     virtual group* formGroup(Location *);
     virtual int pickIndex(std::vector<Location*>, Agent *);

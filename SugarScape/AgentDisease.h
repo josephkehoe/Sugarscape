@@ -28,11 +28,12 @@ Disease transmission
  Agent disease processes E
  * Combination of ``agent immune response'' and ``agent disease transmission'' rules given immediately above
 
+ TYPE:   *Read Dependent*
  */
 
 class AgentDisease:public ReadAction{
 public:
-    AgentDisease(World *s);
+    AgentDisease(World *,Strategy*);
     virtual bool executeAction(Location *, group *);
 };
 
