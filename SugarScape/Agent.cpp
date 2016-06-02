@@ -759,7 +759,7 @@ bool Agent::isImmune(std::vector<bool> disease){
 /**
  * Is this agent our child?
  * @param agent
- * @see Inheritance Rule
+ * @see AgentInheritance Rule
  * @return true if agent is our child
  * @exception none
  */

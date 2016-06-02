@@ -8,9 +8,15 @@
 
 #include "AgentMove.h"
 #include <algorithm>
-
-AgentMove::AgentMove(World *s)
-:AgentBasicMove(s)
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+AgentMove::AgentMove(World *sim, Strategy *theStrategy)
+:AgentBasicMove(sim,theStrategy)
 {
     //our work is done
 }

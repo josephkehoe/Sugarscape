@@ -8,7 +8,14 @@
 
 #include "WriteAction.h"
 
-WriteAction::WriteAction(World* theWorld):Action(theWorld){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+WriteAction::WriteAction(World* sim, Strategy* theStrategy):Action(sim,theStrategy){
     
 }
 WriteAction::~WriteAction(void){

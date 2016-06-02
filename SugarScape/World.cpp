@@ -14,6 +14,7 @@
 #include "World.h"
 #include "group.h"
 #include "Action.h"
+#include "Strategy.h"
 
 
 
@@ -1019,7 +1020,7 @@ int World::applyRules(){
     int ruleCount=0;
     for(auto rule:activeRules){
         ruleCount+=rule->run(0,0,size);
-        //ruleCount+=rule->concurrentRun();//run(0,0,size);
+        //if (rule->getStrategy()->needsSync()) sync();
         sync();
         resetNeighbours();
     }

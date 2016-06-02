@@ -8,8 +8,15 @@
 
 #include "GarbageCollection.h"
 
-GarbageCollection::GarbageCollection(World *s)
-    :IndependentAction(s)
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+GarbageCollection::GarbageCollection(World *sim, Strategy *theStrategy)
+    :IndependentAction(sim,theStrategy)
 {
     //nothing to do here
 }

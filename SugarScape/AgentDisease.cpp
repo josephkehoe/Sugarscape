@@ -7,8 +7,14 @@
 //
 
 #include "AgentDisease.h"
-
-AgentDisease::AgentDisease(World *s):ReadAction(s){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+AgentDisease::AgentDisease(World *sim,Strategy* theStrategy):ReadAction(sim,theStrategy){
     //EMPTY
 }
 

@@ -85,9 +85,14 @@ bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
     return true;
 }
 
-//NOT REQUIRED - JUST INHERIT BASE CLASS VERSION
-//bool RndAsyncStrategy::concurrentRun(Action *rule){
-//    return run(0,0,sim->getSize(),rule);
-//}
+/**
+ * returns true if we need to sync the world after strategy is applied
+ * Asynch does *not*!
+ * @return false as synchronisation is *not* required
+ * @exception none
+ */
+bool RndAsyncStrategy::needsSync(void){
+    return false;
+}
 
 

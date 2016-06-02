@@ -38,15 +38,6 @@ bool IndependentStrategy::run(int startX, int startY, int size, Action *Rule){
     return true;
 }
 
-/**
- * Performs action on entire lattice concurrently
- * @see Action
- * @return number of actions performed
- * @exception none
- */
-//bool IndependentStrategy::concurrentRun(Action* rule){
-//    int size=sim->getSize();
-//    return run(0,0,size,rule);
-//}
+
 
 

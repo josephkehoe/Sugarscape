@@ -9,13 +9,14 @@
 #include "AgentLoanPayments.h"
 
 /**
- * Constructor - passes world pointer to base class constructor
- * @param s :Pointer to World Object
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
  * @return none
  * @exception none
  */
-AgentLoanPayments::AgentLoanPayments(World *s)
-:WriteAction(s)
+AgentLoanPayments::AgentLoanPayments(World *sim,Strategy *theStrategy)
+:WriteAction(sim,theStrategy)
 {
     //our work is done
 }

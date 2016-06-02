@@ -8,9 +8,15 @@
 
 #include "AgentMating.h"
 
-
-AgentMating::AgentMating(World *sim)
-:IterativeWriteAction(sim)
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+AgentMating::AgentMating(World *sim, Strategy *theStrategy)
+:IterativeWriteAction(sim,theStrategy)
 {
     //our work is done
 }

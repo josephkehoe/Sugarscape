@@ -9,12 +9,14 @@
 #include "IterativeWriteAction.h"
 
 /**
- * Construtor - pass World Pointer back to base class constructor
- * @param sim :Pointer to World Object
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
  * @exception none
  */
-IterativeWriteAction::IterativeWriteAction(World *sim)
-:WriteAction(sim)
+IterativeWriteAction::IterativeWriteAction(World *sim, Strategy *theStrategy)
+:WriteAction(sim, theStrategy)
 {
     //our work is done
 }

@@ -53,6 +53,7 @@
 #include "IndependentStrategy.h"
 #include "IterativeWriteStrategy.h"
 #include "ReadDependentStrategy.h"
+#include "AgentInheritance.h"
 
 int benchmark(int,int,int,int,int,std::string);
 int Gui(int, float);
@@ -72,24 +73,6 @@ int Gui(int Dimensions, float pause)
 
     /*!< create viewport for displaying simulation */
     ViewPort theGUI(&window,&theWorld,std::pair<int,int>(1024, 768),std::pair<int,int>(0,0),theWorld.getSize());
-
-    /*!< Declare all rules here */
-    Growback growback(&theWorld);
-    SeasonalGrowback seasonalGrowback(&theWorld);
-    AgentMove move(&theWorld);
-    PollutionFormation pollForm(&theWorld);
-    GarbageCollection gc(&theWorld);
-    AgentCulture agentCulture(&theWorld);
-    AgentDeath agentDeath(&theWorld);
-    AgentDisease agentDisease(&theWorld);
-    Diffusion diffusion(&theWorld);
-    AgentCombat agentCombat(&theWorld);
-    AgentReplacement agentReplacement(&theWorld);
-    AgentMating agentMating(&theWorld);
-    AgentMetabolism agentMetabolism(&theWorld);
-    AgentCredit agentCredit(&theWorld);
-    AgentLoanPayments agentLoanPayments(&theWorld);
-
     /*!< Declare all possible strategies here */
     Strategy baseStrategy(&theWorld);
     NewSweepStrategy newSweep(&theWorld);
@@ -99,23 +82,60 @@ int Gui(int Dimensions, float pause)
     IterativeWriteStrategy iterativeWrite(&theWorld);
     ReadDependentStrategy readDependent(&theWorld);
     WriteStrategy writeDependent(&theWorld);
-
-
+    /*!< Declare all rules here */
+    Growback growback(&theWorld,&independent);
+    growback.setStrategy(&independent);
+    SeasonalGrowback seasonalGrowback(&theWorld,&independent);
+    seasonalGrowback.setStrategy(&independent);
+    AgentMove move(&theWorld,&writeDependent);
+    move.setStrategy(&writeDependent);
+    PollutionFormation pollForm(&theWorld,&independent);
+    pollForm.setStrategy(&independent);
+    GarbageCollection gc(&theWorld,&independent);
+    gc.setStrategy(&independent);
+    AgentCulture agentCulture(&theWorld,&readDependent);
+    agentCulture.setStrategy(&readDependent);
+    AgentDeath agentDeath(&theWorld,&readDependent);
+    agentDeath.setStrategy(&readDependent);
+    AgentDisease agentDisease(&theWorld,&readDependent);
+    agentDisease.setStrategy(&readDependent);
+    Diffusion diffusion(&theWorld,&readDependent);
+    diffusion.setStrategy(&readDependent);
+    AgentCombat agentCombat(&theWorld,&writeDependent);
+    agentCombat.setStrategy(&writeDependent);
+    AgentReplacement agentReplacement(&theWorld,&writeDependent);
+    agentReplacement.setStrategy(&writeDependent);
+    AgentMating agentMating(&theWorld,&iterativeWrite);
+    agentMating.setStrategy(&iterativeWrite);
+    AgentMetabolism agentMetabolism(&theWorld,&independent);
+    agentMetabolism.setStrategy(&independent);
+    AgentCredit agentCredit(&theWorld,&iterativeWrite);
+    agentCredit.setStrategy(&iterativeWrite);
+    AgentLoanPayments agentLoanPayments(&theWorld,&writeDependent);
+    agentLoanPayments.setStrategy(&writeDependent);
+    AgentInheritance inheritance(&theWorld,&readDependent);
+    inheritance.setStrategy(&readDependent);
     //!
     /*!
      Add the rules we are using here.
+     Ordering of rules is important
+     Do death last and metabolism before replacement!!
      */
+    /*!< Rules for Lattice are added first (before Agent Rules)*/
     theWorld.addRule(&growback);
     //theWorld.addRule(&seasonalGrowback);
     //theWorld.addRule(&pollForm);
     //theWorld.addRule(&diffusion);
+    /*!< Movement Rule for Agents follow next -pick only one!*/
     theWorld.addRule(&move);
-    theWorld.addRule(&agentMating);
+    //theWorld.addRule(&agentMating);
     //theWorld.addRule(&agentCombat);
+    /*!< Other rules for Agent behaviour go next*/
     theWorld.addRule(&agentCulture);
     //theWorld.addRule(&agentDisease);
-    //theWorld.addRule(&agentReplacement);
+    /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
     theWorld.addRule(&agentMetabolism);
+    theWorld.addRule(&agentReplacement);
     theWorld.addRule(&agentDeath);
     theWorld.addRule(&gc);
 
@@ -211,6 +231,7 @@ int benchmark(int numRepeats, int stepCount, int dimStart, int increment, int ru
             theWorld.init();
             theWorld.sync();
             //theWorld.sanityCheck();
+/*
             Growback growback(&theWorld);
             SeasonalGrowback seasonalGrowback(&theWorld);
             AgentMove move(&theWorld);
@@ -226,27 +247,28 @@ int benchmark(int numRepeats, int stepCount, int dimStart, int increment, int ru
             AgentMating agentMating(&theWorld);
             AgentCredit agentCredit(&theWorld);
             AgentLoanPayments agentLoanPayments(&theWorld);
-            
+*/
+
             
             //!
             /*!
              Add the rules we are using here.
              */
-            theWorld.addRule(&growback);
+            ///theWorld.addRule(&growback);
             //theWorld.addRule(&seasonalGrowback);
             //theWorld.addRule(&pollForm);
             //theWorld.addRule(&diffusion);
             
-            theWorld.addRule(&agentMetabolism);
-            theWorld.addRule(&move);
+            ///theWorld.addRule(&agentMetabolism);
+            ///theWorld.addRule(&move);
             //theWorld.addRule(&agentCombat);
             
             //theWorld.addRule(&agentCulture);
             //theWorld.addRule(&agentDisease);
             
-            theWorld.addRule(&agentMating);
+            ///theWorld.addRule(&agentMating);
             //theWorld.addRule(&agentReplacement);
-            theWorld.addRule(&agentDeath);
+            ///theWorld.addRule(&agentDeath);
 
             
             

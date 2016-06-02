@@ -8,7 +8,14 @@
 
 #include "PollutionFormation.h"
 
-PollutionFormation::PollutionFormation(World *s):IndependentAction(s){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+PollutionFormation::PollutionFormation(World *sim, Strategy *theStrategy):IndependentAction(sim, theStrategy){
     //EMPTY
 }
 

@@ -8,14 +8,20 @@
 
 #include "AgentMetabolism.h"
 
-
-AgentMetabolism::AgentMetabolism(World *sim):IndependentAction(sim){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+AgentMetabolism::AgentMetabolism(World *sim,Strategy *theStrategy):IndependentAction(sim,theStrategy){
     
 }
 
 /**
- * Decrements an agents surar by their metabolism
- * @param loc :Location in lattice we are runing action on
+ * Decrements an agents sugar by their metabolism
+ * @param loc :Location in lattice we are running action on
  * @param group pointer not used - nullptr passed in
  * @see Metabolism in book
  * @return true if agent was at location else false

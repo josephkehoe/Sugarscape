@@ -8,7 +8,14 @@
 
 #include "ReadAction.h"
 
-ReadAction::ReadAction(World* theWorld):Action(theWorld){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param theWorld :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+ReadAction::ReadAction(World *theWorld, Strategy *theStrategy):Action(theWorld,theStrategy){
     
 }
 ReadAction::~ReadAction(void){

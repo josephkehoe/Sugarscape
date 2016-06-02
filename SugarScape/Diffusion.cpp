@@ -8,8 +8,14 @@
 
 #include "Diffusion.h"
 
-
-Diffusion::Diffusion(World *s):ReadAction(s){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+Diffusion::Diffusion(World *sim, Strategy *theStrategy):ReadAction(sim,theStrategy){
     //EMPTY
 }
 

@@ -8,9 +8,15 @@
 
 #include "AgentReplacement.h"
 
-
-AgentReplacement::AgentReplacement(World *s)
-    :WriteAction(s)
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+AgentReplacement::AgentReplacement(World *sim, Strategy *theStrategy)
+    :WriteAction(sim,theStrategy)
 {
     //our work is done!
 }

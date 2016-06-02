@@ -8,8 +8,14 @@
 
 #include "AgentCredit.h"
 
-
-AgentCredit::AgentCredit(World* sim):IterativeWriteAction(sim){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+AgentCredit::AgentCredit(World* sim,Strategy* theStrategy):IterativeWriteAction(sim,theStrategy){
     //our work is done
 }
 

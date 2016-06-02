@@ -8,8 +8,14 @@
 
 #include "Growback.h"
 
-
-Growback::Growback(World *sim):IndependentAction(sim){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+Growback::Growback(World *sim, Strategy *theStrategy):IndependentAction(sim, theStrategy){
     
 }
 

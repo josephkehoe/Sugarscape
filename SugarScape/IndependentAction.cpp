@@ -8,7 +8,14 @@
 
 #include "IndependentAction.h"
 
-IndependentAction::IndependentAction(World* theWorld):Action(theWorld){
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param theWorld :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+IndependentAction::IndependentAction(World* theWorld, Strategy *theStrategy):Action(theWorld,theStrategy){
     
 }
 IndependentAction::~IndependentAction(void){

@@ -17,12 +17,12 @@ bool combatCompare(Location *a, Location *b)
 
 /**
  * Constructor - passes World pointer to parent constructor
- * @param s :Pointer to World
+ * @param sim :Pointer to World
  * @return none
  * @exception none
  */
-AgentCombat::AgentCombat(World *s)
-:AgentMove(s)
+AgentCombat::AgentCombat(World *sim,Strategy* theStrategy)
+:AgentMove(sim,theStrategy)
 {
     //our work is done
 }

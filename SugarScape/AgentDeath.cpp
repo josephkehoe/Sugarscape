@@ -8,8 +8,15 @@
 
 #include "AgentDeath.h"
 
-AgentDeath::AgentDeath(World *s)
-    :ReadAction(s)
+/**
+ * Constructor - passes World pointer to parent constructor
+ * @param sim :Pointer to World
+ * @param theStrategy :pointer to preferred Strategy
+ * @return none
+ * @exception none
+ */
+AgentDeath::AgentDeath(World *sim,Strategy*theStrategy)
+    :ReadAction(sim,theStrategy)
 {
     //our work is done
 }

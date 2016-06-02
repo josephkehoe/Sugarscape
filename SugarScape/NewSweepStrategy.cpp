@@ -33,7 +33,4 @@ bool NewSweepStrategy::run(int startX, int startY, int size,Action *rule){
     RndAsyncStrategy::run(startX,startY,size,rule);
 }
 
-//USE BASE CLASS VERSION
-//bool NewSweepStrategy::concurrentRun(Action* rule){
-//    return run(0,0,sim->getSize(),rule);
-//}
+

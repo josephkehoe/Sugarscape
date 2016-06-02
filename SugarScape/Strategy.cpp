@@ -47,4 +47,12 @@ bool Strategy::concurrentRun(Action* rule){
     return run(0,0,sim->getSize(),rule);
 }
 
-
+/**
+ * returns true if we need to sync the world after strategy is applied
+ * Assumes we do.  change to false for async strategies
+ * @return true if synchronisation is required
+ * @exception none
+ */
+bool Strategy::needsSync(void){
+    return true;
+}

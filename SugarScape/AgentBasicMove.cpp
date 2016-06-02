@@ -10,12 +10,13 @@
 
 /**
  * Constructor - passes world pointer to base class constructor
- * @param s :Pointer to World Object
+ * @param sim :Pointer to World Object
+ * @param myStrategy :Pointer to preferred Strategy
  * @return none
  * @exception none
  */
-AgentBasicMove::AgentBasicMove(World *s)
-    :WriteAction(s)
+AgentBasicMove::AgentBasicMove(World *sim, Strategy* myStrategy)
+    :WriteAction(sim,myStrategy)
 {
     //our work is done
 }

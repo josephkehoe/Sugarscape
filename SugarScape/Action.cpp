@@ -8,13 +8,26 @@
 
 #include "Action.h"
 
-
-Action::Action(World* theWorld):sim(theWorld){
-    
+/**
+ * Constructor - Initialises world and strategy variables
+ * @param theWorld :Pointer to World Object
+ * @param preferredStrategy :Pointer to Strategy Object
+ * @return none
+ * @exception none
+ */
+Action::Action(World* theWorld, Strategy* preferredStrategy):sim(theWorld),theStrategy(preferredStrategy){
 }
+
+
+/**
+ * Destructor - No work to do here
+ * @return none
+ * @exception none
+ */
 Action::~Action(void){
     
 }
+
 /**
  * Sequentially performs action on square section of Lattice
  * @param startX :start row on lattice
@@ -73,4 +86,26 @@ int Action::participantCount(int startX, int startY, int dimSize)
 int Action::pickIndex(std::vector<Location*> possibleDestinations)
 {
     return sim->getRnd(0,(int)possibleDestinations.size()-1);//pick random location
+}
+
+/**
+ returns pointer to current strategy
+ @returns pointer to current strategy
+ @exception none
+ */
+Strategy *Action::getStrategy(void){
+    return theStrategy;
+}
+
+/**
+ Sets the strategy used by rule for updating
+ @param pointer to new strategy
+ @returns pointer to old strategy
+ @exception none
+ */
+Strategy *Action::setStrategy(Strategy *strategy) {
+    Strategy *oldStrategy=theStrategy;
+    theStrategy=strategy;
+    return oldStrategy;
+
 }
