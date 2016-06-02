@@ -20,7 +20,7 @@
 
   TYPE:   *Independent*
  */
-class AgentMetabolism:public IndependentAction{
+class AgentMetabolism:public Action{//public IndependentAction{
 public:
     AgentMetabolism(World *, Strategy*);
     virtual bool executeAction(Location *, group *);

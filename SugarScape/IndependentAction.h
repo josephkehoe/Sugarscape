@@ -21,8 +21,7 @@ class IndependentAction:public Action{
 public:
     IndependentAction(World*,Strategy*);
     virtual ~IndependentAction();
-    virtual bool run(int,int,int);
-    virtual bool concurrentRun(void);
-    virtual group* formGroup(Location*);
+//    virtual bool run(int,int,int);
+//    virtual bool concurrentRun(void);
 };
 #endif /* defined(__SugarScape__IndependentAction__) */

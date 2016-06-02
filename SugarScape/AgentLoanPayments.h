@@ -20,7 +20,7 @@
 
  TYPE:   *Write Dependent*
  */
-class AgentLoanPayments :public WriteAction{
+class AgentLoanPayments :public Action{//WriteAction
 
 public:
     AgentLoanPayments(World *,Strategy*);

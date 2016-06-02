@@ -22,7 +22,7 @@
  TYPE:   *Read Dependent*
  */
 
-class AgentInheritance:public ReadAction{
+class AgentInheritance:public Action{//ReadAction
 public:
     AgentInheritance(World *,Strategy*);
     virtual bool executeAction(Location *, group *);

@@ -24,7 +24,7 @@
  - Collect all resources at that location
 TYPE:   *Write Dependent*
  */
-class AgentBasicMove :public WriteAction{
+class AgentBasicMove :public Action{//WriteAction
 public:
     AgentBasicMove(World *,Strategy*);
     virtual bool executeAction(Location *, group *);

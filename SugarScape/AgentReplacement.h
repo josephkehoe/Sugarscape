@@ -20,7 +20,7 @@
 
 TYPE:   *Write Dependent*
  */
-class AgentReplacement :public WriteAction{
+class AgentReplacement :public Action{//WriteAction
     std::vector<Location* > freeSlots;
     unsigned long  populateFreeSlots(void);
 public:

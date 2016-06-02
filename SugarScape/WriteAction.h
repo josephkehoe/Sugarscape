@@ -21,9 +21,9 @@ class WriteAction:public Action{
 public:
     WriteAction(World*, Strategy*);
     virtual ~WriteAction();
-    virtual bool run(int,int,int);
-    virtual bool concurrentRun(void);
-    virtual int participantCount(int,int,int);
-    virtual int pickIndex(std::vector<Location*>);
+//    virtual bool run(int,int,int);
+//    virtual bool concurrentRun(void);
+//    virtual int participantCount(int,int,int);
+//    virtual int pickIndex(std::vector<Location*>);
 };
 #endif /* defined(__SugarScape__WriteAction__) */

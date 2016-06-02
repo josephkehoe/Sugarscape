@@ -17,12 +17,12 @@
  
  Base Class for all iterative Write-Dependent Actions If an action is applied to every (or more than one) neighbour each in turn during a single step then it inherits from this
  */
-class IterativeWriteAction:public WriteAction{
+class IterativeWriteAction:public Action{//WriteAction
 
 public:
     IterativeWriteAction(World*, Strategy*);
-    virtual bool run(int startX, int startY, int size);
-    virtual bool concurrentRun(void);
+//    virtual bool run(int startX, int startY, int size);
+//    virtual bool concurrentRun(void);
     virtual int  participantCount(int, int, int);
 };
 

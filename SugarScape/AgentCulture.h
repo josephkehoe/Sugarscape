@@ -30,7 +30,7 @@ Agent Culture K
   TYPE:   *Read Dependent*
  */
 
-class AgentCulture:public ReadAction{
+class AgentCulture:public Action{ //ReadAction
 public:
     AgentCulture(World *, Strategy*);
     virtual bool executeAction(Location *, group *);

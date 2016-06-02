@@ -21,7 +21,7 @@
 
   TYPE:   *Independent*
  */
-class GarbageCollection:public IndependentAction{
+class GarbageCollection:public Action{//public IndependentAction{
 public:
     GarbageCollection(World *, Strategy*);
     virtual bool executeAction(Location *, group *);

@@ -23,7 +23,7 @@ When sugar amount m is consumed (metabolised), consumption pollution is generate
   TYPE:   *Independent*
  */
 
-class PollutionFormation:public IndependentAction{
+class PollutionFormation:public Action{//IndependentAction{
 public:
     PollutionFormation(World *, Strategy*);
     virtual bool executeAction(Location *, group *);

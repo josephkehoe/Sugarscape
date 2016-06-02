@@ -19,7 +19,7 @@
 
  TYPE:   *Read Dependent*
  */
-class AgentDeath :public ReadAction{
+class AgentDeath :public Action{// ReadAction
 public:
     AgentDeath(World *,Strategy*);
     virtual bool executeAction(Location *, group *);

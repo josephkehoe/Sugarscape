@@ -21,7 +21,7 @@
  TYPE:   *Read Dependent*
  */
 
-class Diffusion:public ReadAction{
+class Diffusion:public Action{//ReadAction
 public:
     Diffusion(World *, Strategy*);
     virtual bool executeAction(Location *, group *);

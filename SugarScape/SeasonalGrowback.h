@@ -24,7 +24,7 @@ Initially it is summer in the top half of the Sugarscape and winter in the botto
  TYPE:   *Independent*
  */
 
-class SeasonalGrowback:public IndependentAction{
+class SeasonalGrowback:public Action{//IndependentAction
 public:
     SeasonalGrowback(World *, Strategy*);
     virtual bool executeAction(Location *, group *);

@@ -20,7 +20,7 @@
   TYPE:   *Independent*
  */
 
-class Growback:public IndependentAction{
+class Growback:public Action{//IndependentAction{
 public:
     Growback(World*, Strategy*);
     virtual bool executeAction(Location *, group *);

@@ -31,7 +31,7 @@ Disease transmission
  TYPE:   *Read Dependent*
  */
 
-class AgentDisease:public ReadAction{
+class AgentDisease:public Action{ //ReadAction
 public:
     AgentDisease(World *,Strategy*);
     virtual bool executeAction(Location *, group *);

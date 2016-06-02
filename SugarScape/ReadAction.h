@@ -22,8 +22,7 @@ class ReadAction:public Action{
 public:
     ReadAction(World*, Strategy*);
     virtual ~ReadAction();
-    virtual bool run(int,int,int);
-    virtual bool concurrentRun(void);
-    virtual group* formGroup(Location*);
+//    virtual bool run(int,int,int);
+//    virtual bool concurrentRun(void);
 };
 #endif /* defined(__SugarScape__ReadAction__) */
