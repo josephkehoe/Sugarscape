@@ -12,6 +12,7 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include <fstream>
 //#include <omp.h>
 #include "Location.h"
 
@@ -109,7 +110,8 @@ class World{
     
     //random Numbers
     MyRNG rng;// keep one instance
-
+    //Log file location
+    std::ofstream outputLog;
     
 public:
     //Constructor and Destructor
@@ -191,13 +193,14 @@ public:
     Agent* killAgent(std::pair<int,int>);
     
     //helpers
-    bool init(void);
+    bool init(std::string logFileName="log/output.log");
     int sync(void);
     void sanityCheck(void);
     int wrap(int);
     int getAgentCount(void);
     bool resetNeighbours(void);
     int readConfigFile(std::string);
+    int log(std::string);
 
     //Rule Application
     int addRule(Action*);
