@@ -63,7 +63,6 @@ bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
     Agent *resident=nullptr;
     group *grp=nullptr;
     //Perform action
-#pragma omp parallel for
     for (int i = 0; i < size * size; ++i) {
         loc=&Lattice[(startX + ordering[i] / size) * dim + startY + ordering[i] % size];
         grp = rule->formGroup(loc);/*!< get this group */
@@ -81,7 +80,7 @@ bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
             //delete group
             delete grp;
         }//grp handling
-    }//parallel for
+    }// for
     return true;
 }
 

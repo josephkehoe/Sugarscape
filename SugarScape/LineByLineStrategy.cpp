@@ -32,7 +32,6 @@ bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
     Agent *resident=nullptr;
     group *grp=nullptr;
     /*!<Perform action */
-#pragma omp parallel for
     for (int i = 0; i < size * size; ++i) {
         loc=&Lattice[(startX + i / size) * dim + startY + i % size];
         grp = rule->formGroup(loc);/*!< get this group */
@@ -40,7 +39,7 @@ bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
         /*!< sync this group */
         loc->sync();
         resident = loc->getAgent();
-        if (resident != nullptr) resident->sync();
+        if(resident!=nullptr){resident->sync();}
         if (grp != nullptr) {/*!< sync this group sync everyone in the group */
             for (int k = 0; k < grp->getSize(); ++k) {
                 grp->getMembers()[k]->sync();/*!< sync location */
@@ -50,7 +49,7 @@ bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
             /*!< delete group */
             delete grp;
         }//grp handling
-    }//parallel for
+    }//for
     return true;
 }
 
