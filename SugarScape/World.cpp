@@ -998,9 +998,7 @@ int World::readConfigFile(std::string configFile)
             Lattice[i].setMaxSugar(number);
             Lattice[i].setSugar(number);
             ++i;
-            std::cout << number <<" ";// You have a cell!!!!
         }
-        std::cout <<std::endl;
     }
     return i;
 }

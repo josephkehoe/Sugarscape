@@ -1258,10 +1258,11 @@ bool Agent::makeUnavailable(void){
 }
 /**
  * Finalises updates - Applies updates to agent state
- * @return true if update sucessfull, otherwise false
+ * @return true if update successful otherwise false
  * @exception none
  */
 bool Agent::sync(void){
+    if(currentPosition!=newPosition)
     currentPosition=newPosition;
     currentSugar=newSugar;
     currentSpice=newSpice;

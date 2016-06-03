@@ -155,7 +155,6 @@ bool ViewPort::draw(){
                 window->draw(AgentRepresentations[i*portDimension+k]);
             }
         }
-    std::cout << "Painted Count is: " << agentCount <<std::endl;
     return true;
     
 }
