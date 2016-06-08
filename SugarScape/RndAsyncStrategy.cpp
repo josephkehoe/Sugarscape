@@ -67,19 +67,20 @@ bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
         loc=&Lattice[(startX + ordering[i] / size) * dim + startY + ordering[i] % size];
         grp = rule->formGroup(loc);/*!< get this group */
         rule->executeAction(loc, grp);/*!< execute action on this group */
+        sim->sync();/*!< sync this group <-- REDO THIS PROPERLY*/
         /*!< sync this group */
-        loc->sync();
-        resident = loc->getAgent();
-        if (resident != nullptr) resident->sync();
-        if (grp != nullptr) {/*!< sync everyone in the group */
-            for (int k = 0; k < grp->getSize(); ++k) {
-                grp->getMembers()[k]->sync();/*!< sync location */
-                resident=grp->getMembers()[k]->getAgent();
-                if (nullptr != resident) resident->sync();/*!<sync any agent at location */
-            }
-            //delete group
-            delete grp;
-        }//grp handling
+//        loc->sync();
+//        resident = loc->getAgent();
+//        if (resident != nullptr) resident->sync();
+//        if (grp != nullptr) {/*!< sync everyone in the group */
+//            for (int k = 0; k < grp->getSize(); ++k) {
+//                grp->getMembers()[k]->sync();/*!< sync location */
+//                resident=grp->getMembers()[k]->getAgent();
+//                if (nullptr != resident) resident->sync();/*!<sync any agent at location */
+//            }
+//            //delete group
+//            delete grp;
+//        }//grp handling
     }// for
     return true;
 }

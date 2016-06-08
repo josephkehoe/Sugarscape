@@ -36,19 +36,38 @@ bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
         loc=&Lattice[(startX + i / size) * dim + startY + i % size];
         grp = rule->formGroup(loc);/*!< get this group */
         rule->executeAction(loc, grp);/*!<execute action on this group */
+        sim->sync();/*!< sync this group <-- REDO THIS PROPERLY*/
+//        std::pair<int,int> thePos;
+//        thePos = loc->getPosition();
+//        int v=sim->getMaxVision();
+//        for (int j = thePos.first-v; j <= thePos.first+v; ++j) {
+//            sim->getLocation(std::pair<int, int>(j, thePos.second))->sync();
+//            if (sim->getLocation(std::pair<int, int>(j, thePos.first))->hasAgent())
+//                sim->getLocation(std::pair<int, int>(j, thePos.first))->getAgent()
+//                        ->sync();
+//        }
+//        for (int k = thePos.second-v; k <= thePos.second+v; ++k) {
+//            sim->getLocation(std::pair<int,int>(thePos.first,k))->sync();
+//            if(sim->getLocation(std::pair<int,int>(thePos.first,k))->hasAgent()) sim->getLocation(std::pair<int,int>(thePos.first,k))
+//                        ->getAgent()->sync();
+//        }
+
+        if (grp != nullptr) delete grp;
         /*!< sync this group */
-        loc->sync();
-        resident = loc->getAgent();
-        if(resident!=nullptr){resident->sync();}
-        if (grp != nullptr) {/*!< sync this group sync everyone in the group */
-            for (int k = 0; k < grp->getSize(); ++k) {
-                grp->getMembers()[k]->sync();/*!< sync location */
-                resident=grp->getMembers()[k]->getAgent();
-                if (nullptr != resident) resident->sync();/*!< sync any agent at location */
-            }
-            /*!< delete group */
-            delete grp;
-        }//grp handling
+//        loc->sync();
+//        if (loc->hasAgent()) loc->getAgent()->sync();
+//        if (grp != nullptr) {/*!< sync this group sync everyone in the group */
+//            for (int k = 0; k < grp->getSize(); ++k) {
+//                loc=grp->getMembers()[k];
+//                loc->sync();
+//                if (loc->hasAgent()) loc->getAgent()->sync();
+//                //resident=grp->getMembers()[k]->getAgent();
+//                //if (nullptr != resident) resident->sync();/*!< sync any agent at location */
+//                //grp->getMembers()[k]->sync();/*!< sync location */
+//            }
+//            /*!< delete group */
+//            delete grp;
+//        }//grp handling
     }//for
     return true;
 }

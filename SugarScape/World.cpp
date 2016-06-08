@@ -101,7 +101,8 @@ bool World::init(std::string logFileName)
  * @exception none
  */
 int World::sync(void){
-#pragma omp parallel for
+//#pragma omp parallel for
+// /*!< PUT PRAGMA BACK WITH CHECK FOR LOOP SIZE */
     for (int i=0; i<size*size; ++i) {
         Lattice[i].sync();
         if (Lattice[i].hasAgent()) Lattice[i].getAgent()->sync();
