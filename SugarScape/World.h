@@ -44,12 +44,12 @@ class World{
      Change to suit your simulation
      */
     static const int DIM=40; /*!< Size of lattice dimensions */
-    static const int AGENTCOUNT=100; /*!< Initial number of agents */
+    static const int AGENTCOUNT=500; /*!< Initial number of agents */
     static const int CultureCount=20;
-    static const int MaxAge=60;
+    static const int MaxAge=6000;
     static const int MaxVision=6;
     static const int MaxMetabolism=3;
-    static const int MinAge=10;
+    static const int MinAge=10000;
     static const int MinMetabolism=1;
     static const int SugarGrowth=1;
     static const int SpiceGrowth=0;
