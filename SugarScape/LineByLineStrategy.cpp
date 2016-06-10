@@ -36,21 +36,21 @@ bool LineByLineStrategy::run(int startX, int startY, int size,Action *rule) {
         loc=&Lattice[(startX + i / size) * dim + startY + i % size];
         grp = rule->formGroup(loc);/*!< get this group */
         rule->executeAction(loc, grp);/*!<execute action on this group */
-        sim->sync();/*!< sync this group <-- REDO THIS PROPERLY*/
-//        std::pair<int,int> thePos;
-//        thePos = loc->getPosition();
-//        int v=sim->getMaxVision();
-//        for (int j = thePos.first-v; j <= thePos.first+v; ++j) {
-//            sim->getLocation(std::pair<int, int>(j, thePos.second))->sync();
-//            if (sim->getLocation(std::pair<int, int>(j, thePos.first))->hasAgent())
-//                sim->getLocation(std::pair<int, int>(j, thePos.first))->getAgent()
-//                        ->sync();
-//        }
-//        for (int k = thePos.second-v; k <= thePos.second+v; ++k) {
-//            sim->getLocation(std::pair<int,int>(thePos.first,k))->sync();
-//            if(sim->getLocation(std::pair<int,int>(thePos.first,k))->hasAgent()) sim->getLocation(std::pair<int,int>(thePos.first,k))
-//                        ->getAgent()->sync();
-//        }
+        std::pair<int,int> thePos;
+        thePos = loc->getPosition();
+        int v=sim->getMaxVision();
+        Location *loc=nullptr;
+        for (int j = thePos.first-v; j <= thePos.first+v; ++j) {
+          loc=sim->getLocation(std::pair<int, int>(j, thePos.second));
+          loc->sync();
+            if (loc->hasAgent())
+                loc->getAgent()->sync();
+        }
+        for (int k = thePos.second-v; k <= thePos.second+v; ++k) {
+            loc=sim->getLocation(std::pair<int,int>(thePos.first,k));
+            loc->sync();
+            if(loc->hasAgent()) loc->getAgent()->sync();
+        }
 
         if (grp != nullptr) delete grp;
         /*!< sync this group */

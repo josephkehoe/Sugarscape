@@ -67,7 +67,21 @@ bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
         loc=&Lattice[(startX + ordering[i] / size) * dim + startY + ordering[i] % size];
         grp = rule->formGroup(loc);/*!< get this group */
         rule->executeAction(loc, grp);/*!< execute action on this group */
-        sim->sync();/*!< sync this group <-- REDO THIS PROPERLY*/
+        std::pair<int,int> thePos;
+        thePos = loc->getPosition();
+        int v=sim->getMaxVision();
+        Location *loc=nullptr;
+        for (int j = thePos.first-v; j <= thePos.first+v; ++j) {
+            loc=sim->getLocation(std::pair<int, int>(j, thePos.second));
+            loc->sync();
+            if (loc->hasAgent())
+                loc->getAgent()->sync();
+        }
+        for (int k = thePos.second-v; k <= thePos.second+v; ++k) {
+            loc=sim->getLocation(std::pair<int,int>(thePos.first,k));
+            loc->sync();
+            if(loc->hasAgent()) loc->getAgent()->sync();
+        }
         /*!< sync this group */
 //        loc->sync();
 //        resident = loc->getAgent();
