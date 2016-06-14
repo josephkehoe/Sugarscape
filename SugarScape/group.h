@@ -38,6 +38,7 @@ public:
     //getters
     int getRank(void);
     std::vector<Location*> getMembers(void);
+    Location* getMember(int);
     int getSize(void);
     int getActiveParticipants(void);
     Location *getPrimeMover(void);

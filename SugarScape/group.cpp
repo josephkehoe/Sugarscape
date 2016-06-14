@@ -32,6 +32,11 @@ int group::getRank(void){
 std::vector<Location*> group::getMembers(void){
     return members;
 }
+
+Location* group::getMember(int index){
+    return members[index];
+}
+
 /**
  Returns the number of elements in the group
  @returns size
