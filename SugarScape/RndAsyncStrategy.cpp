@@ -88,8 +88,8 @@ bool RndAsyncStrategy::run(int startX, int startY, int size,Action *rule) {
 //        if (resident != nullptr) resident->sync();
 //        if (grp != nullptr) {/*!< sync everyone in the group */
 //            for (int k = 0; k < grp->getSize(); ++k) {
-//                grp->getMembers()[k]->sync();/*!< sync location */
-//                resident=grp->getMembers()[k]->getAgent();
+//                grp->getMember(k)->sync();/*!< sync location */
+//                resident=grp->getMember(k)->getAgent();
 //                if (nullptr != resident) resident->sync();/*!<sync any agent at location */
 //            }
 //            //delete group

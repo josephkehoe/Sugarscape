@@ -114,11 +114,10 @@ int cc(World *theWorld, std::string fileName)
     theWorld->addRule(&gc);
 
     growback.setStrategy(&lineByLine);
-    move.setStrategy(&rndAsync);
+    move.setStrategy(&lineByLine);
     agentMetabolism.setStrategy(&lineByLine);
     agentDeath.setStrategy(&lineByLine);
     gc.setStrategy(&lineByLine);
-    std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
     //!
     /*!
      Start simulation!
@@ -130,10 +129,13 @@ int cc(World *theWorld, std::string fileName)
      */
     //omp_set_num_threads(1);
     // Start the game loop
-    while (theWorld->incStep()<500)
+    while (theWorld->incStep()<=500)
     {
         theWorld->applyRules();
-        std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
+        if (theWorld->incStep()==500){
+            std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<<
+            std::endl;
+        }
         outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
     }
     return stepCount;
@@ -241,7 +243,7 @@ bool init(int dimensions){
 int Gui(World *theWorld, float pause)
 {
 
-    std::ofstream outputFile("log/cc-lineByLine1.csv",std::ios::out | std::ios::app);
+    std::ofstream outputFile("log/gui.csv",std::ios::out | std::ios::app);
 
     /*!<  Create the main window */
     sf::RenderWindow window(sf::VideoMode(1024, 768), "SFML window");
@@ -312,11 +314,11 @@ int Gui(World *theWorld, float pause)
     //theWorld->addRule(&agentReplacement);
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
-    growback.setStrategy(&lineByLine);
-    move.setStrategy(&rndAsync);
-    agentMetabolism.setStrategy(&lineByLine);
-    agentDeath.setStrategy(&lineByLine);
-    gc.setStrategy(&lineByLine);
+    growback.setStrategy(&newSweep);
+    move.setStrategy(&newSweep);
+    agentMetabolism.setStrategy(&newSweep);
+    agentDeath.setStrategy(&newSweep);
+    gc.setStrategy(&newSweep);
     outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
     //!
     /*!
@@ -396,13 +398,34 @@ int Gui(World *theWorld, float pause)
 
 int main(int, char const**)
 {
-    /*!< create world and initialise it */
-    World theWorld(50);
-    theWorld.init("log/output.log");
-    theWorld.sync();
-    init(50);
-    //cc(&theWorld,"log/cc-lineByLine1.csv");
-    Gui(&theWorld,0.01f);
+
+
+    World *theWorld = nullptr;/*!< create world */
+
+
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 11; j+=2) {
+            for (int k = 0; k < 5; ++k) {
+                std::string theFile="log/NewSweepM";
+                theFile.append(std::to_string(i+1));
+                theFile.append("V");
+                theFile.append(std::to_string(j+1));
+                theFile.append("-");
+                theFile.append(std::to_string(k+1));
+                theFile.append(".csv");
+                theWorld = new World(50);/*!< create world and initialise it */
+                theWorld->init("log/output.log",j+1,i+1);
+                theWorld->sync();
+                std::cout << theFile << std::endl;
+                cc(theWorld,theFile);
+                delete theWorld;
+            }
+        }
+    }
+    //theWorld = new World(50);/*!< create world and initialise it */
+    //theWorld->init("log/output.log",11,1);
+    //theWorld->sync();
+    //Gui(theWorld,0.01f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
     return EXIT_SUCCESS;   
 }

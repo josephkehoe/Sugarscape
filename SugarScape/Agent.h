@@ -42,7 +42,7 @@ class Agent{
     int maxAge; /*!< Maximum lifespan of an agent */
     int cultureLength; /*!< Length of culture bitstring */
     int immunityLength; /*!< Length of immunity bitstring */
-    
+    int initialSugarEndowment;
     int diseaseLength; //!
     /*!
      Not mentioned in specification but we will assume all diseases are the same length!
@@ -71,7 +71,8 @@ class Agent{
     
 public:
     //Constructors
-    Agent(World *sim=nullptr,Agent *dad=nullptr, Agent *mum=nullptr, std::pair<int,int> pos=std::make_pair (-1,-1));
+    Agent(World *sim=nullptr,Agent *dad=nullptr, Agent *mum=nullptr, std::pair<int,int> pos=std::make_pair (-1,-1),
+          int initialVision=1,int metabolism=1);
     
     //getters
     bool getAvail(int);

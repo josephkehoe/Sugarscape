@@ -47,7 +47,7 @@ class World{
     static const int AGENTCOUNT=500; /*!< Initial number of agents */
     static const int CultureCount=20;
     static const int MaxAge=6000;
-    static const int MaxVision=6;
+    static const int MaxVision=12;
     static const int MaxMetabolism=3;
     static const int MinAge=10000;
     static const int MinMetabolism=1;
@@ -193,7 +193,7 @@ public:
     Agent* killAgent(std::pair<int,int>);
     
     //helpers
-    bool init(std::string logFileName="log/output.log");
+    bool init(std::string logFileName="log/output.log",int vision=1,int metabolism=1);
     int sync(void);
     void sanityCheck(void);
     int wrap(int);

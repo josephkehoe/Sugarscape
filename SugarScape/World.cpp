@@ -66,7 +66,7 @@ World::~World(){
  * @return true
  * @exception none
  */
-bool World::init(std::string logFileName)
+bool World::init(std::string logFileName,int vision,int metabolism)
 {
     outputLog.open(logFileName,std::ios::out | std::ios::app);
     //Create Locations in Lattice
@@ -88,7 +88,7 @@ bool World::init(std::string logFileName)
             pos.first=getRnd(0, size-1);
             pos.second=getRnd(0,size-1);
         } while (Lattice[pos.first*size+pos.second].hasAgent());
-        anAgent=new Agent(this,nullptr,nullptr,pos);
+        anAgent=new Agent(this,nullptr,nullptr,pos,vision,metabolism);
         Lattice[pos.first*size+pos.second].initAgent(anAgent);
         //population.push_back(anAgent); NOT USED
     }

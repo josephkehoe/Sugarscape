@@ -20,23 +20,25 @@
  * @return none
  * @exception none
  */
-Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos):amountEaten(0), done(false),
+Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initialVision,int metabolism):amountEaten
+                                                                                                                 (0), done
+        (false),
     father(dad),mother(mum),killed(false),newPosition(pos),currentPosition(pos),
-    theWorld(s),currentAge(0),newAge(1),vision(2),
+    theWorld(s),currentAge(0),newAge(1),vision(initialVision),currentMetabolism(metabolism),newMetabolism(metabolism),
     cultureLength(s->getCultureCount()),immunityLength(s->getImmunityLength())
 {
     if (dad==nullptr) {
-        newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
+        initialSugarEndowment=newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
         newSpice=currentSpice=theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
         maxAge=theWorld->getRnd(theWorld->getMinAge(), theWorld->getMaxAge());
-        currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),theWorld->getMaxMetabolism());
+        //currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),theWorld->getMaxMetabolism());
         //currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),theWorld->getMaxSpiceMetabolism());
     }
     else{
         newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
         newSpice=currentSpice=theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
         maxAge=theWorld->getRnd(theWorld->getMinAge(), dad->getMaxAge());
-        currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),mum->getMetabolism());
+        //currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),mum->getMetabolism());
         //currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),mum->getSpiceMetabolism());
     }
     if (theWorld->getRnd(0,1)==0) {
