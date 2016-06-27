@@ -45,7 +45,7 @@ class World{
      */
     static const int DIM=40; /*!< Size of lattice dimensions */
     static const int AGENTCOUNT=500; /*!< Initial number of agents */
-    static const int CultureCount=20;
+    static const int CultureCount=11;//ODD SIZE REQUIRED 11 mentioned in book!
     static const int MaxAge=6000;
     static const int MaxVision=12;
     static const int MaxMetabolism=3;
@@ -198,6 +198,7 @@ public:
     void sanityCheck(void);
     int wrap(int);
     int getAgentCount(void);
+    int getBlueCount(void);
     bool resetNeighbours(void);
     int readConfigFile(std::string);
     int log(std::string);

@@ -170,6 +170,25 @@ int World::getAgentCount(void){
     return count;
 }
 
+
+/**
+ * counts blue agents in lattice
+ * @return number of blue agents
+ * @exception none
+ */
+int World::getBlueCount(void){
+    int count=0;
+#pragma omp parallel for reduction(+:count)
+    for (int i=0; i<size*size; ++i) {
+        if (Lattice[i].hasAgent()){
+            if (Lattice[i].getAgent()->getTribe()==affiliation::blue) {
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
 /**
  * set neighbours to not done, used in iterative write actions
  * @see InterativeAction
