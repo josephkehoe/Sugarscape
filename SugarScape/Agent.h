@@ -91,6 +91,7 @@ public:
     int getReward(void);
     int getCultureLength(void);
     int getImmunityLength(void);
+    int getInitialSugar(void);
     unsigned long getChildrenCount();
     Agent* getFather();
     Agent* getMother();
