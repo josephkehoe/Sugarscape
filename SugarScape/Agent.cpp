@@ -35,7 +35,7 @@ Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initia
         //currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),theWorld->getMaxSpiceMetabolism());
     }
     else{
-        newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
+        initialSugarEndowment=newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
         newSpice=currentSpice=theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
         maxAge=theWorld->getRnd(theWorld->getMinAge(), dad->getMaxAge());
         //currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),mum->getMetabolism());
@@ -46,7 +46,7 @@ Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initia
     }else{
         sex=Sex::female;
     }
-    
+
     cultureLength=theWorld->getCultureCount();
     immunityLength=theWorld->getImmunityLength();
     diseaseLength=theWorld->getDiseaseLength();
@@ -237,7 +237,9 @@ int Agent::getImmunityLength(void){
     return immunityLength;
 }
 
-
+int Agent::getInitialSugar(void){
+    return initialSugarEndowment;
+}
 /**
  * Returns Number of children of agent
  * @return int - size of currentChildren vector
