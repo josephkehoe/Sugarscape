@@ -78,7 +78,7 @@ bool AgentMating::executeAction(Location *loc, group *grp)
 group* AgentMating::formGroup(Location *loc)
 {
     if (loc->hasAgent()) {
-        if (loc->getAgent()->getSex()==Sex::male) {
+        if (loc->getAgent()->getSex()==Sex::male && loc->getAgent()->getInitialSugar()<loc->getAgent()->getSugar()) {
             Agent *me=loc->getAgent();
             Agent *mate=nullptr;
             group *grp= new group();/*!< create group */
@@ -150,10 +150,8 @@ int AgentMating::participantCount(int startX, int startY, int dimSize)
 
 bool AgentMating::suitable(Location *loc){
     //DO WE NEED TO ADD CHECK FOR RESERVES OF SUGAR AS WELL?
-    if (loc->hasAgent() && loc->getAgent()->getSex()==Sex::female) {
-        return true;
-    }
-    return false;
+    return loc->hasAgent() && loc->getAgent()->getSex() == Sex::female
+           && loc->getAgent()->getSugar()>loc->getAgent()->getInitialSugar() ? true : false;
 }
 
 
