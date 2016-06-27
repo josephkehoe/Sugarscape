@@ -16,4 +16,4 @@ CLEAN:
 	rm *.o
 
 %.o : %.cpp %.h
-	$(CXX)  -c *.cpp  $(CXXFLAGS)
+	$(CXX)  -g -c *.cpp  $(CXXFLAGS)
