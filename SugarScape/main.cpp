@@ -58,7 +58,29 @@
 int benchmark(int,int,int,int,int,std::string);
 int Gui(int, float);
 int cc(World*,std::string);
+int getStats(World*);
 
+int getStats(World *theWorld){
+    std::pair<int,int> pos;
+    int agentCount=0;
+    int blue=0;
+    Agent* theAgent=nullptr;
+    Location *currLocation=nullptr;
+    for (int i=0; i<50; ++i) {
+        for (int k=0; k<50; ++k) {
+            pos={i,k};
+            currLocation=theWorld->getLocation(pos);
+            if (currLocation->hasAgent()) {
+                agentCount++;
+                theAgent=theWorld->getLocation(pos)->getAgent();
+                if (theAgent->getTribe()==affiliation::blue) {
+                    ++blue;
+                }
+            }
+        }
+    }
+    return blue;
+}
 int cc(World *theWorld, std::string fileName)
 {
 
@@ -105,7 +127,7 @@ int cc(World *theWorld, std::string fileName)
     //theWorld.addRule(&agentMating);
     //theWorld.addRule(&agentCombat);
     /*!< Other rules for Agent behaviour go next*/
-    //theWorld->addRule(&agentCulture);
+    theWorld->addRule(&agentCulture);
     //theWorld.addRule(&agentDisease);
     /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
     theWorld->addRule(&agentMetabolism);
@@ -113,11 +135,12 @@ int cc(World *theWorld, std::string fileName)
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
 
-    growback.setStrategy(&lineByLine);
-    move.setStrategy(&lineByLine);
-    agentMetabolism.setStrategy(&lineByLine);
-    agentDeath.setStrategy(&lineByLine);
-    gc.setStrategy(&lineByLine);
+    growback.setStrategy(&newSweep);
+    move.setStrategy(&newSweep);
+    agentMetabolism.setStrategy(&newSweep);
+    agentDeath.setStrategy(&newSweep);
+    agentCulture.setStrategy(&newSweep);
+    gc.setStrategy(&newSweep);
     //!
     /*!
      Start simulation!
@@ -129,14 +152,17 @@ int cc(World *theWorld, std::string fileName)
      */
     //omp_set_num_threads(1);
     // Start the game loop
-    while (theWorld->incStep()<=500)
+    while (theWorld->incStep()<=3000)
     {
         theWorld->applyRules();
-        if (theWorld->incStep()==500){
+        if (theWorld->incStep()==3000){
             std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<<
             std::endl;
         }
-        outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
+        outputFile  << theWorld->getStep()
+                    << "," << theWorld->getAgentCount()
+                    << "," << theWorld->getBlueCount()
+                    <<std::endl;
     }
     return stepCount;
 }
@@ -307,19 +333,21 @@ int Gui(World *theWorld, float pause)
     //theWorld.addRule(&agentMating);
     //theWorld.addRule(&agentCombat);
     /*!< Other rules for Agent behaviour go next*/
-    //theWorld->addRule(&agentCulture);
+    theWorld->addRule(&agentCulture);
     //theWorld.addRule(&agentDisease);
     /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
     theWorld->addRule(&agentMetabolism);
     //theWorld->addRule(&agentReplacement);
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
-    growback.setStrategy(&newSweep);
-    move.setStrategy(&newSweep);
-    agentMetabolism.setStrategy(&newSweep);
-    agentDeath.setStrategy(&newSweep);
-    gc.setStrategy(&newSweep);
-    outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
+    //STRATEGIES
+    growback.setStrategy(&rndAsync);
+    move.setStrategy(&rndAsync);
+    agentMetabolism.setStrategy(&rndAsync);
+    agentDeath.setStrategy(&rndAsync);
+    agentCulture.setStrategy(&rndAsync);
+    gc.setStrategy(&rndAsync);
+    //outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
     //!
     /*!
      Start simulation!
@@ -390,7 +418,7 @@ int Gui(World *theWorld, float pause)
         text.setString(counter);
         sf::Time t1 = sf::seconds(pause);
         sf::sleep(t1);
-        if(theWorld->incStep()>500) window.close();
+        //if(theWorld->incStep()>500) window.close();
         outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
     }
     return stepCount;
@@ -401,31 +429,42 @@ int main(int, char const**)
 
 
     World *theWorld = nullptr;/*!< create world */
-
-
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 11; j+=2) {
-            for (int k = 0; k < 5; ++k) {
-                std::string theFile="log/NewSweepM";
-                theFile.append(std::to_string(i+1));
-                theFile.append("V");
-                theFile.append(std::to_string(j+1));
-                theFile.append("-");
-                theFile.append(std::to_string(k+1));
-                theFile.append(".csv");
-                theWorld = new World(50);/*!< create world and initialise it */
-                theWorld->init("log/output.log",j+1,i+1);
-                theWorld->sync();
-                std::cout << theFile << std::endl;
-                cc(theWorld,theFile);
-                delete theWorld;
-            }
-        }
-    }
-    //theWorld = new World(50);/*!< create world and initialise it */
-    //theWorld->init("log/output.log",11,1);
-    //theWorld->sync();
-    //Gui(theWorld,0.01f);
+//CODE FOR CHECKING CULTURE
+//    for (int i = 0; i < 10; ++i) {
+//                std::string theFile="log/CultureNewSweep";
+//                theFile.append(std::to_string(i+1));
+//                theFile.append(".csv");
+//                theWorld = new World(50);/*!< create world and initialise it */
+//                theWorld->init("log/output.log",3,1);
+//                theWorld->sync();
+//                std::cout << theFile << std::endl;
+//                cc(theWorld,theFile);
+//                delete theWorld;
+//    }
+    //CODE FOR CHECKING CC VERSUS VISION,METABOLISM
+//    for (int i = 0; i < 3; ++i) {
+//        for (int j = 0; j < 11; j+=2) {
+//            for (int k = 0; k < 5; ++k) {
+//                std::string theFile="log/RndAsyncM";
+//                theFile.append(std::to_string(i+1));
+//                theFile.append("V");
+//                theFile.append(std::to_string(j+1));
+//                theFile.append("-");
+//                theFile.append(std::to_string(k+1));
+//                theFile.append(".csv");
+//                theWorld = new World(50);/*!< create world and initialise it */
+//                theWorld->init("log/output.log",j+1,i+1);
+//                theWorld->sync();
+//                std::cout << theFile << std::endl;
+//                cc(theWorld,theFile);
+//                delete theWorld;
+//            }
+//        }
+//    }
+    theWorld = new World(50);/*!< create world and initialise it */
+    theWorld->init("log/output.log");
+    theWorld->sync();
+    Gui(theWorld,0.001f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
     return EXIT_SUCCESS;   
 }
