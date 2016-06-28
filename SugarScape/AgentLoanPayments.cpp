@@ -26,6 +26,7 @@ AgentLoanPayments::AgentLoanPayments(World *sim,Strategy *theStrategy)
 bool AgentLoanPayments::executeAction(Location * loc, group * grp)
 {
     if (loc->hasAgent()) {
+        std::vector<std::pair<Agent*,std::pair<int, int>>> newLoans;
         Agent* theAgent=loc->getAgent();
         auto theLoanBook=theAgent->getLoansOwed();
         int amtAvail=theAgent->getSugar();
@@ -39,13 +40,16 @@ bool AgentLoanPayments::executeAction(Location * loc, group * grp)
                     theLender->incSugar(amtDue);
                 }
                 else{
-                    theLender->incSugar(amtAvail);
-                    amtAvail=0;
+                    theLender->incSugar(amtAvail/2);
+                    amtAvail=amtAvail/2;
+                    theAgent->addLoanOwed(theLender,amtAvail/2);//XXX <--CREATE RENEGOTIATED LOAN
+                    theLender->addLoanOwing(theAgent,amtAvail/2);
                 }
             }//if loan due
         }//end for
         theAgent->setSugar(amtAvail);
-        theAgent->removePaidLoans();/*!<remove paid off loans and also any loans due to use (as they willbe paid to us this turn anyway */
+        theAgent->removePaidLoans();/*!<remove paid off loans and also any loans due to use (as they will be paid to
+ * us this turn anyway */
         return true;
     }else{
         return false;/*!< no agent present or no loans due so did nothing */
