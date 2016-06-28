@@ -39,7 +39,8 @@ bool AgentMating::executeAction(Location *loc, group *grp)
             theFemale->incSugar(-theFemale->getSugar()/2);
             offSpring->makeUnavailable();
             grp->getMembers()[1]->setSugar(0);/*!< sugar at new location now consumed */
-            
+
+            /*!< mark this agent as done, when all agents are done stop iterating*/
             if (loc->getCardinal(0)->getAgent()==theFemale) {
                 theMale->markNeighbour(0);
             } else if(loc->getCardinal(1)->getAgent()==theFemale){
@@ -53,10 +54,10 @@ bool AgentMating::executeAction(Location *loc, group *grp)
             }
             return true;
         }else{
-            return false;/*!< group has no female or no location so no matting here */
+            return false;/*!< group has no female or no location so no mating here */
         }
     }else{
-        std::cerr << "exectued mating on location with no agent! " << std::endl;
+        std::cerr << "executed mating on location with no agent! " << std::endl;
         return false;/*!< no agent present so do nothing */
     }
 
@@ -67,7 +68,7 @@ bool AgentMating::executeAction(Location *loc, group *grp)
  formGroup forms group of male and female agent and location for offspring
  
  returns nullptr if location is empty or contains a female agent.
- Otherwise it returns a group contaiing a free location and a female agent location.
+ Otherwise it returns a group containing a free location and a female agent location.
  If there are no available mates or locations for offspring then return a group 
  containing only the male agent.
  
