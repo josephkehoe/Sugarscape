@@ -127,7 +127,7 @@ int cc(World *theWorld, std::string fileName)
     //theWorld.addRule(&agentMating);
     //theWorld.addRule(&agentCombat);
     /*!< Other rules for Agent behaviour go next*/
-    theWorld->addRule(&agentCulture);
+    //theWorld->addRule(&agentCulture);
     //theWorld.addRule(&agentDisease);
     /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
     theWorld->addRule(&agentMetabolism);
@@ -135,12 +135,12 @@ int cc(World *theWorld, std::string fileName)
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
 
-    growback.setStrategy(&newSweep);
-    move.setStrategy(&newSweep);
-    agentMetabolism.setStrategy(&newSweep);
-    agentDeath.setStrategy(&newSweep);
-    agentCulture.setStrategy(&newSweep);
-    gc.setStrategy(&newSweep);
+    //growback.setStrategy(&newSweep);
+    //move.setStrategy(&newSweep);
+    //agentMetabolism.setStrategy(&newSweep);
+    //agentDeath.setStrategy(&newSweep);
+    //agentCulture.setStrategy(&newSweep);
+    //gc.setStrategy(&newSweep);
     //!
     /*!
      Start simulation!
@@ -152,17 +152,20 @@ int cc(World *theWorld, std::string fileName)
      */
     //omp_set_num_threads(1);
     // Start the game loop
-    while (theWorld->incStep()<=3000)
+    while (500 >= theWorld->incStep())
     {
         theWorld->applyRules();
-        if (theWorld->incStep()==3000){
+        //outputFile  << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
+        if (theWorld->incStep()==500){
             std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<<
             std::endl;
         }
-        outputFile  << theWorld->getStep()
-                    << "," << theWorld->getAgentCount()
-                    << "," << theWorld->getBlueCount()
-                    <<std::endl;
+        if (500 == theWorld->getStep()){
+            outputFile  << theWorld->getStep()
+                        << "," << theWorld->getAgentCount()
+                        //<< "," << theWorld->getBlueCount()
+                        <<std::endl;
+        }
     }
     return stepCount;
 }
@@ -445,7 +448,7 @@ int main(int, char const**)
 //    for (int i = 0; i < 3; ++i) {
 //        for (int j = 0; j < 11; j+=2) {
 //            for (int k = 0; k < 5; ++k) {
-//                std::string theFile="log/RndAsyncM";
+//                std::string theFile="log/SyncRndM";
 //                theFile.append(std::to_string(i+1));
 //                theFile.append("V");
 //                theFile.append(std::to_string(j+1));
@@ -461,11 +464,21 @@ int main(int, char const**)
 //            }
 //        }
 //    }
-    theWorld = new World(50);/*!< create world and initialise it */
-    theWorld->init("log/output.log");
-    theWorld->sync();
-    Gui(theWorld,0.001f);
+//    theWorld = new World(50);/*!< create world and initialise it */
+//    theWorld->init("log/output.log");
+//    theWorld->sync();
+//    Gui(theWorld,0.001f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
+
+    for (int i = 0; i < 300; ++i) {
+                std::string theFile="log/stdMoveCC7.csv";
+                theWorld = new World(50);/*!< create world and initialise it */
+                theWorld->init("log/output.log",7,1);
+                theWorld->sync();
+                std::cout << i << ": ";
+                cc(theWorld,theFile);
+                delete theWorld;
+    }
     return EXIT_SUCCESS;   
 }
 
