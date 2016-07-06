@@ -72,6 +72,7 @@ group* AgentBasicMove::formGroup(Location *loc)
             if (rank<0) rank =-rank;
             ourChoice->push_back(possibleDestinations[index]);
             ourChoice->setRank(rank);
+            //ourChoice->setRank(sim->getRnd(0,10));
             ourChoice->setPrimeMover(loc);
             ourChoice->setActiveParticipants(1);//one active participant per group - the agent moving
         }
