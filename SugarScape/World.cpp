@@ -41,7 +41,8 @@ World::World(int dimensionSize)
     }
     //seed random number generator!!
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    rng.seed(seed);
+    //rng.seed(seed);
+    rng.seed(0);
     femaleFertilityStart=getRnd(MinFemaleFertilityStart, MaxFemaleFertilityStart+1);//range is inclusive!
     maleFertilityStart=getRnd(MinMaleFertilityStart, MaxMaleFertilityStart+1);//range is inclusive!
     femaleFertilityEnd=getRnd(MinFemaleFertilityEnd, MaxFemaleFertilityEnd+1);//range is inclusive!
@@ -88,7 +89,7 @@ bool World::init(std::string logFileName,int vision,int metabolism)
             pos.first=getRnd(0, size-1);
             pos.second=getRnd(0,size-1);
         } while (Lattice[pos.first*size+pos.second].hasAgent());
-        anAgent=new Agent(this,nullptr,nullptr,pos,vision,metabolism);
+        anAgent=new Agent(this,nullptr,nullptr,pos);//,vision,metabolism);
         Lattice[pos.first*size+pos.second].initAgent(anAgent);
         //population.push_back(anAgent); NOT USED
     }
