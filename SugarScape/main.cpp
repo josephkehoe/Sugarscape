@@ -27,7 +27,7 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
-
+#include <omp.h>
 
 
 #include "World.h"
@@ -135,12 +135,12 @@ int cc(World *theWorld, std::string fileName)
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
 
-    //growback.setStrategy(&newSweep);
-    //move.setStrategy(&newSweep);
-    //agentMetabolism.setStrategy(&newSweep);
-    //agentDeath.setStrategy(&newSweep);
+    //growback.setStrategy(&rndAsync);
+    //move.setStrategy(&rndAsync);
+    //agentMetabolism.setStrategy(&rndAsync);
+    //agentDeath.setStrategy(&rndAsync);
     //agentCulture.setStrategy(&newSweep);
-    //gc.setStrategy(&newSweep);
+    //gc.setStrategy(&rndAsync);
     //!
     /*!
      Start simulation!
@@ -155,17 +155,17 @@ int cc(World *theWorld, std::string fileName)
     while (500 >= theWorld->incStep())
     {
         theWorld->applyRules();
-        //outputFile  << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
+        outputFile  << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
         if (theWorld->incStep()==500){
             std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<<
             std::endl;
         }
-        if (500 == theWorld->getStep()){
-            outputFile  << theWorld->getStep()
-                        << "," << theWorld->getAgentCount()
-                        //<< "," << theWorld->getBlueCount()
-                        <<std::endl;
-        }
+//        if (500 == theWorld->getStep()){
+//            outputFile  << theWorld->getStep()
+//                        << "," << theWorld->getAgentCount()
+//                        //<< "," << theWorld->getBlueCount()
+//                        <<std::endl;
+//        }
     }
     return stepCount;
 }
@@ -272,7 +272,7 @@ bool init(int dimensions){
 int Gui(World *theWorld, float pause)
 {
 
-    std::ofstream outputFile("log/gui.csv",std::ios::out | std::ios::app);
+    std::ofstream outputFile("log/CultureLBL.csv",std::ios::out | std::ios::app);
 
     /*!<  Create the main window */
     sf::RenderWindow window(sf::VideoMode(1024, 768), "SFML window");
@@ -344,12 +344,12 @@ int Gui(World *theWorld, float pause)
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
     //STRATEGIES
-    growback.setStrategy(&rndAsync);
-    move.setStrategy(&rndAsync);
-    agentMetabolism.setStrategy(&rndAsync);
-    agentDeath.setStrategy(&rndAsync);
-    agentCulture.setStrategy(&rndAsync);
-    gc.setStrategy(&rndAsync);
+    growback.setStrategy(&lineByLine);
+    move.setStrategy(&lineByLine);
+    agentMetabolism.setStrategy(&lineByLine);
+    agentDeath.setStrategy(&lineByLine);
+    agentCulture.setStrategy(&lineByLine);
+    gc.setStrategy(&lineByLine);
     //outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
     //!
     /*!
@@ -357,7 +357,7 @@ int Gui(World *theWorld, float pause)
      */
     int stepCount=0;
     std::string counter;
-
+    sf::Time t1 = sf::seconds(pause);
     // Set the Icon
     sf::Image icon;
     if (!icon.loadFromFile("resources/icon.png")) {
@@ -408,6 +408,8 @@ int Gui(World *theWorld, float pause)
         window.clear();
 
         theWorld->applyRules();
+        counter = std::to_string(++stepCount);
+        text.setString(counter);
         theGUI.draw();
         // Draw the sprite
         //window.draw(sprite);
@@ -417,12 +419,13 @@ int Gui(World *theWorld, float pause)
 
         // Update the window
         window.display();
-        counter = std::to_string(++stepCount);
-        text.setString(counter);
-        sf::Time t1 = sf::seconds(pause);
-        sf::sleep(t1);
-        //if(theWorld->incStep()>500) window.close();
-        outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
+
+        if (0.1f < pause){
+            sf::sleep(t1);
+        }
+        if(theWorld->incStep()>3000) window.close();
+        outputFile << theWorld->getStep() << ","  << theWorld->getAgentCount()<< "," << theWorld->getBlueCount()
+        << std::endl;
     }
     return stepCount;
 }
@@ -432,6 +435,7 @@ int main(int, char const**)
 
 
     World *theWorld = nullptr;/*!< create world */
+    omp_set_num_threads(1);
 //CODE FOR CHECKING CULTURE
 //    for (int i = 0; i < 10; ++i) {
 //                std::string theFile="log/CultureNewSweep";
@@ -464,21 +468,23 @@ int main(int, char const**)
 //            }
 //        }
 //    }
-//    theWorld = new World(50);/*!< create world and initialise it */
-//    theWorld->init("log/output.log");
-//    theWorld->sync();
-//    Gui(theWorld,0.001f);
+    theWorld = new World(50);/*!< create world and initialise it */
+    theWorld->init("log/output.log");
+    theWorld->sync();
+    Gui(theWorld,0.0f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
 
-    for (int i = 0; i < 300; ++i) {
-                std::string theFile="log/stdMoveCC7.csv";
-                theWorld = new World(50);/*!< create world and initialise it */
-                theWorld->init("log/output.log",7,1);
-                theWorld->sync();
-                std::cout << i << ": ";
-                cc(theWorld,theFile);
-                delete theWorld;
-    }
+//    for (int i = 0; i < 10; ++i) {
+//                std::string theFile="log/syncCC";
+//                theFile.append(std::to_string(i+1));
+//                theFile.append(".csv");
+//                theWorld = new World(50);/*!< create world and initialise it */
+//                theWorld->init("log/output.log",0,0);
+//                theWorld->sync();
+//                std::cout << i << ": ";
+//                cc(theWorld,theFile);
+//                delete theWorld;
+//    }
     return EXIT_SUCCESS;   
 }
 
