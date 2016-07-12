@@ -72,7 +72,7 @@ class Agent{
 public:
     //Constructors
     Agent(World *sim=nullptr,Agent *dad=nullptr, Agent *mum=nullptr, std::pair<int,int> pos=std::make_pair (-1,-1),
-          int initialVision=1,int metabolism=1);
+          int initialVision=0,int metabolism=0);
     
     //getters
     bool getAvail(int);

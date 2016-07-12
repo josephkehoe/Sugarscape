@@ -20,36 +20,35 @@
  * @return none
  * @exception none
  */
-Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initialVision,int metabolism):amountEaten
-                                                                                                                 (0), done
-        (false),
-    father(dad),mother(mum),killed(false),newPosition(pos),currentPosition(pos),
+Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initialVision,int metabolism)
+        :amountEaten(0), done(false),father(dad),mother(mum),killed(false),newPosition(pos),currentPosition(pos),
     theWorld(s),currentAge(0),newAge(1),vision(initialVision),currentMetabolism(metabolism),newMetabolism(metabolism),
-    cultureLength(s->getCultureCount()),immunityLength(s->getImmunityLength())
+    cultureLength(s->getCultureCount()),immunityLength(s->getImmunityLength()),diseaseLength
+                 (s->getDiseaseLength())
 {
     if (dad==nullptr) {
         initialSugarEndowment=newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
         newSpice=currentSpice=theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
         maxAge=theWorld->getRnd(theWorld->getMinAge(), theWorld->getMaxAge());
-        //currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),theWorld->getMaxMetabolism());
-        //currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),theWorld->getMaxSpiceMetabolism());
+        if (vision==0) vision=theWorld->getRnd(1,theWorld->getMaxVision());
+        if (currentMetabolism==0) currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),
+                                                                  theWorld->getMaxMetabolism());
+         currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),
+                                                                    theWorld->getMaxSpiceMetabolism());
     }
     else{
         initialSugarEndowment=newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
         newSpice=currentSpice=theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
         maxAge=theWorld->getRnd(theWorld->getMinAge(), dad->getMaxAge());
-        //currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),mum->getMetabolism());
-        //currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),mum->getSpiceMetabolism());
+        currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),mum->getMetabolism());
+        currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),mum->getSpiceMetabolism());
+        vision=theWorld->getRnd(1,mum->getVision());//REVIEW THESE!!!!XXX
     }
     if (theWorld->getRnd(0,1)==0) {
         sex=Sex::male;
     }else{
         sex=Sex::female;
     }
-
-    cultureLength=theWorld->getCultureCount();
-    immunityLength=theWorld->getImmunityLength();
-    diseaseLength=theWorld->getDiseaseLength();
     /*!< Create random immunity */
     for (int i=0; i<immunityLength; ++i) {
         bool aBit=false;
