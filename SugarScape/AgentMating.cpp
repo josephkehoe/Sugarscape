@@ -141,7 +141,7 @@ int AgentMating::participantCount(int startX, int startY, int dimSize)
             theAgent=sim->getAgent(std::pair<int,int>(i, k));
             if (theAgent!=nullptr) {
                 if (theAgent->getSex()==Sex::male && theAgent->allDone()==false && theAgent->getSugar()>theAgent->getInitialSugar()){
-                    ++pcount;
+                    ++pcount;/*< We only count females with enough sugar as possible participants*/
                 }
             }
         }
