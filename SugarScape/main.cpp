@@ -60,7 +60,7 @@ int Gui(int, float);
 int cc(World*,std::string);
 int getStats(World*);
 
-int evolution(World, std::string);
+int evolution(std::string);
 
 int evolution(std::string fileName)
 {
@@ -92,10 +92,9 @@ int evolution(std::string fileName)
      */
     /*!< Rules for Lattice are added first (before Agent Rules)*/
     theWorld->addRule(&growback);
-
     /*!< Movement Rule for Agents follow next -pick only one!*/
     theWorld->addRule(&move);
-    theWorld.addRule(&agentMating);
+    theWorld->addRule(&agentMating);
     /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
     theWorld->addRule(&agentMetabolism);
     theWorld->addRule(&agentDeath);
@@ -108,29 +107,32 @@ int evolution(std::string fileName)
     /*!
      Start simulation!
      */
-    int stepCount=0;
-    //!
-    /*!
-     set number of threads here - for testing only. Not needed normally
-     */
-    //omp_set_num_threads(1);
-    // Start the game loop
-    while (3000 >= theWorld->incStep())
+    int populationSize=0;
+    float avgMetabolism=0.0;
+    float avgVision=0.0;
+    int ageGraph[10]={0,0,0,0,0,0,0,0,0,0};
+    Location* theLattice=theWorld->getLattice();
+    int size=theWorld->getSize()*theWorld->getSize();
+    while (20 >= theWorld->incStep())
     {
         theWorld->applyRules();
-        outputFile  << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
-        if (theWorld->incStep()==500){
-            std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<<
-            std::endl;
+        populationSize=0;
+        avgVision=avgMetabolism=0.0;
+        Agent *ag= nullptr;
+        for (int i=0; i<size; ++i) {
+            if ((ag=theLattice[i].getAgent())!= nullptr){
+                ++populationSize;
+                avgMetabolism+=ag->getMetabolism();
+                avgVision+=ag->getVision();
+                ageGraph[ag->getAge()%10]++;
+            }
         }
-//        if (500 == theWorld->getStep()){
-//            outputFile  << theWorld->getStep()
-//                        << "," << theWorld->getAgentCount()
-//                        //<< "," << theWorld->getBlueCount()
-//                        <<std::endl;
-//        }
+        avgVision=avgVision/populationSize;
+        avgMetabolism=avgMetabolism/populationSize;
+        std::cout  << theWorld->getStep() << ","  << populationSize << "," <<avgMetabolism << "," << avgVision <<
+                std::endl;
     }
-    return stepCount;
+    return theWorld->getStep();
 }
 
 int getStats(World *theWorld){
@@ -506,9 +508,10 @@ int Gui(World *theWorld, float pause)
 int main(int, char const**)
 {
 
+evolution("test.txt");
 
-    World *theWorld = nullptr;/*!< create world */
-    omp_set_num_threads(1);
+   // World *theWorld = nullptr;/*!< create world */
+   // omp_set_num_threads(1);
 //CODE FOR CHECKING CULTURE
 //    for (int i = 0; i < 10; ++i) {
 //                std::string theFile="log/CultureNewSweep";
@@ -541,10 +544,10 @@ int main(int, char const**)
 //            }
 //        }
 //    }
-    theWorld = new World(50);/*!< create world and initialise it */
-    theWorld->init("log/output.log");
-    theWorld->sync();
-    Gui(theWorld,0.0f);
+//    theWorld = new World(50);/*!< create world and initialise it */
+//    theWorld->init("log/output.log");
+//    theWorld->sync();
+//    Gui(theWorld,0.0f);
     //benchmark(1,50, 18, 18, 6, "/Users/joseph/test18-108.txt");
 
 //    for (int i = 0; i < 10; ++i) {

@@ -88,8 +88,7 @@ group* AgentMating::formGroup(Location *loc)
             grp->setPrimeMover(loc);
 
             for (int i=0; i<4 && mate==nullptr; ++i) {/*!< find mate first */
-
-                if (me->getAvail(i) && suitable(loc->getCardinal(i))==true) {
+                if (me->getAvail(i) && suitable(loc->getCardinal(i))) {
                     mate=loc->getCardinal(i)->getAgent();
                 }
                 me->markNeighbour(i);
@@ -125,6 +124,7 @@ group* AgentMating::formGroup(Location *loc)
  participationCount
  
  We only count male agents as participants for this rule
+ They must have enough Sugar for mating
  @param startX :x-coordinate of top left of grid
  @param startY :y-coordinate of top left of grid
   @param dimSize :width and height of grid
@@ -140,7 +140,7 @@ int AgentMating::participantCount(int startX, int startY, int dimSize)
         for (int k=startY; k<startY+dimSize; ++k) {
             theAgent=sim->getAgent(std::pair<int,int>(i, k));
             if (theAgent!=nullptr) {
-                if (theAgent->getSex()==Sex::male && theAgent->allDone()==false){
+                if (theAgent->getSex()==Sex::male && theAgent->allDone()==false && theAgent->getSugar()>theAgent->getInitialSugar()){
                     ++pcount;
                 }
             }

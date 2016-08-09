@@ -1235,7 +1235,7 @@ int Agent::addLoanOwing(Agent* theBorrower,int theAmount)
  */
 bool Agent::allDone(void){
     for (int i=0; i<4; ++i) {
-        if (availableNeighbours[i]==true) {
+        if (availableNeighbours[i]) {
             return false;
         }
     }
