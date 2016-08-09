@@ -36,12 +36,21 @@ Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initia
          currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),
                                                                     theWorld->getMaxSpiceMetabolism());
     }
-    else{
-        initialSugarEndowment=newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
-        newSpice=currentSpice=theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
-        maxAge=theWorld->getRnd(theWorld->getMinAge(), dad->getMaxAge());
-        currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),mum->getMetabolism());
-        currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),mum->getSpiceMetabolism());
+    else{/*!< Take attributes from parents */
+        initialSugarEndowment=newSugar=currentSugar=mum->getSugar()/2+dad->getSugar()/2;
+                //theWorld->getRnd(0, theWorld->getInitialSugarMax());
+        dad->incSugar(-dad->getSugar()/2);
+        mum->incSugar(-mum->getSugar()/2);
+        newSpice=currentSpice=mum->getSpice()/2+dad->getSpice()/2;
+                //theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
+        dad->incSpice(-dad->getSpice()/2);
+        mum->incSpice(-mum->getSpice()/2);
+        maxAge=theWorld->getRnd(theWorld->getMinAge(), (dad->getMaxAge()+mum->getMaxAge())/2);
+        currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),(mum->getMetabolism()
+                                                                                       +dad->getMetabolism())/2);
+        currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),
+                                                                   (mum->getSpiceMetabolism()+dad->getSpiceMetabolism
+                                                                           ())/2);
         vision=theWorld->getRnd(1,mum->getVision());//REVIEW THESE!!!!XXX
     }
     if (theWorld->getRnd(0,1)==0) {
