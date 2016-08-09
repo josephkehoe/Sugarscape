@@ -60,6 +60,79 @@ int Gui(int, float);
 int cc(World*,std::string);
 int getStats(World*);
 
+int evolution(World, std::string);
+
+int evolution(std::string fileName)
+{
+    std::ofstream outputFile(fileName,std::ios::out | std::ios::app);
+    World *theWorld = new World(50);/*!< create world and initialise it */
+    theWorld->init("log/output.log");
+    theWorld->sync();
+    /*!< Declare all possible strategies here */
+    Strategy baseStrategy(theWorld);
+    NewSweepStrategy newSweep(theWorld);
+    LineByLineStrategy lineByLine(theWorld);
+    RndAsyncStrategy rndAsync(theWorld);
+    IndependentStrategy independent(theWorld);
+    IterativeWriteStrategy iterativeWrite(theWorld);
+    ReadDependentStrategy readDependent(theWorld);
+    WriteStrategy writeDependent(theWorld);
+    /*!< Declare all rules here */
+    Growback growback(theWorld,&independent);
+    AgentMove move(theWorld,&writeDependent);
+    GarbageCollection gc(theWorld,&independent);
+    AgentDeath agentDeath(theWorld,&readDependent);
+    AgentMating agentMating(theWorld,&iterativeWrite);
+    AgentMetabolism agentMetabolism(theWorld,&independent);
+    //!
+    /*!
+     Add the rules we are using here.
+     Ordering of rules is important
+     Do death last and metabolism before replacement!!
+     */
+    /*!< Rules for Lattice are added first (before Agent Rules)*/
+    theWorld->addRule(&growback);
+
+    /*!< Movement Rule for Agents follow next -pick only one!*/
+    theWorld->addRule(&move);
+    theWorld.addRule(&agentMating);
+    /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
+    theWorld->addRule(&agentMetabolism);
+    theWorld->addRule(&agentDeath);
+    theWorld->addRule(&gc);
+
+    //move.setStrategy(&rndAsync);
+    //agentMetabolism.setStrategy(&rndAsync);
+    //agentMating.setStrategy(&rndAsync);
+    //!
+    /*!
+     Start simulation!
+     */
+    int stepCount=0;
+    //!
+    /*!
+     set number of threads here - for testing only. Not needed normally
+     */
+    //omp_set_num_threads(1);
+    // Start the game loop
+    while (3000 >= theWorld->incStep())
+    {
+        theWorld->applyRules();
+        outputFile  << theWorld->getStep() << ","  << theWorld->getAgentCount()<< std::endl;
+        if (theWorld->incStep()==500){
+            std::cout << theWorld->getStep() << ","  << theWorld->getAgentCount()<<
+            std::endl;
+        }
+//        if (500 == theWorld->getStep()){
+//            outputFile  << theWorld->getStep()
+//                        << "," << theWorld->getAgentCount()
+//                        //<< "," << theWorld->getBlueCount()
+//                        <<std::endl;
+//        }
+    }
+    return stepCount;
+}
+
 int getStats(World *theWorld){
     std::pair<int,int> pos;
     int agentCount=0;
