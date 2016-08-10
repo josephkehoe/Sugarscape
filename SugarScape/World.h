@@ -43,12 +43,12 @@ class World{
      All parameters of simulation world are set here.
      Change to suit your simulation
      */
-    static const int DIM=40; /*!< Size of lattice dimensions */
+    static const int DIM=50; /*!< Size of lattice dimensions */
     static const int AGENTCOUNT=500; /*!< Initial number of agents */
     static const int CultureCount=11;/*!<ODD SIZE REQUIRED 11 mentioned in book! */
     static const int MaxAge=100;
-    static const int MaxVision=12;
-    static const int MaxMetabolism=3;
+    static const int MaxVision=6;
+    static const int MaxMetabolism=4;
     static const int MinAge=60;
     static const int MinMetabolism=1;
     static const int SugarGrowth=1;
@@ -56,8 +56,8 @@ class World{
     static const int Duration=10;
     static const int Rate=3;
     static const int InitialPopulationSize=500;
-    static const int InitialSugarMax=50;
-    static const int InitialSugarMin=25;
+    static const int InitialSugarMax=100;
+    static const int InitialSugarMin=50;
     static const int InitialSpiceMax=25;
     static const int InitialSpiceMin=5;
     static const int WinterRate=8;
