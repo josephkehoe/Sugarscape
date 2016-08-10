@@ -38,20 +38,42 @@ Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initia
     }
     else{/*!< Take attributes from parents */
         initialSugarEndowment=newSugar=currentSugar=mum->getSugar()/2+dad->getSugar()/2;
-                //theWorld->getRnd(0, theWorld->getInitialSugarMax());
         dad->incSugar(-dad->getSugar()/2);
         mum->incSugar(-mum->getSugar()/2);
         newSpice=currentSpice=mum->getSpice()/2+dad->getSpice()/2;
-                //theWorld->getRnd(0, theWorld->getInitialSpiceMax() );
         dad->incSpice(-dad->getSpice()/2);
         mum->incSpice(-mum->getSpice()/2);
-        maxAge=theWorld->getRnd(theWorld->getMinAge(), (dad->getMaxAge()+mum->getMaxAge())/2);
-        currentMetabolism=newMetabolism=theWorld->getRnd(theWorld->getMinMetabolism(),(mum->getMetabolism()
-                                                                                       +dad->getMetabolism())/2);
-        currentSpiceMetabolism=newSpiceMetabolism=theWorld->getRnd(theWorld->getMinSpiceMetabolism(),
-                                                                   (mum->getSpiceMetabolism()+dad->getSpiceMetabolism
-                                                                           ())/2);
-        vision=theWorld->getRnd(1,mum->getVision());//REVIEW THESE!!!!XXX
+        //maxAge=theWorld->getRnd(theWorld->getMinAge(), (dad->getMaxAge()+mum->getMaxAge())/2);
+        if (theWorld->getRnd(0,1)==0){
+            maxAge=dad->getMaxAge();
+        }
+        else{
+            maxAge=mum->getMaxAge();
+        }
+        if (theWorld->getRnd(0,1)==0){
+            currentMetabolism=newMetabolism=mum->getMetabolism();
+        }
+        else{
+            currentMetabolism=newMetabolism=dad->getMetabolism();
+        }
+        if (theWorld->getRnd(0,1)==0){
+            currentSpiceMetabolism=newSpiceMetabolism=dad->getSpiceMetabolism();
+        }
+        else{
+            currentSpiceMetabolism=newSpiceMetabolism=mum->getSpiceMetabolism();
+        }
+        if (theWorld->getRnd(0,1)==0){
+            currentMetabolism=newMetabolism=mum->getMetabolism();
+        }
+        else{
+            currentMetabolism=newMetabolism=dad->getMetabolism();
+        }
+        if (theWorld->getRnd(0,1)==0){
+            vision=mum->getVision();
+        }
+        else{
+            vision=dad->getVision();
+        }
     }
     if (theWorld->getRnd(0,1)==0) {
         sex=Sex::male;

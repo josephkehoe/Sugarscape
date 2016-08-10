@@ -100,9 +100,8 @@ int evolution(std::string fileName)
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
 
-    //move.setStrategy(&rndAsync);
-    //agentMetabolism.setStrategy(&rndAsync);
-    //agentMating.setStrategy(&rndAsync);
+    //move.setStrategy(&newSweep);
+    //agentMating.setStrategy(&newSweep);
     //!
     /*!
      Start simulation!
@@ -113,26 +112,36 @@ int evolution(std::string fileName)
     int ageGraph[10]={0,0,0,0,0,0,0,0,0,0};
     Location* theLattice=theWorld->getLattice();
     int size=theWorld->getSize()*theWorld->getSize();
-    while (20 >= theWorld->incStep())
+    while (2500 >= theWorld->incStep())
     {
         theWorld->applyRules();
         populationSize=0;
         avgVision=avgMetabolism=0.0;
         Agent *ag= nullptr;
+        for (int k = 0; k < 10; ++k) {
+            ageGraph[k]=0;
+        }
         for (int i=0; i<size; ++i) {
             if ((ag=theLattice[i].getAgent())!= nullptr){
                 ++populationSize;
                 avgMetabolism+=ag->getMetabolism();
                 avgVision+=ag->getVision();
-                ageGraph[ag->getAge()%10]++;
+                ageGraph[ag->getAge()/10]++;
             }
         }
         avgVision=avgVision/populationSize;
         avgMetabolism=avgMetabolism/populationSize;
-        std::cout  << theWorld->getStep() << ","  << populationSize << "," <<avgMetabolism << "," << avgVision <<
-                std::endl;
+        if(populationSize>0) {
+            outputFile << theWorld->getStep() << "," << populationSize << "," << avgMetabolism << "," << avgVision;
+            for (int j = 0; j < 10; ++j) {
+                outputFile << "," << ageGraph[j];
+            }
+            outputFile << std::endl;
+        }
     }
+    delete theWorld;
     return theWorld->getStep();
+
 }
 
 int getStats(World *theWorld){
@@ -508,10 +517,10 @@ int Gui(World *theWorld, float pause)
 int main(int, char const**)
 {
 
-evolution("test.txt");
+evolution("log/evol.txt");
 
    // World *theWorld = nullptr;/*!< create world */
-   // omp_set_num_threads(1);
+   //omp_set_num_threads(1);
 //CODE FOR CHECKING CULTURE
 //    for (int i = 0; i < 10; ++i) {
 //                std::string theFile="log/CultureNewSweep";
