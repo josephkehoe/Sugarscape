@@ -1016,8 +1016,8 @@ int World::readConfigFile(std::string configFile)
         while(std::getline(lineStream,cell,','))
         {
             int number=stoi(cell);
-            Lattice[i].setMaxSugar(number*10);/*!< -- increased allocation for evolution*/
-            Lattice[i].setSugar(number*10);
+            Lattice[i].setMaxSugar(number*2);/*!< -- increased allocation for evolution*/
+            Lattice[i].setSugar(number*2);
             ++i;
         }
     }
