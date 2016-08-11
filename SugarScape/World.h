@@ -73,8 +73,8 @@ class World{
     static const int MaxFemaleFertilityStart=15;
     static const int MinMaleFertilityStart=12;
     static const int MaxMaleFertilityStart=15;
-    static const int MinFemaleFertilityEnd=40;
-    static const int MaxFemaleFertilityEnd=50;
+    static const int MinFemaleFertilityEnd=90;
+    static const int MaxFemaleFertilityEnd=100;
 
     
     int step; /*!< Number of steps the simulation has run for */
