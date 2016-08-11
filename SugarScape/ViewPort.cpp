@@ -136,7 +136,13 @@ bool ViewPort::draw(){
                     agentCount++;
                     theAgent=theWorld->getLocation(pos)->getAgent();
                     radius=theAgent->getSugar();
-                    if (theAgent->getTribe()==affiliation::blue) {
+                    if (theAgent->getAge()<5){
+                        AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::White);
+                    }
+                    else if (!theAgent->isFertile() || theAgent->getSugar()<theAgent->getInitialSugar()){
+                        AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Yellow);
+                    }
+                    else if (theAgent->getSex()==Sex::female){ //(theAgent->getTribe()==affiliation::blue) {
                         AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Blue);
                     }
                     else{
