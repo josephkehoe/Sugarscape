@@ -12,7 +12,6 @@
 #include <iostream>
 #include "AgentBasicMove.h"
 
-int myCompare(Location *a, Location *b);
 
 
 /*!  \class  AgentMove
@@ -31,6 +30,7 @@ class AgentMove :public AgentBasicMove{
 public:
     AgentMove(World *,Strategy*);
     virtual int pickIndex(std::vector<Location*>);
+    virtual group* formGroup(Location *);
 };
 
 #endif /* defined(__SugarScape__AgentMove__) */

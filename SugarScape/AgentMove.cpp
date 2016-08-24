@@ -22,26 +22,6 @@ AgentMove::AgentMove(World *sim, Strategy *theStrategy)
 }
 
 
-/**
- myCompare compares two locations to see which is best
- 
- if they equal in pollution levels pick location with most sugar
- else pick least polluted
- 
- @param a :pointer to location
- @param b :pointer to location
- @returns true if a better than b
- @exception none
- */
-int myCompare(Location *a, Location *b)
-{
-    if (a->getPollution()==b->getPollution()) {
-        return a->getWealth() - b->getWealth();//I am assuming we will only be checking empty locations
-    } else
-    {
-        return a->getPollution() - b->getPollution();
-    }
-}
 
 
 /**
@@ -67,4 +47,36 @@ int AgentMove::pickIndex(std::vector<Location*> possibleDestinations)
     return best;
 }
 
+/**
+ * Pick a random empty location within our neighbourhood as defined by our vision
+ *
+ * Ranks chosen move randomly
+ * @param loc :Our location
+ * @see Move Rule
+ * @return Our chosen location held in a group object (or our existing location if we have no move)
+ * @exception none
+ */
+group* AgentMove::formGroup(Location *loc)
+{
+    group *ourChoice = nullptr;
+    if (loc->hasAgent()) {/*!< Agent at this location */
+        ourChoice = new group();
+        Agent* theAgent=loc->getAgent();
+        std::vector<Location*> possibleDestinations=sim->getEmptyNeighbourhood(theAgent->getPosition(), theAgent->getVision());/*!< find all empty locations */
+        if (possibleDestinations.size()!=0) {/*!< check to see if we can move anywhere */
+            int index=pickIndex(possibleDestinations);
+            ourChoice->push_back(possibleDestinations[index]);
+            ourChoice->setRank(sim->getRnd(0,10));
+            ourChoice->setPrimeMover(loc);
+            ourChoice->setActiveParticipants(1);//one active participant per group - the agent moving
+        }
+        else{/*!< nowhere to move so stay here */
+            ourChoice->push_back(loc);
+            ourChoice->setRank(0);
+            ourChoice->setPrimeMover(loc);
+            ourChoice->setActiveParticipants(1);
+        }
 
+    }
+    return ourChoice;/*!< is NOT nullPtr only if we assigned it a value earlier */
+}
