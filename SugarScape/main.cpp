@@ -54,6 +54,8 @@
 #include "IterativeWriteStrategy.h"
 #include "ReadDependentStrategy.h"
 #include "AgentInheritance.h"
+#include "AgentMoveClosest.h"
+#include "AgentMoveStrongest.h"
 
 int benchmark(int,int,int,int,int,std::string);
 int Gui(int, float);
@@ -209,6 +211,8 @@ int evolution(std::string fileName)
     /*!< Declare all rules here */
     Growback growback(theWorld,&independent);
     AgentMove move(theWorld,&writeDependent);
+    AgentMoveClosest moveClosest(theWorld,&writeDependent);
+    AgentMoveStrongest moveStrongest(theWorld,&writeDependent);
     GarbageCollection gc(theWorld,&independent);
     AgentDeath agentDeath(theWorld,&readDependent);
     AgentMating agentMating(theWorld,&iterativeWrite);
