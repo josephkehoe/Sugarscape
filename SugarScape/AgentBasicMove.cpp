@@ -67,9 +67,11 @@ group* AgentBasicMove::formGroup(Location *loc)
         std::vector<Location*> possibleDestinations=sim->getEmptyNeighbourhood(theAgent->getPosition(), theAgent->getVision());/*!< find all empty locations */
         if (possibleDestinations.size()!=0) {/*!< check to see if we can move anywhere */
             int index=pickIndex(possibleDestinations);
-            int rank=possibleDestinations[index]->getPosition().first-theAgent->getPosition().first
-                    +possibleDestinations[index]->getPosition().second-theAgent->getPosition().second;
-            if (rank<0) rank =-rank;
+            int xdiff=possibleDestinations[index]->getPosition().first-theAgent->getPosition().first;
+            int ydiff=possibleDestinations[index]->getPosition().second-theAgent->getPosition().second;
+            if (xdiff<0) xdiff=-xdiff;
+            if (ydiff<0) ydiff=-ydiff;
+            int rank=xdiff+ydiff;/*!< Manhatten distance */
             ourChoice->push_back(possibleDestinations[index]);
             ourChoice->setRank(rank);
             //ourChoice->setRank(sim->getRnd(0,10));
