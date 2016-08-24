@@ -67,14 +67,8 @@ group* AgentBasicMove::formGroup(Location *loc)
         std::vector<Location*> possibleDestinations=sim->getEmptyNeighbourhood(theAgent->getPosition(), theAgent->getVision());/*!< find all empty locations */
         if (possibleDestinations.size()!=0) {/*!< check to see if we can move anywhere */
             int index=pickIndex(possibleDestinations);
-            int xdiff=possibleDestinations[index]->getPosition().first-theAgent->getPosition().first;
-            int ydiff=possibleDestinations[index]->getPosition().second-theAgent->getPosition().second;
-            if (xdiff<0) xdiff=-xdiff;
-            if (ydiff<0) ydiff=-ydiff;
-            int rank=xdiff+ydiff;/*!< Manhatten distance */
             ourChoice->push_back(possibleDestinations[index]);
-            ourChoice->setRank(rank);
-            //ourChoice->setRank(sim->getRnd(0,10));
+            ourChoice->setRank(sim->getRnd(0,10));
             ourChoice->setPrimeMover(loc);
             ourChoice->setActiveParticipants(1);//one active participant per group - the agent moving
         }
@@ -89,8 +83,22 @@ group* AgentBasicMove::formGroup(Location *loc)
     return ourChoice;/*!< is NOT nullPtr only if we assigned it a value earlier */
 }
 
+/**
+ myCompare compares two locations to see which is best
 
+ if they equal in pollution levels pick location with most sugar
+ else pick least polluted
 
-
-
-
+ @param a :pointer to location
+ @param b :pointer to location
+ @returns true if a better than b
+ @exception none
+ */
+int AgentBasicMove::myCompare(Location *a, Location *b){
+    if (a->getPollution()==b->getPollution()) {
+        return a->getWealth() - b->getWealth();//I am assuming we will only be checking empty locations
+    } else
+    {
+        return a->getPollution() - b->getPollution();
+    }
+}

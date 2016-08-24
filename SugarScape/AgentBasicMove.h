@@ -25,6 +25,9 @@
 TYPE:   *Write Dependent*
  */
 class AgentBasicMove :public Action{//WriteAction
+
+protected:
+    int myCompare(Location *a, Location *b);
 public:
     AgentBasicMove(World *,Strategy*);
     virtual bool executeAction(Location *, group *);
