@@ -45,8 +45,8 @@ bool AgentBasicMove::executeAction(Location *loc, group * grp)
         theAgent->incSugar(grp->getMembers()[0]->getSugar());/*!< eat sugar at new location */
         grp->getMembers()[0]->setSugar(0);/*!< sugar at new location now consumed */
         return true;
-    }else{
-        //std::cerr << "executed basicMove on location with no agent! " << std::endl;
+    }else{/*!<We should never enter here */
+        std::cerr << "executed basicMove on location with no agent! " << std::endl;
         return false;/*!< no agent present so do nothing */
     }
 }
