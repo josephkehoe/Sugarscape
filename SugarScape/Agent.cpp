@@ -5,9 +5,10 @@
 //  Created by Joseph P Kehoe on 28/04/2015.
 //  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
 //
+#include "Agent.h"
 #include "World.h"
 
-#include "Agent.h"
+
 
 //Constructors
 
@@ -731,7 +732,8 @@ Agent* Agent::reincarnate(std::pair<int,int> pos){
  * @exception none
  */
 bool Agent::markDone(void){
-    return done=true;
+    done=true;
+    return done;
 }
 
 
@@ -742,7 +744,8 @@ bool Agent::markDone(void){
  * @exception none
  */
 bool Agent::markKilled(){
-    return killed=true;
+    killed=true;
+    return killed;
 }
 
 /**
@@ -944,11 +947,7 @@ bool Agent::setTag(int index,bool value){
  */
 bool Agent::isDead(void)
 {
-    if (currentAge>=maxAge || currentSugar<=0) {
-        return true;
-    } else {
-        return false;
-    }
+    return currentAge >= maxAge || currentSugar <= 0;
 }
 
 /**
@@ -1172,12 +1171,12 @@ bool Agent::canLoan(void)
 {
     if (sex==female ) {
         if ((theWorld->getFemaleMaxFertilityAge()<currentAge) ||
-            (currentSugar>theWorld->getChildAmount() && (isFertile()==true)))
+            (currentSugar>theWorld->getChildAmount() && isFertile()))
         return true;
     }
     else if (sex==male){
         if ((theWorld->getFemaleMaxFertilityAge()<currentAge) ||
-            (currentSugar>theWorld->getChildAmount() && (isFertile()==true)))
+            (currentSugar>theWorld->getChildAmount() && isFertile()))
             return true;
     }
     return false;
@@ -1190,10 +1189,7 @@ bool Agent::canLoan(void)
  */
 bool Agent::wantsLoan(void)
 {
-    if (isFertile() && currentSugar<theWorld->getChildAmount()){
-        return true;
-    }
-    return false;
+    return isFertile() && currentSugar < theWorld->getChildAmount();
 }
 
 /**

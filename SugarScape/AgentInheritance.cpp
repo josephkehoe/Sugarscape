@@ -28,7 +28,7 @@ AgentInheritance::AgentInheritance(World *sim, Strategy *theStrategy)
  * Note: We do not bother to check if any of their other children may be dying - just to simplify code
  * @param loc :location to check for agent
  * @see AgentInheritance Rule
- * @return true if agent was presnt otherwise false
+ * @return true if agent was present otherwise false
  * @exception none
  */
 bool AgentInheritance::executeAction(Location * loc, group *)
@@ -40,10 +40,12 @@ bool AgentInheritance::executeAction(Location * loc, group *)
         }
         else {//I am alive check to see if parents are dying
             if (theAgent->getFather()->getAge()==theAgent->getFather()->getMaxAge()) {
-                theAgent->incSugar(theAgent->getFather()->getSugar()/theAgent->getFather()->getChildrenCount());
+                theAgent->incSugar(
+                        (int) (theAgent->getFather()->getSugar() / theAgent->getFather()->getChildrenCount()));
             }
             if (theAgent->getMother()->getAge()==theAgent->getMother()->getMaxAge()) {
-                theAgent->incSugar(theAgent->getMother()->getSugar()/theAgent->getMother()->getChildrenCount());
+                theAgent->incSugar(
+                        (int) (theAgent->getMother()->getSugar() / theAgent->getMother()->getChildrenCount()));
             }
         }
         
