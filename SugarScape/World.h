@@ -65,10 +65,10 @@ class World{
     static const int Production=2;
     static const int Consumption=2;
     static const int CombatLimit=6;
-    static const int ImmunityLength=30;
+    static const int ImmunityLength=50;/*!<set in book  */
     static const int PollutionRate=2;
     static const int ChildAmount=4;
-    static const int DiseaseLength=5;
+    static const int DiseaseLength=10;/*!<Maximum disease length -- set in book  */
     static const int MinFemaleFertilityStart=12;
     static const int MaxFemaleFertilityStart=15;
     static const int MinMaleFertilityStart=12;
