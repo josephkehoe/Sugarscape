@@ -48,7 +48,6 @@ class Agent{
      Not mentioned in specification but we will assume all diseases are the same length!
      Otherwise code needs to change to use std::vector<bool> for diseases
      */
-    
     //mutable
     int amountEaten;/*!< Store amount last eaten - required for Pollution Formation rule */
     bool done; /*!< True if agent has completed current action */
@@ -67,7 +66,8 @@ class Agent{
     Agent *father, *mother;
     std::vector<std::pair<Agent*,std::pair<int, int>>> currentLoansOwed,newLoansOwed; /*!< Loans that the agent owes */
     std::vector<std::pair<Agent*,std::pair<int, int>>> currentLoansOwing,newLoansOwing; /*!< Loans the agent has given to other agents - amounts owed to him */
-    std::vector<std::vector<bool>> currentDiseases,newDiseases; /*!< Set of diseases (bitstrings) that agent suffers from */
+    std::vector<std::vector<bool>*> currentDiseases,newDiseases; /*!< Set of diseases (bitstrings) that agent suffers
+ * from */
     
 public:
     //Constructors
@@ -100,7 +100,7 @@ public:
     std::vector<Agent*> getChildren(void);
     std::vector<std::pair<Agent*,std::pair<int, int>>> getLoansOwed(void);
     std::vector<std::pair<Agent*,std::pair<int, int>>> getLoansOwing(void);
-    std::vector<std::vector<bool>> getDiseases(void);
+    std::vector<std::vector<bool>*> getDiseases(void);
     Location* getLocation(void);
     
     //setters
@@ -125,7 +125,7 @@ public:
     std::vector<Agent*> setChildren(std::vector<Agent*>);
     std::vector<std::pair<Agent*,std::pair<int, int>>> setLoansOwed(std::vector<std::pair<Agent*,std::pair<int, int>>>);
     std::vector<std::pair<Agent*,std::pair<int, int>>> setLoansOwing(std::vector<std::pair<Agent*,std::pair<int, int>>>);
-    std::vector<std::vector<bool>> setDiseases(std::vector<std::vector<bool>>);
+    std::vector<std::vector<bool>*> setDiseases(int initialDiseaseCount=1);
 
     //helpers
     Agent* initialise(World *sim=nullptr,Agent *dad=nullptr, Agent *mum=nullptr);
@@ -133,7 +133,7 @@ public:
     bool markDone(void);
     bool markKilled(void);
     affiliation getTribe(void);
-    bool isImmune(std::vector<bool>);
+    bool isImmune(std::vector<bool>*);
     bool isChild(Agent*);
     unsigned long  addChild(Agent*);
     unsigned long  removeChild(Agent*);
@@ -141,8 +141,8 @@ public:
     int totalOwing(void);
     int OwedToday(void);
     int OwingToday(void);
-    bool hasDisease(std::vector<bool>);
-    unsigned long addDisease(std::vector<bool>);
+    bool hasDisease(std::vector<bool>*);
+    unsigned long addDisease(std::vector<bool>*);
     unsigned long  diseaseCount(void);
     bool setTag(int,bool);
     bool isDead(void);

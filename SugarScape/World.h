@@ -13,12 +13,12 @@
 #include <algorithm>
 #include <random>
 #include <fstream>
+//#include <bits/shared_ptr.h>
 //#include <omp.h>
 #include "Location.h"
 
 
 typedef std::mt19937 MyRNG;  // the Mersenne Twister with a popular choice of parameters
-  
 
 
 class Action;
@@ -45,7 +45,8 @@ class World{
      */
     static const int DIM=50; /*!< Size of lattice dimensions */
     static const int AGENTCOUNT=500; /*!< Initial number of agents */
-    static const int CultureCount=11;/*!<ODD SIZE REQUIRED 11 mentioned in book! */
+    static const int CULTURECOUNT=11;/*!<ODD SIZE REQUIRED 11 mentioned in book! */
+    static const int DISEASECOUNT=10;/*!<10 is used in book - but other values also used i.e. 25 */
     static const int MaxAge=100;
     static const int MaxVision=6;
     static const int MaxMetabolism=4;
@@ -68,7 +69,7 @@ class World{
     static const int ImmunityLength=50;/*!<set in book  */
     static const int PollutionRate=2;
     static const int ChildAmount=4;
-    static const int DiseaseLength=10;/*!<Maximum disease length -- set in book  */
+    static const int DISEASELENGTH =10;/*!<Maximum disease length -- set in book  */
     static const int MinFemaleFertilityStart=12;
     static const int MaxFemaleFertilityStart=15;
     static const int MinMaleFertilityStart=12;
@@ -81,11 +82,12 @@ class World{
     int size; /*!< Dimensions of lattice  a size*size matrix of locations*/
     int cultureCount;/*!< Length of bitstring containing culture information */
     int diseaseLength;/*!< Length of disease bitstring assuming all diseases are same length */
+    int diseaseCount;/*!< Number of possible diseases - all predefined */
     int maxVision; /*!< Maximum extent allowable for any agents vision */
     int minMetabolism, maxMetabolism; /*!< minimum and maximum metabolism rates that any agent may be born with */
     int minSpiceMetabolism, maxSpiceMetabolism; /*!< minimum and maximum metabolism rates that any agent may be born with */
     int sugarGrowth; /*!< Rate at which sugar is replenished by each location during a step */
-    int spiceGrowth; /*!< Rate at which sugar is replenished by each location during a step */
+    int spiceGrowth; /*!< Rate at which spice is replenished by each location during a step */
     int minAge,maxAge; /*!< Minimum and maximum allowable lifespan that can be assigned to any agents*/
     int duration; /*!< Duration of all loan lengths in steps */
     int rate; /*!< Rate of interest applied to loans */
@@ -107,7 +109,7 @@ class World{
     Location *Lattice; /*!< 2D (size by size) Matrix of locations in world  */
     //std::vector<Agent*> population; /*!< Agents in simulation NOT USED */
     std::vector<Action*> activeRules; /*!< Rules we run each time step */
-    
+    std::vector<std::vector<bool>> globalDiseaseList;/*!< All diseases that exist */
     //random Numbers
     MyRNG rng;// keep one instance
     //Log file location
@@ -161,6 +163,7 @@ public:
     std::vector<Agent*> getNeighbours(std::pair<int,int>,int);
     Location* getLattice(void);
     Location* getLocation(std::pair<int, int>);
+    std::vector<bool>* getRandomDisease(void);
     
     //Setters
     int incStep();

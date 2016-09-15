@@ -25,15 +25,15 @@
  * @exception none
  */
 World::World(int dimensionSize)
-    :size(DIM),step(0),cultureCount(CultureCount),
-    maxAge(MaxAge),maxVision(MaxVision),maxMetabolism(MaxMetabolism),
-    minAge(MinAge),minMetabolism(MinMetabolism),sugarGrowth(SugarGrowth),
-    duration(Duration),rate(Rate),initialPopulationSize(InitialPopulationSize),
-    initialSugarMax(InitialSugarMax),initialSugarMin(InitialSugarMin),winterRate(WinterRate),
-    initialSpiceMax(InitialSpiceMax),initialSpiceMin(InitialSpiceMin),spiceGrowth(SpiceGrowth),
-    seasonLength(SeasonLength),production(Production),consumption(Consumption),
-    combatLimit(CombatLimit),immunityLength(ImmunityLength),pollutionRate(PollutionRate),
-    childAmount(ChildAmount),diseaseLength(DiseaseLength),initialPopulation(AGENTCOUNT)
+    : size(DIM), step(0), cultureCount(CULTURECOUNT),
+      maxAge(MaxAge), maxVision(MaxVision), maxMetabolism(MaxMetabolism),
+      minAge(MinAge), minMetabolism(MinMetabolism), sugarGrowth(SugarGrowth),
+      duration(Duration), rate(Rate), initialPopulationSize(InitialPopulationSize),
+      initialSugarMax(InitialSugarMax), initialSugarMin(InitialSugarMin), winterRate(WinterRate),
+      initialSpiceMax(InitialSpiceMax), initialSpiceMin(InitialSpiceMin), spiceGrowth(SpiceGrowth),
+      seasonLength(SeasonLength), production(Production), consumption(Consumption),
+      combatLimit(CombatLimit), immunityLength(ImmunityLength), pollutionRate(PollutionRate),
+      childAmount(ChildAmount), diseaseLength(DISEASELENGTH), diseaseCount(DISEASECOUNT), initialPopulation(AGENTCOUNT)
 {
     if (dimensionSize>0) {
         size=dimensionSize;
@@ -47,6 +47,17 @@ World::World(int dimensionSize)
     maleFertilityStart=getRnd(MinMaleFertilityStart, MaxMaleFertilityStart+1);//range is inclusive!
     femaleFertilityEnd=getRnd(MinFemaleFertilityEnd, MaxFemaleFertilityEnd+1);//range is inclusive!
     maleFertilityEnd=femaleFertilityEnd+10;//as per specification
+    //create diseases
+    for (int i = 0; i < diseaseCount; ++i) {
+        int diseaseSize=getRnd(1,diseaseLength);
+        std::vector<bool> newDisease;
+        for (int j = 0; j < diseaseSize; ++j) {
+            bool aBit=true;
+            if (getRnd(0,10)>5){ aBit=false;}
+            newDisease.push_back(aBit);
+        }
+        globalDiseaseList.push_back(newDisease);
+    }
 }
 
 /**
@@ -220,7 +231,7 @@ int World::incStep(){
  * Gets a randon number in range (inclusive)
  * @param start :integer start value of number range
  * @param end :integer end value in range
- * @return number in range
+ * @return number in range [start, end] --inclusive!
  * @exception none
  */
 int World::getRnd(int start,int end){
@@ -663,7 +674,10 @@ Location* World::getLocation(std::pair<int, int> pos)
     return &Lattice[wrap(pos.first)*size+wrap(pos.second)];
 }
 
-
+std::vector<bool>*  World::getRandomDisease(void)
+{
+    return &globalDiseaseList[getRnd(0,globalDiseaseList.size()-1)];
+}
 
 //**************************SETTERS********************************
 
@@ -700,7 +714,7 @@ int World::setCultureCount(int newCultureCount){
  * @exception none
  */
 int World::setDiseaseLength(int newDiseaseLength){
-    int oldLength=DiseaseLength;
+    int oldLength= diseaseLength;
     diseaseLength=newDiseaseLength;
     return oldLength;
 }

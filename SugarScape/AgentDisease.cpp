@@ -34,7 +34,7 @@ bool AgentDisease::executeAction(Location *loc, group*){
         std::vector<Agent*> neighbours=sim->getNeighbours(loc->getPosition(), 1);
         for(auto a:neighbours){
             if (a->diseaseCount()>0) {
-                std::vector<std::vector<bool>> diseaseSet = a->getDiseases();
+                std::vector<std::vector<bool>*> diseaseSet = a->getDiseases();
                 int index=sim->getRnd(0,(int)(a->diseaseCount())-1);
                 if (!subject->hasDisease(diseaseSet[index])) {
                     subject->addDisease(diseaseSet[index]);//new disease contracted
@@ -47,19 +47,19 @@ bool AgentDisease::executeAction(Location *loc, group*){
         for(auto infection:subject->getDiseases()){
             if (!subject->isImmune(infection)) {
                 int bestIndex=0;
-                int bestHammingDistance=(int)infection.size()+1;
+                int bestHammingDistance=(int)infection->size()+1;
                 int currentScore=0;
                 //!
                 /*!
                  Check each substring for Hamming distance
                  */
-                for (int startIndex=0; startIndex<subject->getImmunityLength()-infection.size(); ++startIndex) {
+                for (int startIndex=0; startIndex<subject->getImmunityLength()-infection->size(); ++startIndex) {
                     //!
                     /*!
                      Calculate Hamming distance of current substring
                      */
-                    for (int k=0; k<infection.size(); ++k) {
-                        if (infection[k]!=immunity[k+startIndex]) {
+                    for (int k=0; k<infection->size(); ++k) {
+                        if ((*infection)[k]!=immunity[k+startIndex]) {
                             ++currentScore;
                         }
                     }
@@ -72,15 +72,21 @@ bool AgentDisease::executeAction(Location *loc, group*){
                         bestIndex=startIndex;
                     }
                 }
-                //find first tag not agreeing
-                int i=0;
-                for (i=0; immunity[bestIndex+i]==infection[i]; ++i) {
+                if (bestHammingDistance>0){
+                    /*!
+                     * TODO: Here is where we take one from sugerlevel
+                     * metabolism penalty of one for every infection we are not immune from
+                     */
+                    //find first tag not agreeing
+                    int i=0;
+                    for (i=0; immunity[bestIndex+i]==(*infection)[i]; ++i) {
                     //EMPTY
+                    }
+                    //set tag at index value to new value
+                    subject->setImmunityTag((*infection)[i],i);
                 }
-                //set tag at index value to new value
-                subject->setImmunityTag(infection[i],i);
                 
-            }
+            }//foreach infection
         }
         return true;//agent updated
     }else{//no agent here

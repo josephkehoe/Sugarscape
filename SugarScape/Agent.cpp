@@ -99,17 +99,7 @@ Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initia
         currentCulture.push_back(aBit);
         newCulture.push_back(aBit);
     }
-    /*!< Create random disease */
-    std::vector<bool> newDisease;
-    for (int i=0; i<diseaseLength; ++i) {
-        bool aBit=false;
-        if (theWorld->getRnd(0, 10)>=5) {
-            aBit=true;
-        }
-        newDisease.push_back(aBit);
-    }
-    currentDiseases.push_back(newDisease);
-    newDiseases.push_back(newDisease);
+
 }
 
 
@@ -353,7 +343,7 @@ std::vector<std::pair<Agent*,std::pair<int, int>>> Agent::getLoansOwing(void){
  * @return vector containing diseases
  * @exception none
  */
-std::vector<std::vector<bool>> Agent::getDiseases(void){
+std::vector<std::vector<bool>*> Agent::getDiseases(void){
     return currentDiseases;
 }
 
@@ -636,8 +626,12 @@ std::vector<std::pair<Agent*,std::pair<int, int>>> Agent::setLoansOwing(std::vec
  * @return new diseases vector
  * @exception none
  */
-std::vector<std::vector<bool>> Agent::setDiseases(std::vector<std::vector<bool>> replacementDiseases){
-    newDiseases=replacementDiseases;
+std::vector<std::vector<bool>*> Agent::setDiseases(int initialDiseaseCount){
+    /*!< Create *initialDiseaseCount* random diseases */
+    for (int i=0; i<initialDiseaseCount; ++i) {
+        std::vector<bool>* rndInfection=theWorld->getRandomDisease();
+         newDiseases.push_back(rndInfection);
+    }
     return newDiseases;
 }
 
@@ -713,16 +707,7 @@ Agent* Agent::reincarnate(std::pair<int,int> pos){
         newCulture.push_back(aBit);
     }
     /*!< Create random disease */
-    std::vector<bool> newDisease;
-    for (int i=0; i<diseaseLength; ++i) {
-        bool aBit=false;
-        if (theWorld->getRnd(0, 10)>=5) {
-            aBit=true;
-        }
-        newDisease.push_back(aBit);
-    }
-    currentDiseases.push_back(newDisease);
-    newDiseases.push_back(newDisease);
+    setDiseases();
     return this;
 }
 
@@ -777,11 +762,11 @@ affiliation Agent::getTribe(void){
  * @return true if immune else false
  * @exception none
  */
-bool Agent::isImmune(std::vector<bool> disease){
+bool Agent::isImmune(std::vector<bool> *disease){
     int j=0;
-    int length= (int)disease.size();
+    int length= (int)disease->size();
     for (int i=0; i<immunityLength-length; ++i) {
-        for (j=0; j<length && disease[j]==currentImmunity[i+j]; ++j) {
+        for (j=0; j<length && (*disease)[j]==currentImmunity[i+j]; ++j) {
             if (i+j==immunityLength-1) {
                 return false;
             }
@@ -899,8 +884,8 @@ int Agent::OwingToday(void){
  * @return true if we have it otherwise false
  * @exception none
  */
-bool Agent::hasDisease(std::vector<bool> infection){
-    for(const std::vector<bool> myDisease:currentDiseases){
+bool Agent::hasDisease(std::vector<bool>* infection){
+    for(const std::vector<bool>* myDisease:currentDiseases){
         if (myDisease==infection) {
             return true;
         }
@@ -914,7 +899,7 @@ bool Agent::hasDisease(std::vector<bool> infection){
  * @return the number of diseases held by the agent
  * @exception none
  */
-unsigned long Agent::addDisease(std::vector<bool> infection){
+unsigned long Agent::addDisease(std::vector<bool>* infection){
     newDiseases.push_back(infection);
     return newDiseases.size();
 }
