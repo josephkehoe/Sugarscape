@@ -25,7 +25,7 @@ Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initia
         :amountEaten(0), done(false),father(dad),mother(mum),killed(false),newPosition(pos),currentPosition(pos),
     theWorld(s),currentAge(0),newAge(1),vision(initialVision),currentMetabolism(metabolism),newMetabolism(metabolism),
     cultureLength(s->getCultureCount()),immunityLength(s->getImmunityLength()),diseaseLength
-                 (s->getDiseaseLength())
+                 (s->getDiseaseLength()),initialDiseaseCount(s->getInitialDiseaseCount())
 {
     if (dad==nullptr) {
         initialSugarEndowment=newSugar=currentSugar=theWorld->getRnd(0, theWorld->getInitialSugarMax());
@@ -90,6 +90,8 @@ Agent::Agent(World *s,Agent *dad, Agent *mum, std::pair<int,int> pos, int initia
         currentImmunity.push_back(aBit);
         newImmunity.push_back(aBit);
     }
+    /*!< Create initial disease set */
+    setDiseases(initialDiseaseCount);
     /*!< Create random culture */
     for (int i=0; i<cultureLength; ++i) {
         bool aBit=false;
@@ -707,7 +709,7 @@ Agent* Agent::reincarnate(std::pair<int,int> pos){
         newCulture.push_back(aBit);
     }
     /*!< Create random disease */
-    setDiseases();
+    setDiseases(initialDiseaseCount);
     return this;
 }
 

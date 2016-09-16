@@ -43,6 +43,7 @@ class Agent{
     int cultureLength; /*!< Length of culture bitstring */
     int immunityLength; /*!< Length of immunity bitstring */
     int initialSugarEndowment;
+    int initialDiseaseCount;
     int diseaseLength; //!
     /*!
      Not mentioned in specification but we will assume all diseases are the same length!
@@ -125,7 +126,7 @@ public:
     std::vector<Agent*> setChildren(std::vector<Agent*>);
     std::vector<std::pair<Agent*,std::pair<int, int>>> setLoansOwed(std::vector<std::pair<Agent*,std::pair<int, int>>>);
     std::vector<std::pair<Agent*,std::pair<int, int>>> setLoansOwing(std::vector<std::pair<Agent*,std::pair<int, int>>>);
-    std::vector<std::vector<bool>*> setDiseases(int initialDiseaseCount=1);
+    std::vector<std::vector<bool>*> setDiseases(int);
 
     //helpers
     Agent* initialise(World *sim=nullptr,Agent *dad=nullptr, Agent *mum=nullptr);

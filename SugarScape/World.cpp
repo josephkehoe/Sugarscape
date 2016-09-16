@@ -33,7 +33,8 @@ World::World(int dimensionSize)
       initialSpiceMax(InitialSpiceMax), initialSpiceMin(InitialSpiceMin), spiceGrowth(SpiceGrowth),
       seasonLength(SeasonLength), production(Production), consumption(Consumption),
       combatLimit(CombatLimit), immunityLength(ImmunityLength), pollutionRate(PollutionRate),
-      childAmount(ChildAmount), diseaseLength(DISEASELENGTH), diseaseCount(DISEASECOUNT), initialPopulation(AGENTCOUNT)
+      childAmount(ChildAmount), diseaseLength(DISEASELENGTH), diseaseCount(DISEASECOUNT), initialPopulation
+              (AGENTCOUNT), initialDiseaseCount(INITIALDISEASECOUNT)
 {
     if (dimensionSize>0) {
         size=dimensionSize;
@@ -377,8 +378,8 @@ int World::getInitialSugarMax(void){
     return initialSugarMax;
 }
 /**
- Returns the minimum possible initial sugar allocation assigned to an agent
- @returns initialSugarMin
+ Returns the minimum possible initial spice allocation assigned to an agent
+ @returns initialSpiceMin
  @exception void
  */
 int World::getInitialSpiceMin(void){
@@ -527,6 +528,14 @@ Agent* World::getAgent(std::pair<int,int> pos){
     return Lattice[wrap(pos.first)*size+wrap(pos.second)].getAgent();
 }
 
+/**
+ * Returns number of diseases each agent is intialised with
+ * @return int number of diseases
+ * @exception none
+ */
+int World::getInitialDiseaseCount(void){
+    return initialDiseaseCount;
+}
 
 
 /**
@@ -984,6 +993,17 @@ int World::setChildAmount(int newChildAmount){
     return oldAmt;
 }
 
+/**
+ * change number of diseases created for each agent
+ * @param newInitialDiseaseCount
+ * @return old InitialDiseaseCount
+ * @exception none
+ */
+int World::setInitialDiseaseCount(int newInitialDiseaseCount){
+    int oldCount=initialDiseaseCount;
+    initialDiseaseCount=newInitialDiseaseCount;
+    return oldCount;
+}
 /**
  * put agent at location *Does NOT delete pointer to old agent!*
  * @param pos :std::pair indices of location 

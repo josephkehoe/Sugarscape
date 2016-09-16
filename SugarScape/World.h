@@ -70,6 +70,7 @@ class World{
     static const int PollutionRate=2;
     static const int ChildAmount=4;
     static const int DISEASELENGTH =10;/*!<Maximum disease length -- set in book  */
+    static const int INITIALDISEASECOUNT=5;/*!<Number of diseases each agent is created with  */
     static const int MinFemaleFertilityStart=12;
     static const int MaxFemaleFertilityStart=15;
     static const int MinMaleFertilityStart=12;
@@ -81,7 +82,8 @@ class World{
     int step; /*!< Number of steps the simulation has run for */
     int size; /*!< Dimensions of lattice  a size*size matrix of locations*/
     int cultureCount;/*!< Length of bitstring containing culture information */
-    int diseaseLength;/*!< Length of disease bitstring assuming all diseases are same length */
+    int diseaseLength;/*!< Maximum length of disease bitstring */
+    int initialDiseaseCount;/*!< Number of diseases an agent is born with */
     int diseaseCount;/*!< Number of possible diseases - all predefined */
     int maxVision; /*!< Maximum extent allowable for any agents vision */
     int minMetabolism, maxMetabolism; /*!< minimum and maximum metabolism rates that any agent may be born with */
@@ -155,6 +157,7 @@ public:
     int getFemaleMaxFertilityAge(void);
     int getMaleMinFertilityAge(void);
     int getMaleMaxFertilityAge(void);
+    int getInitialDiseaseCount(void);
     
     Agent* getAgent(std::pair<int,int>);
     std::vector<Location*> getNeighbourhood(std::pair<int,int>,int);
@@ -192,6 +195,7 @@ public:
     int setInitialPopulationSize(int);
     int setPollutionRate(int);
     int setChildAmount(int);
+    int setInitialDiseaseCount(int);
     Agent* setAgent(std::pair<int,int>,Agent*);
     Agent* killAgent(std::pair<int,int>);
     
