@@ -42,7 +42,9 @@ public:
     ~ViewPort();
     
     /*!< Draw Method */
-    bool draw();
+    bool drawMating();
+    bool drawCulture();
+    bool drawDiseases();
     
     /*!< Setters */
     std::pair<int,int>  setStartPositions(std::pair<int,int>);

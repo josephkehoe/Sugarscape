@@ -118,11 +118,11 @@ int                 ViewPort::getSize()
 
 /*!< Draw Method */
 /**
- * Draws lattice grid on screen
+ * Draws lattice grid on screen showing red and blue cultures
  * @return true
  * @exception none
  */
-bool ViewPort::draw(){
+bool ViewPort::drawCulture(){
     int agentCount=0;
     // Display grid
         std::pair<int,int> pos;
@@ -136,13 +136,7 @@ bool ViewPort::draw(){
                     agentCount++;
                     theAgent=theWorld->getLocation(pos)->getAgent();
                     radius=theAgent->getSugar();
-                    if (theAgent->getAge()<5){
-                        AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::White);
-                    }
-                    else if (!theAgent->isFertile() || theAgent->getSugar()<theAgent->getInitialSugar()){
-                        AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Yellow);
-                    }
-                    else if (theAgent->getSex()==Sex::female){ //(theAgent->getTribe()==affiliation::blue) {
+                    if (theAgent->getTribe()==affiliation::blue) {
                         AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Blue);
                     }
                     else{
@@ -165,3 +159,101 @@ bool ViewPort::draw(){
     
 }
 
+/*!< Draw Method */
+/**
+ * Draws lattice grid on screen showing Fertility and Sex
+ * White for newly born agents
+ * Yellow for fertile but lacking sugar for child
+ * Blue for fertile females with enough sugar resources
+ * Red for fertile males with enough Sugar resources
+ * Magenta for agents too old to be fertile
+ * @return true
+ * @exception none
+ */
+bool ViewPort::drawMating(){
+    int agentCount=0;
+    // Display grid
+    std::pair<int,int> pos;
+    Agent *theAgent=nullptr;
+    for (int i=startPosition.first; i<portDimension; ++i) {
+        for (int k=startPosition.second; k<portDimension; ++k) {
+            pos={i,k};
+            int radius=-1;
+            Location *currLocation=theWorld->getLocation(pos);
+            if (currLocation->hasAgent()) {
+                agentCount++;
+                theAgent=theWorld->getLocation(pos)->getAgent();
+                radius=theAgent->getSugar();
+                if (theAgent->getAge()<5){
+                    AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::White);
+                }
+                else if (!theAgent->isFertile() || theAgent->getSugar()<theAgent->getInitialSugar()){
+                    AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Yellow);
+                }
+                else if (theAgent->getSex()==Sex::female && theAgent->getAge()<theWorld->getFemaleMaxFertilityAge()){
+                    AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Blue);
+                }
+                else if (theAgent->getSex() == Sex::male && theAgent->getAge() < theWorld->getMaleMaxFertilityAge()) {
+                        AgentRepresentations[i * portDimension + k].setFillColor(sf::Color::Red);
+                } else {
+                    AgentRepresentations[i * portDimension + k].setFillColor(sf::Color::Magenta);
+                }
+
+            }
+            else{
+                radius=theWorld->getLocation(pos)->getSugar();
+                AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Green);
+            }
+            if (radius>cellSize/2) {
+                radius=cellSize/2;
+            }
+            AgentRepresentations[i*portDimension+k].setRadius(radius);
+            window->draw(AgentRepresentations[i*portDimension+k]);
+        }
+    }
+    return true;
+
+}
+
+/*!< Draw Method */
+/**
+ * Draws lattice grid on screen showing diseases
+ * @return true
+ * @exception none
+ */
+bool ViewPort::drawDiseases(){
+    int agentCount=0;
+    // Display grid
+    std::pair<int,int> pos;
+    Agent *theAgent=nullptr;
+    for (int i=startPosition.first; i<portDimension; ++i) {
+        for (int k=startPosition.second; k<portDimension; ++k) {
+            pos={i,k};
+            int radius=-1;
+            Location *currLocation=theWorld->getLocation(pos);
+            if (currLocation->hasAgent()) {
+                agentCount++;
+                theAgent=theWorld->getLocation(pos)->getAgent();
+                radius=theAgent->getSugar();
+                if (theAgent->getActiveDiseases() <0){
+                    AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Red);
+                }
+                else{
+                    AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Blue);
+                }
+
+            }
+            else{
+                radius=theWorld->getLocation(pos)->getSugar();
+                AgentRepresentations[i*portDimension+k].setFillColor(sf::Color::Green);
+            }
+            if (radius>cellSize/2) {
+                radius=cellSize/2;
+            }
+            AgentRepresentations[i*portDimension+k].setRadius(radius);
+            window->draw(AgentRepresentations[i*portDimension+k]);
+        }
+    }
+    return true;
+
+}
