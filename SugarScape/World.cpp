@@ -537,6 +537,9 @@ int World::getInitialDiseaseCount(void){
     return initialDiseaseCount;
 }
 
+int World::getMaxDiseaseCount(void){
+    return diseaseCount;
+}
 
 /**
  * return all locations in neighbourhood

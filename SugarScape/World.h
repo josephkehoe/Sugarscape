@@ -158,6 +158,7 @@ public:
     int getMaleMinFertilityAge(void);
     int getMaleMaxFertilityAge(void);
     int getInitialDiseaseCount(void);
+    int getMaxDiseaseCount(void);
     
     Agent* getAgent(std::pair<int,int>);
     std::vector<Location*> getNeighbourhood(std::pair<int,int>,int);

@@ -37,6 +37,7 @@ bool AgentDisease::executeAction(Location *loc, group*){
                 std::vector<std::vector<bool>*> diseaseSet = a->getDiseases();
                 int index=sim->getRnd(0,(int)(a->diseaseCount())-1);
                 if (!subject->hasDisease(diseaseSet[index])) {
+                    if (subject->diseaseCount()<sim->getMaxDiseaseCount())
                     subject->addDisease(diseaseSet[index]);//new disease contracted
                 }
             }

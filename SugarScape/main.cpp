@@ -540,16 +540,15 @@ int disease(std::string fileName)
     int size=theWorld->getSize()*theWorld->getSize();
     while (2500 >= theWorld->incStep())
     {
-        theWorld->applyRules();
-        populationSize=0;
+
+        populationSize=theWorld->getAgentCount();
         Agent *ag= nullptr;
         for (int k = 0; k < 10; ++k) {
             diseaseGraph[k]=0;
         }
         for (int i=0; i<size; ++i) {
             if ((ag=theLattice[i].getAgent())!= nullptr){
-                ++populationSize;
-                diseaseGraph[ag->getActiveDiseases()]++;
+                diseaseGraph[ag->diseaseCount()]++;//getActiveDiseases()]++;
             }
         }
         if(populationSize>0) {
@@ -557,9 +556,15 @@ int disease(std::string fileName)
             for (int j = 0; j < 10; ++j) {
                 std::cout << "," << diseaseGraph[j];
             }
-            std::cout << std::endl;
+            int totalInfected=0;
+            for(int k=0;k<10;++k){
+                totalInfected+=diseaseGraph[k];
+            }
+            std::cout << ":"<<totalInfected<<std::endl;
         }
+        theWorld->applyRules();
     }
+
     int totalSteps=theWorld->getStep();
     delete theWorld;
     return totalSteps;
@@ -881,6 +886,7 @@ int main(int, char const**)
 
 //evolutionGUI("log/evol.txt");
 disease("log/disease.txt");
+
    // World *theWorld = nullptr;/*!< create world */
    //omp_set_num_threads(1);
 //CODE FOR CHECKING CULTURE
