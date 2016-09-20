@@ -643,6 +643,21 @@ std::vector<std::vector<bool>*> Agent::setDiseases(int initialDiseaseCount){
 //*********************** HELPERS ***********************************************
 
 /**
+ * Retrun numkber of carried diseases that are active
+ * @return int Number of diseases that has and is not immune to
+ * @exception none
+ */
+int Agent::getActiveDiseases(void)
+{
+    int activeDiseases=0;
+    for(auto aDisease:currentDiseases){
+        if(!isImmune(aDisease)) ++activeDiseases;
+    }
+    return activeDiseases;
+}
+
+
+/**
  * Initialise some values in existing agent: Not used as yet
  * @param sim :pointer to world
  * @param dad :pointer to male parent

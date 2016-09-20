@@ -129,6 +129,7 @@ public:
     std::vector<std::vector<bool>*> setDiseases(int);
 
     //helpers
+    int getActiveDiseases(void);
     Agent* initialise(World *sim=nullptr,Agent *dad=nullptr, Agent *mum=nullptr);
     Agent* reincarnate(std::pair<int,int> pos);
     bool markDone(void);
