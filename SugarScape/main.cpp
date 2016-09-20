@@ -64,6 +64,8 @@ int getStats(World*);
 
 int evolution(std::string);
 int evolutionGUI(std::string);
+int disease(std::string);
+int diseaseGUI(std::string);
 
 int evolutionGUI(std::string fileName)
 {
@@ -170,7 +172,7 @@ int evolutionGUI(std::string fileName)
         theWorld->applyRules();
         counter = std::to_string(++stepCount);
         text.setString(counter);
-        theGUI.draw();
+        theGUI.drawMating();
         // Draw the sprite
         //window.draw(sprite);
 
@@ -272,8 +274,9 @@ int evolution(std::string fileName)
             std::cout << std::endl;
         }
     }
+    int totalSteps=theWorld->getStep();
     delete theWorld;
-    return theWorld->getStep();
+    return totalSteps;
 
 }
 
@@ -485,6 +488,232 @@ bool init(int dimensions){
 }
 
 
+int disease(std::string fileName)
+{
+    std::ofstream outputFile(fileName,std::ios::out | std::ios::app);
+    World *theWorld = new World(50);/*!< create world and initialise it */
+    theWorld->init("log/output.log");
+    theWorld->sync();
+    /*!< Declare all possible strategies here */
+    Strategy baseStrategy(theWorld);
+    NewSweepStrategy newSweep(theWorld);
+    LineByLineStrategy lineByLine(theWorld);
+    RndAsyncStrategy rndAsync(theWorld);
+    IndependentStrategy independent(theWorld);
+    IterativeWriteStrategy iterativeWrite(theWorld);
+    ReadDependentStrategy readDependent(theWorld);
+    WriteStrategy writeDependent(theWorld);
+    /*!< Declare all rules here */
+    Growback growback(theWorld,&independent);
+    AgentMove move(theWorld,&writeDependent);
+    AgentMoveClosest moveClosest(theWorld,&writeDependent);
+    AgentMoveStrongest moveStrongest(theWorld,&writeDependent);
+    GarbageCollection gc(theWorld,&independent);
+    AgentDeath agentDeath(theWorld,&readDependent);
+    AgentDisease agentDisease(theWorld,&readDependent);
+    AgentMetabolism agentMetabolism(theWorld,&independent);
+    //!
+    /*!
+     Add the rules we are using here.
+     Ordering of rules is important
+     Do death last and metabolism before replacement!!
+     */
+    /*!< Rules for Lattice are added first (before Agent Rules)*/
+    theWorld->addRule(&growback);
+    /*!< Movement Rule for Agents follow next -pick only one!*/
+    theWorld->addRule(&move);
+    theWorld->addRule(&agentDisease);
+    /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
+    theWorld->addRule(&agentMetabolism);
+    theWorld->addRule(&agentDeath);
+    theWorld->addRule(&gc);
+
+    move.setStrategy(&newSweep);
+    //agentDisease.setStrategy(&newSweep);
+    //!
+    /*!
+     Start simulation!
+     */
+    int populationSize=0;
+    int diseaseGraph[10]={0,0,0,0,0,0,0,0,0,0};
+    Location* theLattice=theWorld->getLattice();
+    int size=theWorld->getSize()*theWorld->getSize();
+    while (2500 >= theWorld->incStep())
+    {
+        theWorld->applyRules();
+        populationSize=0;
+        Agent *ag= nullptr;
+        for (int k = 0; k < 10; ++k) {
+            diseaseGraph[k]=0;
+        }
+        for (int i=0; i<size; ++i) {
+            if ((ag=theLattice[i].getAgent())!= nullptr){
+                ++populationSize;
+                diseaseGraph[ag->getActiveDiseases()]++;
+            }
+        }
+        if(populationSize>0) {
+            std::cout << theWorld->getStep() << "," << populationSize << ": ";
+            for (int j = 0; j < 10; ++j) {
+                std::cout << "," << diseaseGraph[j];
+            }
+            std::cout << std::endl;
+        }
+    }
+    int totalSteps=theWorld->getStep();
+    delete theWorld;
+    return totalSteps;
+
+}
+
+int diseaseGUI(std::string fileName)
+{
+    std::ofstream outputFile(fileName,std::ios::out | std::ios::app);
+    World *theWorld = new World(50);/*!< create world and initialise it */
+    theWorld->init("log/output.log");
+    theWorld->sync();
+    /*!< Declare all possible strategies here */
+    Strategy baseStrategy(theWorld);
+    NewSweepStrategy newSweep(theWorld);
+    LineByLineStrategy lineByLine(theWorld);
+    RndAsyncStrategy rndAsync(theWorld);
+    IndependentStrategy independent(theWorld);
+    IterativeWriteStrategy iterativeWrite(theWorld);
+    ReadDependentStrategy readDependent(theWorld);
+    WriteStrategy writeDependent(theWorld);
+    /*!< Declare all rules here */
+    Growback growback(theWorld,&independent);
+    AgentMove move(theWorld,&writeDependent);
+    AgentMoveClosest moveClosest(theWorld,&writeDependent);
+    AgentMoveStrongest moveStrongest(theWorld,&writeDependent);
+    GarbageCollection gc(theWorld,&independent);
+    AgentDeath agentDeath(theWorld,&readDependent);
+    AgentDisease agentDisease(theWorld,&readDependent);
+    AgentMetabolism agentMetabolism(theWorld,&independent);
+    //!
+    /*!
+     Add the rules we are using here.
+     Ordering of rules is important
+     Do death last and metabolism before replacement!!
+     */
+    /*!< Rules for Lattice are added first (before Agent Rules)*/
+    theWorld->addRule(&growback);
+    /*!< Movement Rule for Agents follow next -pick only one!*/
+    theWorld->addRule(&move);
+    theWorld->addRule(&agentDisease);
+    /*!< Finally add Metabolism and (replacement or death) and finish with garbage collection*/
+    theWorld->addRule(&agentMetabolism);
+    theWorld->addRule(&agentDeath);
+    theWorld->addRule(&gc);
+
+    move.setStrategy(&newSweep);
+    //agentDisease.setStrategy(&newSweep);
+    //!
+    /*!
+     Start simulation!
+     */
+    //!
+    /*!
+     Start simulation!
+     */
+    /*!<  Create the main window */
+    sf::RenderWindow window(sf::VideoMode(1024, 768), "SFML window");
+    /*!< create viewport for displaying simulation */
+    ViewPort theGUI(&window,theWorld,std::pair<int,int>(1024, 768),std::pair<int,int>(0,0),theWorld->getSize());
+    // Set the Icon
+    sf::Image icon;
+    if (!icon.loadFromFile("resources/icon.png")) {
+        return EXIT_FAILURE;
+    }
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    // Create a graphical text to display
+    sf::Font font;
+    if (!font.loadFromFile("resources/sansation.ttf")) {
+        return EXIT_FAILURE;
+    }
+    int stepCount=0;
+    std::string counter = std::to_string(stepCount);
+    sf::Text text(counter, font, 50);
+    text.setColor(sf::Color::White);
+
+    // Load a music to play
+    sf::Music music;
+    if (!music.openFromFile("resources/nice_music.ogg")) {
+        return EXIT_FAILURE;
+    }
+
+    // Play the music -it never hurts!
+    music.play();
+    sf::Time t1 = sf::seconds(0.1f);
+
+    int populationSize=0;
+    int diseaseGraph[10]={0,0,0,0,0,0,0,0,0,0};
+    Location* theLattice=theWorld->getLattice();
+    int size=theWorld->getSize()*theWorld->getSize();
+
+    // Start the game loop
+    while (window.isOpen())
+    {
+        // Process events
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            // Close window: exit
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            // Escape pressed: exit
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+                window.close();
+            }
+        }
+
+        // Clear screen
+        window.clear();
+
+        theWorld->applyRules();
+        counter = std::to_string(++stepCount);
+        text.setString(counter);
+        theGUI.drawDiseases();
+        // Draw the string
+        window.draw(text);
+        // Update the window
+        window.display();
+        if (theWorld->getAgentCount() < 300){
+            sf::sleep(t1);
+        }
+        if(theWorld->incStep()>3000) window.close();
+        populationSize=theWorld->getAgentCount();
+        Agent *ag= nullptr;
+        for (int k = 0; k < 10; ++k) {
+            diseaseGraph[k]=0;
+        }
+        for (int i=0; i<size; ++i) {
+            if ((ag=theLattice[i].getAgent())!= nullptr){
+                diseaseGraph[ag->getActiveDiseases()]++;
+            }
+        }
+        if(populationSize>0) {
+            outputFile  << theWorld->getStep() << "," << populationSize <<" : ";
+            for (int j = 0; j < 10; ++j) {
+                outputFile  << "," << diseaseGraph[j];
+            }
+            outputFile  << std::endl;
+        }
+    }
+
+    int totalSteps=theWorld->getStep();
+    delete theWorld;
+    return totalSteps;
+}
+
+
+
+
+
+
+
 
 int Gui(World *theWorld, float pause)
 {
@@ -627,7 +856,7 @@ int Gui(World *theWorld, float pause)
         theWorld->applyRules();
         counter = std::to_string(++stepCount);
         text.setString(counter);
-        theGUI.draw();
+        theGUI.drawCulture();
         // Draw the sprite
         //window.draw(sprite);
 
@@ -650,8 +879,8 @@ int Gui(World *theWorld, float pause)
 int main(int, char const**)
 {
 
-evolutionGUI("log/evol.txt");
-
+//evolutionGUI("log/evol.txt");
+disease("log/disease.txt");
    // World *theWorld = nullptr;/*!< create world */
    //omp_set_num_threads(1);
 //CODE FOR CHECKING CULTURE
