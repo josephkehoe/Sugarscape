@@ -51,11 +51,11 @@ World::World(int dimensionSize)
     //create diseases
     for (int i = 0; i < diseaseCount; ++i) {
         int diseaseSize=getRnd(1,diseaseLength);
-        std::vector<bool> newDisease;
+        std::vector<bool>* newDisease = new std::vector<bool>;
         for (int j = 0; j < diseaseSize; ++j) {
             bool aBit=true;
             if (getRnd(0,10)>5){ aBit=false;}
-            newDisease.push_back(aBit);
+            newDisease->push_back(aBit);
         }
         globalDiseaseList.push_back(newDisease);
     }
@@ -67,6 +67,9 @@ World::World(int dimensionSize)
  */
 World::~World(){
     delete [] Lattice;
+    for (auto aDisease: globalDiseaseList){
+     delete aDisease;
+    }
     
 }
 
@@ -688,7 +691,7 @@ Location* World::getLocation(std::pair<int, int> pos)
 
 std::vector<bool>*  World::getRandomDisease(void)
 {
-    return &globalDiseaseList[getRnd(0,globalDiseaseList.size()-1)];
+    return globalDiseaseList[getRnd(0,globalDiseaseList.size()-1)];
 }
 
 //**************************SETTERS********************************

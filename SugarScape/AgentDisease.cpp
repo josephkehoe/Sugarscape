@@ -26,7 +26,7 @@ AgentDisease::AgentDisease(World *sim,Strategy* theStrategy):Action(sim,theStrat
  * @return True if agent was here
  * @exception none
  */
-bool AgentDisease::executeAction(Location *loc, group*){
+bool AgentDisease::executeAction(Location *loc, group* grp){
 
     if (loc->hasAgent()) {
         Agent * subject=loc->getAgent();
@@ -34,16 +34,15 @@ bool AgentDisease::executeAction(Location *loc, group*){
         std::vector<Agent*> neighbours=sim->getNeighbours(loc->getPosition(), 1);
         for(auto a:neighbours){
             if (a->diseaseCount()>0) {
-                std::vector<std::vector<bool>*> diseaseSet = a->getDiseases();
-                int index=sim->getRnd(0,(int)(a->diseaseCount())-1);
-                if (!subject->hasDisease(diseaseSet[index])) {
+                std::vector<bool>* rndDisease = a->getRndDisease();
+                if (!subject->hasDisease(rndDisease)) {
                     if (subject->diseaseCount()<sim->getMaxDiseaseCount())
-                    subject->addDisease(diseaseSet[index]);//new disease contracted
+                        subject->addDisease(rndDisease);//new disease contracted
                 }
             }
             
         }
-        //check immunity and update immmunity tags
+        //check immunity and update immunity tags
         std::vector<bool> immunity=subject->getImmunity();
         for(auto infection:subject->getDiseases()){
             if (!subject->isImmune(infection)) {

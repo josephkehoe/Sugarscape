@@ -130,6 +130,7 @@ public:
 
     //helpers
     int getActiveDiseases(void);
+    std::vector<bool> * getRndDisease(void);
     Agent* initialise(World *sim=nullptr,Agent *dad=nullptr, Agent *mum=nullptr);
     Agent* reincarnate(std::pair<int,int> pos);
     bool markDone(void);
@@ -143,7 +144,7 @@ public:
     int totalOwing(void);
     int OwedToday(void);
     int OwingToday(void);
-    bool hasDisease(std::vector<bool>*);
+    bool hasDisease(const std::vector<bool>*);
     unsigned long addDisease(std::vector<bool>*);
     unsigned long  diseaseCount(void);
     bool setTag(int,bool);

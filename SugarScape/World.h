@@ -111,7 +111,7 @@ class World{
     Location *Lattice; /*!< 2D (size by size) Matrix of locations in world  */
     //std::vector<Agent*> population; /*!< Agents in simulation NOT USED */
     std::vector<Action*> activeRules; /*!< Rules we run each time step */
-    std::vector<std::vector<bool>> globalDiseaseList;/*!< All diseases that exist */
+    std::vector<std::vector<bool>*> globalDiseaseList;/*!< All diseases that exist */
     //random Numbers
     MyRNG rng;// keep one instance
     //Log file location

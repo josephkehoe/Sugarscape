@@ -632,7 +632,14 @@ std::vector<std::vector<bool>*> Agent::setDiseases(int initialDiseaseCount){
     /*!< Create *initialDiseaseCount* random diseases */
     for (int i=0; i<initialDiseaseCount; ++i) {
         std::vector<bool>* rndInfection=theWorld->getRandomDisease();
-         newDiseases.push_back(rndInfection);
+        if (hasDisease(rndInfection)){
+            --i;
+        }
+        else{
+            newDiseases.push_back(rndInfection);
+            currentDiseases.push_back(rndInfection);
+        }
+
     }
     return newDiseases;
 }
@@ -654,6 +661,16 @@ int Agent::getActiveDiseases(void)
         if(!isImmune(aDisease)) ++activeDiseases;
     }
     return activeDiseases;
+}
+
+/**
+ * Get a random disease carried by agent
+ * @return pointer to disease vector
+ * @exception none
+ */
+std::vector<bool> * Agent::getRndDisease(void)
+{
+    return currentDiseases[theWorld->getRnd(0,currentDiseases.size()-1)];
 }
 
 
@@ -901,7 +918,7 @@ int Agent::OwingToday(void){
  * @return true if we have it otherwise false
  * @exception none
  */
-bool Agent::hasDisease(std::vector<bool>* infection){
+bool Agent::hasDisease(const std::vector<bool>* infection){
     for(const std::vector<bool>* myDisease:currentDiseases){
         if (myDisease==infection) {
             return true;
