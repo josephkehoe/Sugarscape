@@ -801,9 +801,9 @@ bool Agent::isImmune(std::vector<bool> *disease){
     int length= (int)disease->size();
     for (int i=0; i<immunityLength-length; ++i) {
         for (j=0; j<length && (*disease)[j]==currentImmunity[i+j]; ++j) {
-            if (i+j==immunityLength-1) {
-                return false;
-            }
+            //if (i+j==immunityLength-1) { //This should not be possible!
+            //    return false;
+            //}
         }
         if (j==length) {
             return true;
@@ -919,7 +919,7 @@ int Agent::OwingToday(void){
  * @exception none
  */
 bool Agent::hasDisease(const std::vector<bool>* infection){
-    for(const std::vector<bool>* myDisease:currentDiseases){
+    for(auto myDisease:currentDiseases){
         if (myDisease==infection) {
             return true;
         }
