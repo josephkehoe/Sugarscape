@@ -35,7 +35,7 @@ bool AgentDisease::executeAction(Location *loc, group* grp){
         for(auto a:neighbours){
             if (a->diseaseCount()>0) {
                 std::vector<bool>* rndDisease = a->getRndDisease();
-                if (!subject->hasDisease(rndDisease)) {
+                if (!subject->hasDisease(rndDisease) && !subject->isImmune(rndDisease)) {
                     if (subject->diseaseCount()<sim->getMaxDiseaseCount())
                         subject->addDisease(rndDisease);//new disease contracted
                 }
@@ -46,24 +46,25 @@ bool AgentDisease::executeAction(Location *loc, group* grp){
         std::vector<bool> immunity=subject->getImmunity();
         for(auto infection:subject->getDiseases()){
             if (!subject->isImmune(infection)) {
+                /*!
+                 * TODO: Here is where we take one from sugerlevel
+                 * metabolism penalty of one for every infection we are not immune from
+                 */
                 int bestIndex=0;
                 int bestHammingDistance=(int)infection->size()+1;
-                int currentScore=0;
-                //!
                 /*!
                  Check each substring for Hamming distance
                  */
-                for (int startIndex=0; startIndex<subject->getImmunityLength()-infection->size(); ++startIndex) {
-                    //!
+                for (int startIndex=0; startIndex<immunity.size()-infection->size(); ++startIndex) {
                     /*!
                      Calculate Hamming distance of current substring
                      */
+                    int currentScore=0;
                     for (int k=0; k<infection->size(); ++k) {
                         if ((*infection)[k]!=immunity[k+startIndex]) {
                             ++currentScore;
                         }
                     }
-                    //!
                     /*!
                      Is current substring the closest so far?
                      */
@@ -72,20 +73,15 @@ bool AgentDisease::executeAction(Location *loc, group* grp){
                         bestIndex=startIndex;
                     }
                 }
-                if (bestHammingDistance>0){
-                    /*!
-                     * TODO: Here is where we take one from sugerlevel
-                     * metabolism penalty of one for every infection we are not immune from
-                     */
-                    //find first tag not agreeing
-                    int i=0;
-                    for (i=0; immunity[bestIndex+i]==(*infection)[i]; ++i) {
-                    //EMPTY
+                if (bestHammingDistance==0) std::cout << "ERROR IN HAMMING DISTANCE FUNCTION" <<  std::endl;
+                else {//find first tag not agreeing
+                    int i = 0;
+                    for (i = 0; immunity[bestIndex + i] == (*infection)[i]; ++i) {
+                        //EMPTY
                     }
                     //set tag at index value to new value
-                    subject->setImmunityTag((*infection)[i],i);
+                    subject->setImmunityTag((*infection)[i], bestIndex + i);
                 }
-                
             }//foreach infection
         }
         return true;//agent updated
