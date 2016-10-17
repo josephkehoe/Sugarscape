@@ -47,10 +47,10 @@ class World{
     static const int AGENTCOUNT=500; /*!< Initial number of agents */
     static const int CULTURECOUNT=11;/*!<ODD SIZE REQUIRED 11 mentioned in book! */
     static const int DISEASECOUNT=10;/*!<10 is used in book - but other values also used i.e. 25 */
-    static const int MaxAge=100;
+    static const int MaxAge=10000; /*!<Highest lifespan for an agent (100 is default)*/
     static const int MaxVision=6;
     static const int MaxMetabolism=4;
-    static const int MinAge=60;
+    static const int MinAge=6000;/*!<Lowest lifespan for an agent (60 is default)*/
     static const int MinMetabolism=1;
     static const int SugarGrowth=1;
     static const int SpiceGrowth=0;
@@ -66,11 +66,11 @@ class World{
     static const int Production=2;
     static const int Consumption=2;
     static const int CombatLimit=6;
-    static const int ImmunityLength=50;/*!<set in book  */
+    static const int IMMUNITYLENGTH=50;/*!<set in book  */
     static const int PollutionRate=2;
     static const int ChildAmount=4;
-    static const int DISEASELENGTH =10;/*!<Maximum disease length -- set in book  */
-    static const int INITIALDISEASECOUNT=5;/*!<Number of diseases each agent is created with  */
+    static const int DISEASELENGTH =10;/*!<Maximum disease length -- set in book  (10)*/
+    static const int INITIALDISEASECOUNT=4;/*!<Number of diseases each agent is created with (4) */
     static const int MinFemaleFertilityStart=12;
     static const int MaxFemaleFertilityStart=15;
     static const int MinMaleFertilityStart=12;

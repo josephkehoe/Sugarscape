@@ -32,7 +32,7 @@ World::World(int dimensionSize)
       initialSugarMax(InitialSugarMax), initialSugarMin(InitialSugarMin), winterRate(WinterRate),
       initialSpiceMax(InitialSpiceMax), initialSpiceMin(InitialSpiceMin), spiceGrowth(SpiceGrowth),
       seasonLength(SeasonLength), production(Production), consumption(Consumption),
-      combatLimit(CombatLimit), immunityLength(ImmunityLength), pollutionRate(PollutionRate),
+      combatLimit(CombatLimit), immunityLength(IMMUNITYLENGTH), pollutionRate(PollutionRate),
       childAmount(ChildAmount), diseaseLength(DISEASELENGTH), diseaseCount(DISEASECOUNT), initialPopulation
               (AGENTCOUNT), initialDiseaseCount(INITIALDISEASECOUNT)
 {
@@ -42,7 +42,7 @@ World::World(int dimensionSize)
     }
     //seed random number generator!!
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    //rng.seed(seed);
+    rng.seed(seed);
     rng.seed(0);
     femaleFertilityStart=getRnd(MinFemaleFertilityStart, MaxFemaleFertilityStart+1);//range is inclusive!
     maleFertilityStart=getRnd(MinMaleFertilityStart, MaxMaleFertilityStart+1);//range is inclusive!
@@ -51,6 +51,7 @@ World::World(int dimensionSize)
     //create diseases
     for (int i = 0; i < diseaseCount; ++i) {
         int diseaseSize=getRnd(1,diseaseLength);
+        std::cout << diseaseSize << std::endl;
         std::vector<bool>* newDisease = new std::vector<bool>;
         for (int j = 0; j < diseaseSize; ++j) {
             bool aBit=true;
