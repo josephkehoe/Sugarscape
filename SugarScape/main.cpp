@@ -528,7 +528,7 @@ int disease(std::string fileName)
     theWorld->addRule(&agentDeath);
     theWorld->addRule(&gc);
 
-    move.setStrategy(&newSweep);
+    //move.setStrategy(&newSweep);
     //agentDisease.setStrategy(&newSweep);
     //!
     /*!
@@ -547,7 +547,7 @@ int disease(std::string fileName)
         for (int i=0; i<size; ++i) {
             if (theLattice[i].hasAgent()){
                 ag=theLattice[i].getAgent();
-                int temp=ag->diseaseCount();//getActiveDiseases()]++;
+                int temp=ag->getActiveDiseases();//diseaseCount();
                 if (temp>10) {
                     extras++;
                 }
@@ -558,14 +558,14 @@ int disease(std::string fileName)
         }
         if(populationSize>0) {
             std::cout << theWorld->getStep() << "," << populationSize << ": ";
-            for (int j = 0; j < 10; ++j) {
-                std::cout << "," << diseaseGraph[j];
+            for (int j = 0; j < 11; ++j) {
+                std::cout  << diseaseGraph[j] << ",";
             }
             int totalInfected=0;
             for(int k=0;k<11;++k){
                 totalInfected+=diseaseGraph[k];
             }
-            std::cout << ":("<<populationSize-totalInfected<< "):"<< extras << std::endl;
+            std::cout << ":("<<totalInfected<< "):"<< extras << std::endl;
         }
         theWorld->applyRules();
     }
