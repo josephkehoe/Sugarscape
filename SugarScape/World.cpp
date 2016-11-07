@@ -107,7 +107,7 @@ bool World::init(std::string logFileName,int vision,int metabolism)
         } while (Lattice[pos.first*size+pos.second].hasAgent());
         anAgent=new Agent(this,nullptr,nullptr,pos);//,vision,metabolism);
         Lattice[pos.first*size+pos.second].initAgent(anAgent);
-        //population.push_back(anAgent); NOT USED
+        //population.push_back(anAgent); NOT USED CURRENTLY
     }
     return true;
 }
