@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionResource_File"/>
+    <addaction name="actionConfig_File"/>
+    <addaction name="actionStatistics"/>
+    <addaction name="actionExit"/>
+    <addaction name="actionInitialise_All"/>
+   </widget>
+   <widget class="QMenu" name="menuRun">
+    <property name="title">
+     <string>Run</string>
+    </property>
+    <addaction name="actionStart"/>
+    <addaction name="actionStep"/>
+    <addaction name="actionStop"/>
+    <addaction name="actionReset"/>
+   </widget>
+   <widget class="QMenu" name="menuRules">
+    <property name="title">
+     <string>Rules</string>
+    </property>
+    <widget class="QMenu" name="menuResources">
+     <property name="title">
+      <string>Resources</string>
+     </property>
+     <addaction name="actionGrowback"/>
+     <addaction name="actionSeasonal_Growback"/>
+    </widget>
+    <widget class="QMenu" name="menuPollution">
+     <property name="title">
+      <string>Pollution</string>
+     </property>
+     <addaction name="actionFormation"/>
+     <addaction name="actionDiffusion"/>
+    </widget>
+    <widget class="QMenu" name="menuMovement">
+     <property name="title">
+      <string>Movement</string>
+     </property>
+     <addaction name="actionMovement_2"/>
+     <addaction name="actionCombat"/>
+     <addaction name="actionMove_Closest_Wins"/>
+     <addaction name="actionMove_Strongest_Wins"/>
+    </widget>
+    <widget class="QMenu" name="menuDeath">
+     <property name="title">
+      <string>Death</string>
+     </property>
+     <addaction name="actionReplacement"/>
+     <addaction name="actionReproduction"/>
+    </widget>
+    <addaction name="menuResources"/>
+    <addaction name="menuPollution"/>
+    <addaction name="menuMovement"/>
+    <addaction name="menuDeath"/>
+    <addaction name="actionCulture"/>
+    <addaction name="actionDisease"/>
+    <addaction name="actionCredit"/>
+    <addaction name="actionInheritance"/>
+    <addaction name="actionTrade"/>
+   </widget>
+   <widget class="QMenu" name="menuDisplay">
+    <property name="title">
+     <string>Display</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuRun"/>
+   <addaction name="menuRules"/>
+   <addaction name="menuDisplay"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionStart">
+   <property name="text">
+    <string>Run</string>
+   </property>
+   <property name="toolTip">
+    <string>Run Simulation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionStep">
+   <property name="text">
+    <string>Step</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionSetup">
+   <property name="text">
+    <string>Set-up</string>
+   </property>
+  </action>
+  <action name="actionStatistics">
+   <property name="text">
+    <string>Statistics</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit the Simulation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionCulture">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Culture</string>
+   </property>
+   <property name="toolTip">
+    <string>Agents have culture - red or blue</string>
+   </property>
+  </action>
+  <action name="actionDisease">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Disease</string>
+   </property>
+   <property name="toolTip">
+    <string>Agents spread disease</string>
+   </property>
+  </action>
+  <action name="actionCredit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Credit</string>
+   </property>
+   <property name="toolTip">
+    <string>Agents can give and receive loans</string>
+   </property>
+  </action>
+  <action name="actionInheritance">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Inheritance</string>
+   </property>
+   <property name="toolTip">
+    <string>Agents inherit from their parents</string>
+   </property>
+  </action>
+  <action name="actionTrade">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Trade</string>
+   </property>
+  </action>
+  <action name="actionGrowback">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Growback</string>
+   </property>
+   <property name="toolTip">
+    <string>Sets resources to growback by some amount during each step</string>
+   </property>
+  </action>
+  <action name="actionSeasonal_Growback">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Seasonal Growback</string>
+   </property>
+   <property name="toolTip">
+    <string>Sets Growback to have seasonal rates</string>
+   </property>
+  </action>
+  <action name="actionMovement_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Movement</string>
+   </property>
+   <property name="toolTip">
+    <string>Allow basic agent movement</string>
+   </property>
+  </action>
+  <action name="actionCombat">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Combat</string>
+   </property>
+   <property name="toolTip">
+    <string>Agents fight as they move</string>
+   </property>
+  </action>
+  <action name="actionReplacement">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Replacement</string>
+   </property>
+   <property name="toolTip">
+    <string>Agents are replaced when they die</string>
+   </property>
+  </action>
+  <action name="actionReproduction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Reproduction</string>
+   </property>
+   <property name="toolTip">
+    <string>Agents can reproduce</string>
+   </property>
+  </action>
+  <action name="actionFormation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Formation</string>
+   </property>
+   <property name="toolTip">
+    <string>Pollution Formation on the Lattice</string>
+   </property>
+  </action>
+  <action name="actionDiffusion">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Diffusion</string>
+   </property>
+   <property name="toolTip">
+    <string>Allows pollution to diffuse over time</string>
+   </property>
+  </action>
+  <action name="actionLog_File">
+   <property name="text">
+    <string>Log File</string>
+   </property>
+  </action>
+  <action name="actionResource_File">
+   <property name="text">
+    <string>Resource File</string>
+   </property>
+   <property name="toolTip">
+    <string>Choose a Resource File</string>
+   </property>
+  </action>
+  <action name="actionConfig_File">
+   <property name="text">
+    <string>Config File</string>
+   </property>
+   <property name="toolTip">
+    <string>Choose a Config File</string>
+   </property>
+  </action>
+  <action name="actionInitialise_All">
+   <property name="text">
+    <string>Initialise All</string>
+   </property>
+   <property name="toolTip">
+    <string>Load all information and rules for simulation</string>
+   </property>
+  </action>
+  <action name="actionMove_Closest_Wins">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Move (Closest Wins)</string>
+   </property>
+  </action>
+  <action name="actionMove_Strongest_Wins">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Move (Strongest Wins)</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
