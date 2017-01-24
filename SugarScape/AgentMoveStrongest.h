@@ -20,7 +20,7 @@ Movement - M
  TYPE:   *Write Dependent*
  */
 
-class AgentMoveStrongest :AgentBasicMove {
+class AgentMoveStrongest :public AgentBasicMove {
 public:
     AgentMoveStrongest(World *sim, Strategy *theStrategy):AgentBasicMove(sim,theStrategy) {
 
