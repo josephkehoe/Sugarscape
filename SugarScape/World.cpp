@@ -60,6 +60,7 @@ World::World(int dimensionSize)
         }
         globalDiseaseList.push_back(newDisease);
     }
+    Lattice=nullptr;
 }
 
 /**
@@ -67,7 +68,7 @@ World::World(int dimensionSize)
  * @exception none
  */
 World::~World(){
-    delete [] Lattice;
+    if (Lattice!=nullptr) delete [] Lattice;
     for (auto aDisease: globalDiseaseList){
      delete aDisease;
     }
@@ -83,20 +84,24 @@ World::~World(){
  * @return true
  * @exception none
  */
-bool World::init(std::string logFileName,int vision,int metabolism)
+bool World::init(std::string logFileName,std::string configFileName, int vision,int metabolism)
 {
     outputLog.open(logFileName,std::ios::out | std::ios::app);
     //Create Locations in Lattice
+    if (Lattice!=nullptr) delete[] Lattice;
     Lattice=new Location[size*size];
+    //read in initial sugar levels from config file
+    int fileCount=this->readConfigFile(configFileName);
     for (int i=0; i<size*size; ++i) {
         Lattice[i].setWorld(this);
         Lattice[i].setPosition(std::pair<int,int>(i/size,i%size));
         //do not set these if we are reading in from config file -- only one assignment allowed!
-        //Lattice[i].setMaxSugar(getRnd(InitialSugarMin, InitialSugarMax));
-        //Lattice[i].setSugar(getRnd(InitialSugarMin, Lattice[i].getMaxSugar()));
+        if (fileCount==0){
+            Lattice[i].setMaxSugar(getRnd(InitialSugarMin, InitialSugarMax));
+            Lattice[i].setSugar(getRnd(InitialSugarMin, Lattice[i].getMaxSugar()));
+        }
     }
-    //read in initial sugar levels from config file
-    this->readConfigFile("startup.csv");
+
     //create agents and put in lattice
     std::pair<int,int> pos;
     for (int i=0; i<initialPopulation; ++i) {//quarter fill lattice
@@ -1101,5 +1106,16 @@ int World::applyRules(){
         //sync();
         resetNeighbours();
     }
+    return ruleCount;
+}
+
+/**
+ * Remove all active rules
+ * @return number of rules removed
+ * @exception none
+ */
+int World::clearRules(void){
+    int ruleCount=activeRules.size();
+    activeRules.clear();
     return ruleCount;
 }

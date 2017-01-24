@@ -201,7 +201,7 @@ public:
     Agent* killAgent(std::pair<int,int>);
     
     //helpers
-    bool init(std::string logFileName="log/output.log",int vision=1,int metabolism=1);
+    bool init(std::string logFileName="log/output.log",std::string configFileName="startup.csv",int vision=1,int metabolism=1);
     int sync(void);
     void sanityCheck(void);
     int wrap(int);
@@ -214,6 +214,7 @@ public:
     //Rule Application
     int addRule(Action*);
     int applyRules(void);
+    int clearRules(void);
     
 
 };
