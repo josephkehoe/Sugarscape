@@ -18,7 +18,7 @@
 int AgentMoveStrongest::pickIndex(std::vector<Location*> possibleDestinations)
 {
     int best=0;
-    for (int i=0; i<possibleDestinations.size(); ++i) {
+    for (unsigned int i=0; i<possibleDestinations.size(); ++i) {
         if (myCompare(possibleDestinations[i], possibleDestinations[best])>0) {
             best=i;
         }

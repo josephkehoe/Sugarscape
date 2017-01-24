@@ -29,7 +29,7 @@ AgentMoveClosest::AgentMoveClosest(World *sim, Strategy *theStrategy)
 int AgentMoveClosest::pickIndex(std::vector<Location*> possibleDestinations)
 {
     int best=0;
-    for (int i=0; i<possibleDestinations.size(); ++i) {
+    for (unsigned int i=0; i<possibleDestinations.size(); ++i) {
         if (myCompare(possibleDestinations[i], possibleDestinations[best])>0) {
             best=i;
         }
@@ -44,7 +44,7 @@ int AgentMoveClosest::pickIndex(std::vector<Location*> possibleDestinations)
 /**
  * Pick a random empty location within our neighbourhood as defined by our vision
  *
- * Ranks chosen move randomly
+ * Ranks chosen move by proximity to current position
  * @param loc :Our location
  * @see Move Rule
  * @return Our chosen location held in a group object (or our existing location if we have no move)
