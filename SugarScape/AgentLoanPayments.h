@@ -12,7 +12,7 @@
 #include <iostream>
 #include "IterativeWriteAction.h"
 
-/*!  \class  AgentCredit
+/*!  \class  AgentLoanPayments
  \brief Credit Rule
 
  Credit
