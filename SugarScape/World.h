@@ -44,13 +44,13 @@ class World{
      Change to suit your simulation
      */
     static const int DIM=50; /*!< Size of lattice dimensions */
-    static const int AGENTCOUNT=500; /*!< Initial number of agents */
+    static const int AGENTCOUNT=400; /*!< Initial number of agents */
     static const int CULTURECOUNT=11;/*!<ODD SIZE REQUIRED 11 mentioned in book! */
     static const int DISEASECOUNT=10;/*!<10 is used in book - but other values also used i.e. 25 */
-    static const int MaxAge=10000; /*!<Highest lifespan for an agent (100 is default)*/
+    static const int MaxAge=100; /*!<Highest lifespan for an agent (100 is default)*/
     static const int MaxVision=6;
     static const int MaxMetabolism=4;
-    static const int MinAge=6000;/*!<Lowest lifespan for an agent (60 is default)*/
+    static const int MinAge=60;/*!<Lowest lifespan for an agent (60 is default)*/
     static const int MinMetabolism=1;
     static const int SugarGrowth=1;
     static const int SpiceGrowth=0;
@@ -114,7 +114,7 @@ class World{
     std::vector<std::vector<bool>*> globalDiseaseList;/*!< All diseases that exist */
     //random Numbers
     MyRNG rng;// keep one instance
-    //Log file location
+    //Log file location0
     std::ofstream outputLog;
     
 public:
@@ -201,7 +201,9 @@ public:
     Agent* killAgent(std::pair<int,int>);
     
     //helpers
-    bool init(std::string logFileName="log/output.log",std::string configFileName="startup.csv",int vision=1,int metabolism=1);
+    bool init(std::string logFileName="log/output.log",
+              std::string configFileName="startup.csv",
+              int vision=1,int metabolism=1);
     int sync(void);
     void sanityCheck(void);
     int wrap(int);
