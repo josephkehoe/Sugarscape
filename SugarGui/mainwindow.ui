@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -90,6 +90,9 @@
     <property name="title">
      <string>Display</string>
     </property>
+    <addaction name="actionSex"/>
+    <addaction name="actionFertility"/>
+    <addaction name="actionNewBorn"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRun"/>
@@ -330,6 +333,30 @@
    </property>
    <property name="text">
     <string>Move (Strongest Wins)</string>
+   </property>
+  </action>
+  <action name="actionSex">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sex</string>
+   </property>
+  </action>
+  <action name="actionFertility">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fertility</string>
+   </property>
+  </action>
+  <action name="actionNewBorn">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>NewBorn</string>
    </property>
   </action>
  </widget>

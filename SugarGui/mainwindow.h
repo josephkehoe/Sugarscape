@@ -52,14 +52,15 @@ const int Combat=8;
 const int Culture=9;
 const int Disease=10;
 const int Credit=11;
-const int Inheritance=12;
-const int Trade=13;
-const int Replacement=14;
-const int Reproduction=15;
-const int Metabolism=16;
-const int Death=17;
-const int GarbageCollection=18;
-const int RuleCount=19;
+const int LoanPayments=12;
+const int Inheritance=13;
+const int Trade=14;
+const int Replacement=15;
+const int Reproduction=16;
+const int Metabolism=17;
+const int Death=18;
+const int GarbageCollection=19;
+const int RuleCount=20;
 }
 
 class MainWindow : public QMainWindow
@@ -97,7 +98,9 @@ private:
     std::string SugarDistributionFileName;
     bool liveRules[Ui::RuleCount];
     Action *Rules[Ui::RuleCount];
-
+    bool displaySex;
+    bool displayFertility;
+    bool displayNewBorn;
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -126,6 +129,10 @@ private slots:
     void on_actionInitialise_All_triggered();
     void on_actionMove_Strongest_Wins_toggled(bool arg1);
     void on_actionMove_Closest_Wins_toggled(bool arg1);
+    void on_actionSex_toggled(bool arg1);
+    void on_actionFertility_toggled(bool arg1);
+    void on_actionNewBorn_toggled(bool arg1);
+    void on_actionReplacement_triggered();
 };
 
 #endif // MAINWINDOW_H

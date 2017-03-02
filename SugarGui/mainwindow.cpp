@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Rules[Ui::Growback]= new Growback(theWorld,independent);
     Rules[Ui::SeasonalGrowback]= new SeasonalGrowback(theWorld,independent);
     Rules[Ui::PollutionFormation]= new PollutionFormation(theWorld,independent);
-    Rules[Ui::Diffusion]= new Diffusion(theWorld,independent);
+    Rules[Ui::Diffusion]= new Diffusion(theWorld,readDependent);
     Rules[Ui::BasicMovement]= new AgentBasicMove(theWorld,writeDependent);
     Rules[Ui::Movement]= new AgentMove(theWorld,writeDependent);
     Rules[Ui::ClosestMovement]= new AgentMoveClosest(theWorld,writeDependent);
@@ -34,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     Rules[Ui::Combat]= new AgentCombat(theWorld,writeDependent);
     Rules[Ui::Culture]= new AgentCulture(theWorld,readDependent);
     Rules[Ui::Disease]= new AgentDisease(theWorld,readDependent);
-    Rules[Ui::Credit]= new AgentCredit(theWorld,writeDependent);
+    Rules[Ui::Credit]= new AgentCredit(theWorld,iterativeWrite);
+    Rules[Ui::LoanPayments]= new AgentLoanPayments(theWorld,iterativeWrite);
     Rules[Ui::Inheritance]= new AgentInheritance(theWorld,writeDependent);
     Rules[Ui::Trade]= new AgentCredit(theWorld,iterativeWrite);//TO DO: ADD AGENTTRADE
     Rules[Ui::Replacement]= new AgentReplacement(theWorld,writeDependent);
@@ -56,12 +57,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //agentMating= new AgentMating(theWorld,iterativeWrite);
     //agentMetabolism= new AgentMetabolism(theWorld,independent);
 
+    displaySex=false;
+    displayNewBorn=false;
+    displayFertility=false;
 //!!TO DO change to user selectable files
     SugarDistributionFileName="startup.csv";
     logFileName="log/output.log";
-
+    theWorld->init(logFileName,SugarDistributionFileName);
     myTimer= new QTimer(this);
-    myTimer->setInterval(0);
+    myTimer->setInterval(300);
     connect(myTimer,SIGNAL(timeout()),this,SLOT(timerTimeout()));
 
 }
@@ -114,6 +118,9 @@ void MainWindow::paintEvent(QPaintEvent *)
                     else{
                         brush.setColor(Qt::red);
                     }
+                    if (displayNewBorn==true && theAgent->getAge()<2){
+                        brush.setColor(Qt::white);
+                    }
                 }
                 else{
                     radius=theWorld->getLocation(pos)->getSugar();
@@ -123,7 +130,25 @@ void MainWindow::paintEvent(QPaintEvent *)
                     radius=cellSize/2;
                 }
                 painter.setBrush(brush);
-                painter.drawEllipse(p,radius,radius);
+                if (displaySex==true && currLocation->hasAgent()){
+                    if (theAgent->getSex()==male){
+                        QRectF rectangle(p.x()-radius,p.y()-radius,radius*2,radius*2);
+                        painter.drawRect(rectangle);
+                    }
+                    else{
+                        painter.drawEllipse(p,radius,radius);
+                    }
+                }
+                else{
+                   painter.drawEllipse(p,radius,radius);
+                }
+                if (displayFertility==true && currLocation->hasAgent()){
+                    if (theAgent->isFertile()){
+                        brush.setColor(Qt::black);
+                        painter.drawEllipse(p,radius/2,radius/2);
+                    }
+                }
+
             }
         }
 
@@ -299,8 +324,10 @@ void MainWindow::on_actionReplacement_toggled(bool arg1)
     if (Ui::State::WAITING==currentState){
         if(arg1==true){
             liveRules[Ui::Replacement]=true;
+            liveRules[Ui::Death]=false;
         }else{
             liveRules[Ui::Replacement]=false;
+            liveRules[Ui::Death]=true;
         }
     }
 }
@@ -343,8 +370,10 @@ void MainWindow::on_actionCredit_toggled(bool arg1)
     if (Ui::State::WAITING==currentState){
         if(arg1==true){
             liveRules[Ui::Credit]=true;
+            liveRules[Ui::LoanPayments]=true;
         }else{
             liveRules[Ui::Credit]=false;
+            liveRules[Ui::LoanPayments]=false;
         }
     }
 }
@@ -372,6 +401,7 @@ void MainWindow::on_actionResource_File_triggered()
         QString fileName= QFileDialog::getOpenFileName(this, tr("Open Resource File"), QString(),
                                                        tr("Config Files (*.csv)"));
     if(!fileName.isEmpty()) SugarDistributionFileName = fileName.toUtf8().constData();
+    theWorld->init(logFileName,SugarDistributionFileName);
 }
 
 void MainWindow::on_actionStart_triggered()
@@ -395,12 +425,6 @@ void MainWindow::on_actionInitialise_All_triggered()
         for(int i=0;i<Ui::RuleCount;++i){
             if (liveRules[i]==true) theWorld->addRule(Rules[i]);
         }
-        //theWorld->addRule(growback);
-        //theWorld->addRule(move);
-        //theWorld->addRule(gc);
-        //theWorld->addRule(agentDeath);
-        //theWorld->addRule(agentMating);
-        //theWorld->addRule(agentMetabolism);
         currentState=Ui::State::READY;
         this->repaint();
     }
@@ -409,3 +433,38 @@ void MainWindow::on_actionInitialise_All_triggered()
 
 
 
+
+void MainWindow::on_actionSex_toggled(bool arg1)
+{
+    if (arg1==true){
+        displaySex=true;
+    }
+    else{
+        displaySex=false;
+    }
+}
+
+void MainWindow::on_actionFertility_toggled(bool arg1)
+{
+    if (arg1==true){
+        displayFertility=true;
+    }
+    else{
+        displayFertility=false;
+    }
+}
+
+void MainWindow::on_actionNewBorn_toggled(bool arg1)
+{
+    if (arg1==true){
+        displayNewBorn=true;
+    }
+    else{
+        displayNewBorn=false;
+    }
+}
+
+void MainWindow::on_actionReplacement_triggered()
+{
+
+}
