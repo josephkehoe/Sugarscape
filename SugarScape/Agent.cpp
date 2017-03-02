@@ -740,7 +740,9 @@ Agent* Agent::reincarnate(std::pair<int,int> pos){
         currentCulture.push_back(aBit);
         newCulture.push_back(aBit);
     }
-    /*!< Create random disease */
+    /*!< Create random diseases */
+    newDiseases.clear();
+    currentDiseases.clear();
     setDiseases(initialDiseaseCount);
     return this;
 }
