@@ -15,7 +15,30 @@
 #include "group.h"
 #include "Action.h"
 #include "Strategy.h"
-
+#include "NewSweepStrategy.h"
+#include "LineByLineStrategy.h"
+#include "RndAsyncStrategy.h"
+#include "IndependentStrategy.h"
+#include "IterativeWriteStrategy.h"
+#include "ReadDependentStrategy.h"
+#include "Growback.h"
+#include "SeasonalGrowback.h"
+#include "PollutionFormation.h"
+#include "GarbageCollection.h"
+#include "AgentMove.h"
+#include "AgentCulture.h"
+#include "AgentDeath.h"
+#include "AgentDisease.h"
+#include "Diffusion.h"
+#include "AgentCombat.h"
+#include "AgentReplacement.h"
+#include "AgentMetabolism.h"
+#include "AgentMating.h"
+#include "AgentLoanPayments.h"
+#include "AgentCredit.h"
+#include "AgentInheritance.h"
+#include "AgentMoveClosest.h"
+#include "AgentMoveStrongest.h"
 
 
 
@@ -61,6 +84,42 @@ World::World(int dimensionSize)
         globalDiseaseList.push_back(newDisease);
     }
     Lattice=nullptr;
+    /*!< Declare all possible strategies here */
+    baseStrategy = new Strategy(this);
+    newSweep= new NewSweepStrategy(this);
+    lineByLine= new LineByLineStrategy(this);
+    rndAsync= new RndAsyncStrategy(this);
+    independent= new IndependentStrategy(this);
+    iterativeWrite= new IterativeWriteStrategy(this);
+    readDependent= new ReadDependentStrategy(this);
+    writeDependent= new WriteStrategy(this);
+    /*!< Declare all rules here */
+    Rules[Growbk]= new Growback(this,independent);
+    Rules[SeasonalGrowbk]= new SeasonalGrowback(this,independent);
+    Rules[PollutionForm]= new PollutionFormation(this,independent);
+    Rules[Diffuse]= new Diffusion(this,readDependent);
+    Rules[BasicMovement]= new AgentBasicMove(this,writeDependent);
+    Rules[Movement]= new AgentMove(this,writeDependent);
+    Rules[ClosestMovement]= new AgentMoveClosest(this,writeDependent);
+    Rules[StrongestMovement]= new AgentMoveStrongest(this,writeDependent);
+    Rules[Combat]= new AgentCombat(this,writeDependent);
+    Rules[Culture]= new AgentCulture(this,readDependent);
+    Rules[Disease]= new AgentDisease(this,readDependent);
+    Rules[Credit]= new AgentCredit(this,iterativeWrite);
+    Rules[LoanPayments]= new AgentLoanPayments(this,iterativeWrite);
+    Rules[Inheritance]= new AgentInheritance(this,writeDependent);
+    Rules[Trade]= new AgentCredit(this,iterativeWrite);//TO DO: ADD AGENTTRADE
+    Rules[Replacemt]= new AgentReplacement(this,writeDependent);
+    Rules[Garbage]= new GarbageCollection(this,independent);
+    Rules[Death]= new AgentDeath(this,readDependent);
+    Rules[Reproduction]= new AgentMating(this,iterativeWrite);
+    Rules[Metabolism]= new AgentMetabolism(this,independent);
+    for(int i=0;i<RuleCount;++i){
+        liveRules[i]=false;
+    }
+    liveRules[Garbage]=true;
+    liveRules[Metabolism]=true;
+    liveRules[Death]=true;
 }
 
 /**
@@ -71,6 +130,17 @@ World::~World(){
     if (Lattice!=nullptr) delete [] Lattice;
     for (auto aDisease: globalDiseaseList){
      delete aDisease;
+    }
+    delete baseStrategy;
+    delete newSweep;
+    delete lineByLine;
+    delete rndAsync;
+    delete independent;
+    delete iterativeWrite;
+    delete readDependent;
+    delete writeDependent;
+    for(int i=0;i<RuleCount;++i){
+        delete Rules[i];
     }
     
 }
@@ -1118,4 +1188,55 @@ int World::clearRules(void){
     int ruleCount=activeRules.size();
     activeRules.clear();
     return ruleCount;
+}
+
+/**
+ * Initialise all active rules
+ * @return number of rules active
+ * @exception none
+ */
+int World::initialiseRules(void){
+    int ruleCount=0;
+    for(int i=0;i<RuleCount;++i){
+        if (liveRules[i]==true){
+            ++ruleCount;
+            addRule(Rules[i]);
+        }
+    }
+    return ruleCount;
+}
+
+/**
+ * Actives rules based on index
+ * @param index rule number
+ * @return -1 if rule already active else index
+ * @exception none TO DO: check for bounds error
+ */
+int World::activateRule(int index){
+    if (index<0 || index>RuleCount) return -2;
+    if (liveRules[index]==true){
+        return -1;
+    }
+    else{
+        liveRules[index]=true;
+        return index;
+    }
+}
+
+
+/**
+ * Actives rules based on index
+ * @param index rule number
+ * @return -1 if rule already inactive else index
+ * @exception none TO DO: check for bounds error
+ */
+int World::deactivateRule(int index){
+    if (index<0 || index>RuleCount) return -2;
+    if (liveRules[index]==false){
+        return -1;
+    }
+    else{
+        liveRules[index]=false;
+        return index;
+    }
 }

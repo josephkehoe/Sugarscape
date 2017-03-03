@@ -22,6 +22,14 @@ typedef std::mt19937 MyRNG;  // the Mersenne Twister with a popular choice of pa
 
 
 class Action;
+class Strategy;
+class NewSweepStrategy;
+class LineByLineStrategy;
+class RndAsyncStrategy;
+class IndependentStrategy;
+class ReadDependentStrategy;
+class WriteStrategy;
+class IterativeWriteStrategy;
 
 
 /*!  \class  World
@@ -78,6 +86,27 @@ class World{
     static const int MinFemaleFertilityEnd=90;
     static const int MaxFemaleFertilityEnd=100;
 
+    static const int Growbk=0;
+    static const int SeasonalGrowbk=1;
+    static const int PollutionForm=2;
+    static const int Diffuse=3;
+    static const int BasicMovement=4;
+    static const int Movement=5;
+    static const int ClosestMovement=6;
+    static const int StrongestMovement=7;
+    static const int Combat=8;
+    static const int Culture=9;
+    static const int Disease=10;
+    static const int Credit=11;
+    static const int LoanPayments=12;
+    static const int Inheritance=13;
+    static const int Trade=14;
+    static const int Replacemt=15;
+    static const int Reproduction=16;
+    static const int Metabolism=17;
+    static const int Death=18;
+    static const int Garbage=19;
+    static const int RuleCount=20;
     
     int step; /*!< Number of steps the simulation has run for */
     int size; /*!< Dimensions of lattice  a size*size matrix of locations*/
@@ -114,9 +143,20 @@ class World{
     std::vector<std::vector<bool>*> globalDiseaseList;/*!< All diseases that exist */
     //random Numbers
     MyRNG rng;// keep one instance
-    //Log file location0
+    //Log file location
     std::ofstream outputLog;
-    
+    /*!< Declare all possible strategies here */
+    Strategy *baseStrategy;
+    NewSweepStrategy *newSweep;
+    LineByLineStrategy *lineByLine;
+    RndAsyncStrategy *rndAsync;
+    IndependentStrategy *independent;
+    IterativeWriteStrategy *iterativeWrite;
+    ReadDependentStrategy *readDependent;
+    WriteStrategy *writeDependent;
+    /*!< Place all possible Rules here */
+    bool liveRules[RuleCount];
+    Action *Rules[RuleCount];
 public:
     //Constructor and Destructor
     World(int dimensionSize=0);
@@ -217,6 +257,9 @@ public:
     int addRule(Action*);
     int applyRules(void);
     int clearRules(void);
+    int initialiseRules(void);
+    int activateRule(int);
+    int deactivateRule(int);
     
 
 };
