@@ -5,6 +5,7 @@
 #include<QDebug>
 #include <QDialog>
  #include <QFileDialog>
+#include <QString>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -65,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     logFileName="log/output.log";
     theWorld->init(logFileName,SugarDistributionFileName);
     myTimer= new QTimer(this);
-    myTimer->setInterval(300);
+    myTimer->setInterval(1);
     connect(myTimer,SIGNAL(timeout()),this,SLOT(timerTimeout()));
 
 }
@@ -151,8 +152,16 @@ void MainWindow::paintEvent(QPaintEvent *)
 
             }
         }
-
+        //update step counter display on screen
+        int step=theWorld->getStep();
+        QString theCounter;
+        std::cout << step<<std::endl;
+        theCounter.setNum(step);
+        ui->StepCount->setText(theCounter);
     }
+
+
+
 }
 
 void MainWindow::on_actionSetup_triggered()
@@ -168,6 +177,7 @@ void MainWindow::timerTimeout()
     if(Ui::State::RUNNING==currentState)
     {
          this->theWorld->applyRules();
+        theWorld->incStep();
          this->repaint();
     }
 }
@@ -193,6 +203,7 @@ void MainWindow::on_actionStep_triggered()
     if(Ui::State::PAUSED==currentState)
     {
          this->theWorld->applyRules();
+        theWorld->incStep();
          this->repaint();
     }
 }
@@ -253,7 +264,7 @@ void MainWindow::on_actionMovement_2_toggled(bool arg1)
 {
     if (Ui::State::WAITING==currentState){
         if(arg1==true){
-            liveRules[Ui::BasicMovement]=true;
+            liveRules[Ui::Movement]=true;
             ui->actionCombat->setChecked(false);
             liveRules[Ui::Combat]=false;
             ui->actionMove_Closest_Wins->setChecked(false);
@@ -261,7 +272,7 @@ void MainWindow::on_actionMovement_2_toggled(bool arg1)
             ui->actionMove_Strongest_Wins->setChecked(false);
             liveRules[Ui::StrongestMovement]=false;
         }else{
-            liveRules[Ui::BasicMovement]=false;
+            liveRules[Ui::Movement]=false;
         }
     }
 }
@@ -275,7 +286,7 @@ void MainWindow::on_actionMove_Strongest_Wins_toggled(bool arg1)
             ui->actionCombat->setChecked(false);
             liveRules[Ui::Combat]=false;
             ui->actionMovement_2->setChecked(false);
-            liveRules[Ui::BasicMovement]=false;
+            liveRules[Ui::Movement]=false;
             ui->actionMove_Closest_Wins->setChecked(false);
             liveRules[Ui::ClosestMovement]=false;
         }else{
@@ -292,7 +303,7 @@ void MainWindow::on_actionMove_Closest_Wins_toggled(bool arg1)
             ui->actionCombat->setChecked(false);
             liveRules[Ui::Combat]=false;
             ui->actionMovement_2->setChecked(false);
-            liveRules[Ui::BasicMovement]=false;
+            liveRules[Ui::Movement]=false;
             ui->actionMove_Strongest_Wins->setChecked(false);
             liveRules[Ui::StrongestMovement]=false;
         }else{
@@ -308,7 +319,7 @@ void MainWindow::on_actionCombat_toggled(bool arg1)
         if(arg1==true){
             liveRules[Ui::Combat]=true;
             ui->actionMovement_2->setChecked(false);
-            liveRules[Ui::BasicMovement]=false;
+            liveRules[Ui::Movement]=false;
             ui->actionMove_Closest_Wins->setChecked(false);
             liveRules[Ui::ClosestMovement]=false;
             ui->actionMove_Strongest_Wins->setChecked(false);
