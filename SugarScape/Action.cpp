@@ -12,11 +12,12 @@
 /**
  * Constructor - Initialises world and strategy variables
  * @param theWorld :Pointer to World Object
- * @param preferredStrategy :Pointer to Strategy Object
+ * @param preferredStrategy :Pointer to SU Strategy Object
  * @return none
  * @exception none
  */
-Action::Action(World* theWorld, Strategy* preferredStrategy):sim(theWorld),theStrategy(preferredStrategy){
+Action::Action(World* theWorld, Strategy* preferredStrategy)
+    :sim(theWorld),theStrategy(preferredStrategy),SyncStrategy(preferredStrategy){
 }
 
 

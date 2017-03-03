@@ -28,6 +28,7 @@ class Action{
 protected:
     World *sim; /*!< The object containing the entire simulation */
     Strategy *theStrategy; /*!< The updating strategy we will use with this rule */
+    Strategy *SyncStrategy;/*!< Copy of the Synchronous updating strategy */
 public:
     Action(World*, Strategy*);
     virtual ~Action();
