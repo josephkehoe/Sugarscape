@@ -145,6 +145,8 @@ class World{
     MyRNG rng;// keep one instance
     //Log file location
     std::ofstream outputLog;
+    //INI file location
+    std::ifstream iniFile;
     /*!< Declare all possible strategies here */
     Strategy *baseStrategy;
     NewSweepStrategy *newSweep;
@@ -242,7 +244,7 @@ public:
     
     //helpers
     bool init(std::string logFileName="log/output.log",
-              std::string configFileName="startup.csv",
+              std::string configFileName="startup.csv",std::string iniFile="config.ini",
               int vision=1,int metabolism=1);
     int sync(void);
     void sanityCheck(void);
@@ -250,6 +252,7 @@ public:
     int getAgentCount(void);
     int getBlueCount(void);
     bool resetNeighbours(void);
+    int readIniFile(std::string);
     int readConfigFile(std::string);
     int log(std::string);
 

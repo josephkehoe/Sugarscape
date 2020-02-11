@@ -50,21 +50,13 @@ MainWindow::MainWindow(QWidget *parent) :
     liveRules[Ui::GarbageCollection]=true;
     liveRules[Ui::Metabolism]=true;
     liveRules[Ui::Death]=true;
-//!! TO DO remove these!
-    //growback= new Growback(theWorld,independent);
-    //move= new AgentMove(theWorld,writeDependent);
-    //gc= new GarbageCollection(theWorld,independent);
-    //agentDeath= new AgentDeath(theWorld,readDependent);
-    //agentMating= new AgentMating(theWorld,iterativeWrite);
-    //agentMetabolism= new AgentMetabolism(theWorld,independent);
-
     displaySex=false;
     displayNewBorn=false;
     displayFertility=false;
-//!!TO DO change to user selectable files
     SugarDistributionFileName="startup.csv";
+    configFileName="config.ini";
     logFileName="log/output.log";
-    theWorld->init(logFileName,SugarDistributionFileName);
+    theWorld->init(logFileName,SugarDistributionFileName, configFileName);
     myTimer= new QTimer(this);
     myTimer->setInterval(1);
     connect(myTimer,SIGNAL(timeout()),this,SLOT(timerTimeout()));
@@ -192,7 +184,7 @@ void MainWindow::on_actionStop_triggered()
 void MainWindow::on_actionReset_triggered()
 {
     currentState=Ui::State::READY;
-    theWorld->init(logFileName,SugarDistributionFileName);/*!< Read from init files */
+    theWorld->init(logFileName,SugarDistributionFileName, configFileName);/*!< Read from init files */
     theWorld->sync();/*!< sync World before use */
     this->repaint(); /*!< Draw start state */
 }
@@ -412,7 +404,7 @@ void MainWindow::on_actionResource_File_triggered()
         QString fileName= QFileDialog::getOpenFileName(this, tr("Open Resource File"), QString(),
                                                        tr("Config Files (*.csv)"));
     if(!fileName.isEmpty()) SugarDistributionFileName = fileName.toUtf8().constData();
-    theWorld->init(logFileName,SugarDistributionFileName);
+    theWorld->init(logFileName,SugarDistributionFileName, configFileName);
 }
 
 void MainWindow::on_actionStart_triggered()
@@ -430,7 +422,7 @@ void MainWindow::on_actionInitialise_All_triggered()
 {
     if (currentState==Ui::State::WAITING){
         outputFile= new std::ofstream("fileName.cfg",std::ios::out | std::ios::app);
-        theWorld->init(logFileName,SugarDistributionFileName);/*!< Read from init files */
+        theWorld->init(logFileName,SugarDistributionFileName, configFileName);/*!< Read from init files */
         theWorld->sync();/*!< sync World before use */
         theWorld->clearRules();
         for(int i=0;i<Ui::RuleCount;++i){

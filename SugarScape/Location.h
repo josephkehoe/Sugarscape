@@ -28,11 +28,14 @@ class Location{
         World *sim;/*!< Pointer to the simulation */
     
         //mutable
-        bool done; /*!< True if location has applied current rule successfully */
-        int currentSugar,newSugar; /*!< Amount of sugar currently at location */
-        int currentPollution,newPollution; /*!< Amount of pollution currently at site */
-        Agent *currentResident,*newResident; /*!< Agent currently at this location (if any) */
         Agent *deadAgent;
+        Agent *newResident, *currentResident; /*!< Agent currently at this location (if any) */
+        int  currentPollution, newPollution; /*!< Amount of pollution currently at site */
+        bool done; /*!< True if location has applied current rule successfully */
+        int newSugar, currentSugar; /*!< Amount of sugar currently at location */
+
+
+
 public:
     //constructors
     Location(World* sim=nullptr, std::pair<int,int> pos=nullPosition);

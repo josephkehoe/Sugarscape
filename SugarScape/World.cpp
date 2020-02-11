@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Joseph P Kehoe. All rights reserved.
 //
 
+#include <QSettings>
+#include <QString>
 #include <fstream>
 #include <chrono>
 #include <string>       // std::string
@@ -67,6 +69,10 @@ World::World(int dimensionSize)
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     rng.seed(seed);
     rng.seed(0);
+
+    //Read INI file to set parameters for simulation
+    this->readIniFile("config.ini");
+
     femaleFertilityStart=getRnd(MinFemaleFertilityStart, MaxFemaleFertilityStart+1);//range is inclusive!
     maleFertilityStart=getRnd(MinMaleFertilityStart, MaxMaleFertilityStart+1);//range is inclusive!
     femaleFertilityEnd=getRnd(MinFemaleFertilityEnd, MaxFemaleFertilityEnd+1);//range is inclusive!
@@ -150,18 +156,19 @@ World::~World(){
 
 
 /**
- * initialises World fully
+ * initialises World Sugar Levels and settings
  * @return true
  * @exception none
  */
-bool World::init(std::string logFileName,std::string configFileName, int vision,int metabolism)
+bool World::init(std::string logFileName,std::string sugarFileName, std::string iniFile, int vision,int metabolism)
 {
+    //Open log file for error message output
     outputLog.open(logFileName,std::ios::out | std::ios::app);
     //Create Locations in Lattice
     if (Lattice!=nullptr) delete[] Lattice;
     Lattice=new Location[size*size];
     //read in initial sugar levels from config file
-    int fileCount=this->readConfigFile(configFileName);
+    int fileCount=this->readConfigFile(sugarFileName);
     for (int i=0; i<size*size; ++i) {
         Lattice[i].setWorld(this);
         Lattice[i].setPosition(std::pair<int,int>(i/size,i%size));
@@ -1114,8 +1121,24 @@ Agent* World::killAgent(std::pair<int,int> pos)
     }
 }
 
+
+
 /**
  * read in config file --comma delimited ints
+ * @param configFile :name (incl. path) of configfile
+ * @return number of items read
+ * @exception none
+ */
+int World::readIniFile(std::string iniFile)
+{//TO DO: get this working!!
+    QSettings settings(QString::fromUtf8(iniFile.c_str()), QSettings::IniFormat);
+    QString someValue = settings.value("some/config/key", "default value if unset").toString();
+    size= settings.value("grid/size","50").toInt();
+}
+
+
+/**
+ * read in sugar layout file --comma delimited ints
  * @param configFile :name (incl. path) of configfile
  * @return number of items read
  * @exception none

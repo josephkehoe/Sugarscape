@@ -19,16 +19,14 @@
  * @exception none
  */
 Location::Location(World *theWorld, std::pair<int,int> pos):
+    position(pos), maxSugar(0),sim(theWorld),
     deadAgent(nullptr),newResident(nullptr),currentResident(nullptr),
     currentPollution(0),newPollution(0),done(false),
-    newSugar(0),position(pos),sim(theWorld)
+    newSugar(0),currentSugar(0)
 {
     if (sim!=nullptr) {
         maxSugar=sim->getRnd(sim->getInitialSugarMin(), sim->getInitialSugarMax());
         currentSugar=sim->getRnd(sim->getInitialSugarMin(), maxSugar);
-    }else{
-        maxSugar=0;
-        currentSugar=0;
     }
 }
 
